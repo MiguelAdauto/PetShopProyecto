@@ -64,7 +64,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  max-width: 300px; /* ajusta según tu layout */
+  max-width: 300px;
   margin-top: 1rem;
 }
 
@@ -102,7 +102,6 @@
   color: #fff;
 }
 
-/* Opcional: hover para mejorar UX */
 .btn.pago:hover {
   filter: brightness(0.9);
 }

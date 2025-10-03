@@ -3,8 +3,11 @@ import Header from '../components/Cabecera/Header';
 import { Outlet, useLocation } from 'react-router-dom';
 
 const getTitle = (path: string) => {
-  if (path.includes('ventas')) return 'Ventas';
-  // otras rutas...
+  if (path.includes('/vendedor/listado')) return 'Listado de Ventas';
+  if (path.includes('/vendedor/ventas')) return 'Ventas';
+  if (path.includes('/vendedor/productos')) return 'Productos';
+  if (path.includes('/vendedor/categorias')) return 'Categorías';
+  if (path.includes('/vendedor/perfil')) return 'Perfil';
   return 'Vendedor';
 };
 
@@ -14,14 +17,9 @@ const VendedorLayout = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {/* Sidebar fijo */}
       <Sidebar />
-
-      {/* Contenedor principal: header + contenido */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <Header title={title} />
-
-        {/* Aquí va el outlet (contenido de la ruta) */}
         <main style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
           <Outlet />
         </main>

@@ -15,14 +15,13 @@ const productos = [
   { id: 6, nombre: 'Producto 6', precio: 11.25, imagen: 'https://via.placeholder.com/150' },
   { id: 7, nombre: 'Producto 7', precio: 9.99, imagen: 'https://via.placeholder.com/150' },
   { id: 8, nombre: 'Producto 8', precio: 14.99, imagen: 'https://via.placeholder.com/150' },
-  // más productos...
 ];
 
 const Ventas = () => {
   const [nombre, setNombre] = useState('');
   const [codigo, setCodigo] = useState('');
   const [categoria, setCategoria] = useState<'Perros' | 'Gatos' | 'Mixto'>('Mixto');
-const [subcategoria, setSubcategoria] = useState<'Juguetes' | 'Aseo' | 'Accesorios' | 'Hogar'| 'Comederos'>('Juguetes');
+  const [subcategoria, setSubcategoria] = useState<'Juguetes' | 'Aseo' | 'Accesorios' | 'Hogar' | 'Comederos'>('Juguetes');
   return (
     <div className="ventas-container">
       {/* Columna izquierda: productos */}
@@ -37,16 +36,16 @@ const [subcategoria, setSubcategoria] = useState<'Juguetes' | 'Aseo' | 'Accesori
 
         {/* Lista de productos con scroll */}
         <div className="productos-scroll">
-  <div className="productos-grid">
-    {productos.slice(0, 6).map(({ id, nombre, precio, imagen }) => (
-      <div key={id} className="producto-card">
-        <img src={imagen} alt={nombre} className="producto-img" />
-        <div className="producto-nombre">{nombre}</div>
-        <div className="producto-precio">s/{precio.toFixed(2)}</div>
-      </div>
-    ))}
-  </div>
-</div>
+          <div className="productos-grid">
+            {productos.slice(0, 6).map(({ id, nombre, precio, imagen }) => (
+              <div key={id} className="producto-card">
+                <img src={imagen} alt={nombre} className="producto-img" />
+                <div className="producto-nombre">{nombre}</div>
+                <div className="producto-precio">s/{precio.toFixed(2)}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Categorías alineadas a la izquierda */}
         <div style={{ width: '50%', marginTop: '1rem' }}>
@@ -59,8 +58,8 @@ const [subcategoria, setSubcategoria] = useState<'Juguetes' | 'Aseo' | 'Accesori
 
       {/* Columna derecha: resumen de venta */}
       <div className="resumen-section">
-  <ResumenDeOrden />
-</div>
+        <ResumenDeOrden />
+      </div>
     </div>
   );
 };

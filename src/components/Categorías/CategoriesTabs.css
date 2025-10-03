@@ -1,7 +1,7 @@
 .categories-tabs {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0rem; /* Aumenta esto si lo ves muy pegado arriba */
+  margin-top: 0rem;
   margin-left: 0;
 }
 

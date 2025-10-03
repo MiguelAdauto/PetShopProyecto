@@ -1,48 +1,34 @@
-/* src/components/TablaGenerica/TablaGenerica.css */
-
-.tabla-generica {
+.tabla-contenedor {
   width: 100%;
-  margin: 1rem 0;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
-.tabla-generica table {
+.tabla-generica {
   width: 100%;
   border-collapse: collapse;
 }
 
 .tabla-generica th,
 .tabla-generica td {
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
+  padding: 12px 16px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 .tabla-generica th {
-  background-color: #f1f1f1;
+  background-color: #eee;
 }
 
-.tabla-generica .btn-ver,
-.tabla-generica .btn-descargar {
-  background: none;
-  border: none;
+.icono-opcion {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  margin-right: 10px;
+  border-radius: 3px;
   cursor: pointer;
-  font-size: 1.2rem;
-  margin-right: 0.5rem;
-}
-
-.tabla-generica .btn-ver {
-  color: #4caf50;
-}
-
-.tabla-generica .btn-descargar {
-  color: #2196f3;
-}
-
-.tabla-generica .btn-ver:hover,
-.tabla-generica .btn-descargar:hover {
-  opacity: 0.8;
 }

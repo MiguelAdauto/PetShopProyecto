@@ -1,5 +1,3 @@
-import './SearchBar.css';
-
 type Props = {
   nombre: string;
   codigo: string;
@@ -29,7 +27,7 @@ const SearchBar = ({ nombre, codigo, onNombreChange, onCodigoChange }: Props) =>
         />
       </label>
 
-      <button className="buscar-btn">Buscar</button>
+      <button className="buscar-btn">Buscar</button> {/* Estilo global */}
     </div>
   );
 };

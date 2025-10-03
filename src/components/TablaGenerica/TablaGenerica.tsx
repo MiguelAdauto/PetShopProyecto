@@ -1,36 +1,55 @@
-// src/components/TablaGenerica/TablaGenerica.tsx
-import React from 'react';
 import './TablaGenerica.css';
 
-type Props = {
-  columnas: string[]; // Encabezados de la tabla
-  datos: any[]; // Datos de la tabla (array de objetos)
-  botones: boolean; // Si muestra los botones de ver y descargar
-};
+const ventas = [
+  {
+    nro: '001',
+    tipoPago: 'Yape',
+    fecha: '17-09-2025 11:35 am',
+    cliente: 'Pepito',
+    total: 's/22:00'
+  },
+  {
+    nro: '002',
+    tipoPago: 'Plin',
+    fecha: '17-09-2025 11:35 am',
+    cliente: 'Luis',
+    total: 's/12:00'
+  },
+  {
+    nro: '003',
+    tipoPago: 'Mixto',
+    fecha: '17-09-2025 11:35 am',
+    cliente: 'Camila',
+    total: 's/11:00'
+  }
+];
 
-const TablaGenerica = ({ columnas, datos, botones }: Props) => {
+const TablaGenerica = () => {
   return (
-    <div className="tabla-generica">
-      <table>
+    <div className="tabla-contenedor">
+      <table className="tabla-generica">
         <thead>
           <tr>
-            {columnas.map((col, index) => (
-              <th key={index}>{col}</th>
-            ))}
+            <th>NRO.</th>
+            <th>Tipo de Pago</th>
+            <th>Fecha / Hora</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
-          {datos.map((dato, index) => (
+          {ventas.map((venta, index) => (
             <tr key={index}>
-              {columnas.map((col, idx) => (
-                <td key={idx}>{dato[col]}</td>
-              ))}
-              {botones && (
-                <td>
-                  <button className="btn-ver">👁️ Ver</button>
-                  <button className="btn-descargar">⬇ Descargar</button>
-                </td>
-              )}
+              <td>{venta.nro}</td>
+              <td>{venta.tipoPago}</td>
+              <td>{venta.fecha}</td>
+              <td>{venta.cliente}</td>
+              <td>{venta.total}</td>
+              <td>
+                <span className="icono-opcion" />
+                <span className="icono-opcion" />
+              </td>
             </tr>
           ))}
         </tbody>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import VendedorLayout from './layouts/VendedorLayout';
 import Ventas from './pages/Vendedor/Ventas/Ventas';
+import './Styles/global.css';
 import VentasListado from './pages/Vendedor/VentasListado/VentasListado';
 
 
