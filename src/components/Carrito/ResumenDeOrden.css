@@ -1,0 +1,124 @@
+.resumen-orden {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item-carrito {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-controles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.item-controles button {
+  padding: 2px 8px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.item-controles .eliminar {
+  color: red;
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+}
+
+.formulario-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formulario-cliente input {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.metodo-pago-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 300px; /* ajusta según tu layout */
+  margin-top: 1rem;
+}
+
+.btn.pago {
+  padding: 0.75rem 0;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+/* Colores específicos */
+.btn.efectivo {
+  background-color: #00ff3c; /* verde claro */
+  color: #ffffff;
+}
+
+.btn.mixto {
+  background-color: #ffffff; /* blanco */
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn.yape {
+  background-color: #971ba4; /* morado */
+  color: #fff;
+}
+
+.btn.plin {
+  background-color: #58cfc9; /* celeste */
+  color: #fff;
+}
+
+/* Opcional: hover para mejorar UX */
+.btn.pago:hover {
+  filter: brightness(0.9);
+}
+
+.trash-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.eliminar {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
