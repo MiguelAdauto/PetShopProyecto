@@ -12,8 +12,8 @@ type ProductoCarrito = {
 const ResumenDeOrden = () => {
   const [carrito, setCarrito] = useState<ProductoCarrito[]>([
     { id: 1, nombre: 'Cama de perro', cantidad: 2, precio: 10 },
-    { id: 2, nombre: 'Cama de gato', cantidad: 1, precio: 10 },
-    { id: 2, nombre: 'Cama de gato', cantidad: 3, precio: 10 },
+    { id: 2, nombre: 'Cama de gato', cantidad: 5, precio: 10 },
+    { id: 3, nombre: 'Cama de gato', cantidad: 3, precio: 10 },
   ]);
 
   const [cliente, setCliente] = useState('');
@@ -46,7 +46,7 @@ const ResumenDeOrden = () => {
 
   return (
     <div className="resumen-orden">
-      <h2>RESUMEN DE LA ORDEN</h2>
+      <h2 className="titulo-resumen">RESUMEN DE LA ORDEN</h2>
       <hr />
 
       {carrito.map((producto) => (

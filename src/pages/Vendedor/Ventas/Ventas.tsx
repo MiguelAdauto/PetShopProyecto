@@ -8,13 +8,16 @@ import { useState } from 'react';
 
 const productos = [
   { id: 1, nombre: 'Producto 1', precio: 10.99, imagen: producto1 },
-  { id: 2, nombre: 'Producto 2', precio: 12.99, imagen: 'https://via.placeholder.com/150' },
-  { id: 3, nombre: 'Producto 3', precio: 8.99, imagen: 'https://via.placeholder.com/150' },
-  { id: 4, nombre: 'Producto 4', precio: 15.0, imagen: 'https://via.placeholder.com/150' },
+  { id: 2, nombre: 'Producto 2', precio: 12.99, imagen: producto1 },
+  { id: 3, nombre: 'Producto 3', precio: 8.99, imagen: producto1 },
+  { id: 4, nombre: 'Producto 4', precio: 15.0, imagen: producto1 },
   { id: 5, nombre: 'Producto 5', precio: 7.5, imagen: 'https://via.placeholder.com/150' },
   { id: 6, nombre: 'Producto 6', precio: 11.25, imagen: 'https://via.placeholder.com/150' },
   { id: 7, nombre: 'Producto 7', precio: 9.99, imagen: 'https://via.placeholder.com/150' },
   { id: 8, nombre: 'Producto 8', precio: 14.99, imagen: 'https://via.placeholder.com/150' },
+  { id: 9, nombre: 'Producto 9', precio: 11.25, imagen: 'https://via.placeholder.com/150' },
+  { id: 10, nombre: 'Producto 10', precio: 9.99, imagen: 'https://via.placeholder.com/150' },
+  { id: 11, nombre: 'Producto 11', precio: 14.99, imagen: 'https://via.placeholder.com/150' },
 ];
 
 const Ventas = () => {
@@ -30,14 +33,14 @@ const Ventas = () => {
         <SearchBar
           nombre={nombre}
           codigo={codigo}
-          onNombreChange={setNombre}
+          onNombreChange={setNombre}  
           onCodigoChange={setCodigo}
         />
 
         {/* Lista de productos con scroll */}
         <div className="productos-scroll">
           <div className="productos-grid">
-            {productos.slice(0, 6).map(({ id, nombre, precio, imagen }) => (
+            {productos.slice(0, 11).map(({ id, nombre, precio, imagen }) => (
               <div key={id} className="producto-card">
                 <img src={imagen} alt={nombre} className="producto-img" />
                 <div className="producto-nombre">{nombre}</div>

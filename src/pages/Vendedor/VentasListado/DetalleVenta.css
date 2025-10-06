@@ -1,0 +1,123 @@
+/* ✅ Estilo general del contenedor para ocupar toda la pantalla */
+.detalle-venta-container {
+  width: 100vw;
+  max-width: 100vw;
+  padding: 40px;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+}
+
+/* ✅ Título */
+.detalle-venta-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* ✅ Estilo base del contenedor de datos */
+.info-venta {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* ✅ Fila con 3 columnas distribuidas horizontalmente */
+.fila {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* ✅ Fila con solo 2 elementos (tipo de pago y cambio) */
+.fila-dos {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* ✅ Cada item ocupa 33% o 50% según la fila */
+.fila > div {
+  flex: 1;
+  min-width: 200px;
+}
+
+.fila-dos > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ✅ Colores personalizados */
+.valor {
+  color: #3c3cff;
+  margin-left: 5px;
+}
+
+.total {
+  font-weight: bold;
+}
+
+.pagado {
+  color: green;
+  font-weight: bold;
+}
+
+.cambio {
+  color: purple;
+  font-weight: bold;
+}
+
+/* ✅ Tabla de detalle */
+.tabla-detalle {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.tabla-detalle th,
+.tabla-detalle td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.tabla-detalle tfoot td {
+  font-weight: bold;
+  background-color: #e6e6e6;
+}
+
+/* ✅ Botón de descarga */
+.boton-descargar {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.boton-descargar button {
+  background-color: #4ec3ff;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.boton-descargar button:hover {
+  background-color: #28a6e2;
+}
+
+.fila > div:last-child,
+.fila-dos > div:last-child {
+  text-align: right;
+}
+
+.fila > div:nth-child(2),
+.fila-dos > div:nth-child(2) {
+  text-align: center;
+}

@@ -1,12 +1,7 @@
-
 .contenedor-ventas-listado {
-  padding: 20px 50px 50px;  /* top, horizontal (left & right), bottom */
-  /* O, si quieres aún menos espacio arriba: */
-  /* padding: 10px 50px 50px; */
-
+  padding: 50px;
   margin-left: 50px;
   margin-right: 50px;
-
   width: calc(130% - 190px);
   box-sizing: border-box;
 }
@@ -91,29 +86,4 @@
 .tabla-generica .btn-ver:hover,
 .tabla-generica .btn-descargar:hover {
   opacity: 0.8;
-}
-
-.paginacion {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  font-size: 1rem;
-}
-
-.paginacion button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.paginacion button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
 }

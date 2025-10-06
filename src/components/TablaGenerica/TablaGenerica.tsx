@@ -1,54 +1,95 @@
-import './TablaGenerica.css';
+import React, { useState } from 'react';
+import "./TablaGenerica.css";
 
-const ventas = [
-  {
-    nro: '001',
-    tipoPago: 'Yape',
-    fecha: '17-09-2025 11:35 am',
-    cliente: 'Pepito',
-    total: 's/22:00'
-  },
-  {
-    nro: '002',
-    tipoPago: 'Plin',
-    fecha: '17-09-2025 11:35 am',
-    cliente: 'Luis',
-    total: 's/12:00'
-  },
-  {
-    nro: '003',
-    tipoPago: 'Mixto',
-    fecha: '17-09-2025 11:35 am',
-    cliente: 'Camila',
-    total: 's/11:00'
-  }
-];
+interface Columna {
+  key: string;         // Clave en el objeto de datos
+  label: string;       // Texto del encabezado
+  sortable?: boolean;  // Si se puede ordenar o no
+}
 
-const TablaGenerica = () => {
+interface TablaGenericaProps {
+  columnas: Columna[];
+  datos: any[];
+  renderOpciones?: (fila: any) => React.ReactNode; // ✅ Opcional: acciones por fila
+}
+
+const TablaGenerica: React.FC<TablaGenericaProps> = ({ columnas, datos, renderOpciones }) => {
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+
+  const sortedDatos = React.useMemo(() => {
+    if (!sortConfig) return datos;
+
+    const sorted = [...datos].sort((a, b) => {
+      const aVal = a[sortConfig.key];
+      const bVal = b[sortConfig.key];
+
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        return sortConfig.direction === 'asc'
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      }
+
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return sortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
+      }
+
+      return sortConfig.direction === 'asc'
+        ? String(aVal).localeCompare(String(bVal))
+        : String(bVal).localeCompare(String(aVal));
+    });
+
+    return sorted;
+  }, [datos, sortConfig]);
+
+  const handleSort = (key: string, sortable?: boolean) => {
+    if (!sortable) return;
+
+    let direction: 'asc' | 'desc' = 'asc';
+
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIndicator = (key: string) => {
+    if (!sortConfig || sortConfig.key !== key) return null;
+    return sortConfig.direction === 'asc' ? '  ▲' : '  ▼';
+  };
+
   return (
     <div className="tabla-contenedor">
       <table className="tabla-generica">
         <thead>
           <tr>
-            <th>NRO.</th>
-            <th>Tipo de Pago</th>
-            <th>Fecha / Hora</th>
-            <th>Cliente</th>
-            <th>Total</th>
+            {columnas.map(({ key, label, sortable }) => (
+              <th
+                key={key}
+                onClick={() => handleSort(key, sortable)}
+                style={{ cursor: sortable ? 'pointer' : 'default', userSelect: 'none' }}
+                title={sortable ? 'Ordenar' : undefined}
+              >
+                {label}
+                {getSortIndicator(key)}
+              </th>
+            ))}
             <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
-          {ventas.map((venta, index) => (
-            <tr key={index}>
-              <td>{venta.nro}</td>
-              <td>{venta.tipoPago}</td>
-              <td>{venta.fecha}</td>
-              <td>{venta.cliente}</td>
-              <td>{venta.total}</td>
+          {sortedDatos.map((item, idx) => (
+            <tr key={idx}>
+              {columnas.map(({ key }) => (
+                <td key={key}>{item[key]}</td>
+              ))}
               <td>
-                <span className="icono-opcion" />
-                <span className="icono-opcion" />
+                {renderOpciones ? renderOpciones(item) : (
+                  <>
+                    <span className="icono-opcion" title="Ver" />
+                    <span className="icono-opcion" title="Eliminar" />
+                  </>
+                )}
               </td>
             </tr>
           ))}

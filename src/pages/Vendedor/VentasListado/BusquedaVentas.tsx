@@ -2,10 +2,10 @@ const BusquedaVentas = () => {
   return (
     <div className="barra-busqueda">
       <label>
-        Cliente:
+        Nro boleta:
         <input type="text" placeholder="nombre del cliente" />
       </label>
-
+    
       <label>
         Fecha:
         <input type="date" />

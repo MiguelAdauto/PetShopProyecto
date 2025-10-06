@@ -10,6 +10,12 @@
 .tabla-generica {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 1rem;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
 }
 
 .tabla-generica th,
@@ -17,18 +23,78 @@
   padding: 12px 16px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  font-size: 14px;
 }
 
-.tabla-generica th {
-  background-color: #eee;
+.tabla-generica thead th {
+  background-color: #f1f1f1;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tabla-generica tbody tr:hover {
+  background-color: #f9f9f9;
 }
 
 .icono-opcion {
-  display: inline-block;
   width: 20px;
   height: 20px;
-  background-color: black;
-  margin-right: 10px;
-  border-radius: 3px;
   cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  margin-right: 10px;
+}
+
+.icono-opcion:hover {
+  opacity: 0.7;
+}
+
+.tabla-generica .btn-ver {
+  color: #4caf50;
+}
+
+.tabla-generica .btn-descargar {
+  color: #2196f3;
+}
+
+.tabla-generica .btn-ver:hover,
+.tabla-generica .btn-descargar:hover {
+  opacity: 0.8;
+}
+
+.info-venta {
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr;
+  gap: 10px 30px;
+  font-size: 14px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.campo {
+  display: flex;
+  gap: 6px;
+}
+
+.etiqueta {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.valor {
+  color: #3c3cff;
+}
+
+.total {
+  font-weight: bold;
+}
+
+.pagado {
+  color: green;
+  font-weight: bold;
+}
+
+.cambio {
+  color: purple;
+  font-weight: bold;
 }

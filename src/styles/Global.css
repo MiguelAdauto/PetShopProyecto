@@ -1,53 +1,41 @@
-/* Global Styles */
 
-/* Estilo común para los inputs, mejorando el espaciado y el diseño */
+/* === INPUTS GENERALES === */
 input[type="text"],
 input[type="date"] {
-  padding: 8px 12px; /* Más padding para los inputs */
+  padding: 8px 12px; 
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 220px; /* Asegura un tamaño decente para los inputs */
-  margin: 0 10px; /* Solo agrega margen a los lados, sin cambiar la disposición */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil para hacerlos más visibles */
-  transition: border-color 0.3s ease; /* Transición suave para el border-color */
+  width: 220px;
+  margin: 0 10px; 
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
 }
 
-/* Estilo cuando el input está enfocado */
 input[type="text"]:focus,
 input[type="date"]:focus {
-  border-color: #28a745; /* Cambio de color del borde al estar enfocado */
-  outline: none; /* Elimina el borde azul predeterminado */
-  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5); /* Agrega una sombra verde al enfocar */
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5); 
 }
 
-/* Estilo común para los botones de búsqueda */
+/* === BOTONES GENERALES === */
 .buscar-btn,
 .boton-buscar {
-  background-color: #28a745; /* Color de fondo verde */
+  background-color: #28a745;
   color: white;
   border: none;
-  padding: 10px 18px; /* Mejor padding para los botones */
+  padding: 10px 18px; 
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  align-self: flex-start; /* Alineación a la izquierda si es necesario */
-  min-width: 150px; /* Asegura que el botón tenga un tamaño mínimo */
+  align-self: flex-start;
+  min-width: 150px;
+  margin: 15px;
 }
 
-/* Estilo cuando el botón de búsqueda es hover */
 .buscar-btn:hover,
 .boton-buscar:hover {
-  background-color: #218838; /* Fondo verde más oscuro cuando el botón es hover */
-}
-
-/* Estilo para el contenedor de búsqueda (general) */
-.search-bar,
-.barra-busqueda {
-  display: flex;
-  gap: 10px; /* Espaciado entre los elementos */
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+  background-color: #218838; 
 }

@@ -1,0 +1,79 @@
+.login-page {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+/* Lado izquierdo con color */
+.login-left {
+  flex: 1.5;
+  background-color: #edf3fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor blanco */
+.login-box {
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+  width: 70%;
+  max-width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo arriba */
+.login-logo {
+  display: block;
+  margin: 0 auto 30px auto;
+  max-width: 150px;
+}
+
+/* Inputs y labels */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  text-align: left;
+  font-weight: 600;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Botón */
+button {
+  background-color: #2d8cf0;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #1c6fd0;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Lado derecho con imagen de fondo */
+.login-right {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+}
