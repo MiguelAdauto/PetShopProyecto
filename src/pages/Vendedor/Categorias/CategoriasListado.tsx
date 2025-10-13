@@ -1,6 +1,7 @@
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaCategorias from "./BusquedaCategorias";
-import verIcon from '../../../assets/ver.svg'
+import verIcon from '../../../assets/ver.svg';
+import '../../../Styles/PaginasListado.css';
 import './BusquedaCategorias';
 
 const columnasCategorias=[
@@ -41,7 +42,7 @@ const renderAccionesCatogira=(fila: any)=> (
 
 const CategoriasListado=()=>{
     return(
-        <div className="contenedor-ventas-listado">
+        <div className="contenedor-pagina-listado">
             <BusquedaCategorias/>
             <TablaGenerica
             columnas={columnasCategorias}

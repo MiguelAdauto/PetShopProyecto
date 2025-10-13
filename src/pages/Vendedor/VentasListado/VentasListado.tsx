@@ -4,7 +4,7 @@ import TablaGenerica from '../../../components/TablaGenerica/TablaGenerica';
 import BusquedaVentas from './BusquedaVentas';
 import verIcon from '../../../assets/verDocumento.svg';
 import descargarIcon from '../../../assets/descargarPdf.svg';
-import './VentasListado.css';
+import '../../../Styles/PaginasListado.css';
 
 const columnasVentas = [
   { key: 'nro', label: 'NRO.', sortable: true },
@@ -24,8 +24,8 @@ const datosVentas = Array.from({ length: 25 }, (_, index) => ({
 
 const VentasListado = () => {
   const [paginaActual, setPaginaActual] = useState(1);
-  const filasPorPagina = 10;
-  const navigate = useNavigate();  // hook para navegar
+  const filasPorPagina = 11;
+  const navigate = useNavigate();
 
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
@@ -55,7 +55,7 @@ const VentasListado = () => {
   );
 
   return (
-    <div className="contenedor-ventas-listado">
+    <div className="contenedor-pagina-listado">
       <BusquedaVentas />
       <TablaGenerica
         columnas={columnasVentas}

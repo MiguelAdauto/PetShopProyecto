@@ -28,3 +28,9 @@
   background-color: #3399ff;
   border-radius: 2px;
 }
+
+.subcategory-btn:hover {
+  color: #000000; /* texto en celeste claro */
+  background-color: #f0faff; /* fondo azul claro muy suave */
+  border-radius: 4px;
+}

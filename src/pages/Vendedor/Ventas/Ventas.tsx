@@ -7,7 +7,7 @@ import producto1 from '../../../assets/cuerda.jpg';
 import { useState } from 'react';
 
 const productos = [
-  { id: 1, nombre: 'Producto 1', precio: 10.99, imagen: producto1 },
+  { id: 1, nombre: 'cuerda de gato con forma de cilindro', precio: 10.99, imagen: producto1 },
   { id: 2, nombre: 'Producto 2', precio: 12.99, imagen: producto1 },
   { id: 3, nombre: 'Producto 3', precio: 8.99, imagen: producto1 },
   { id: 4, nombre: 'Producto 4', precio: 15.0, imagen: producto1 },
@@ -20,16 +20,41 @@ const productos = [
   { id: 11, nombre: 'Producto 11', precio: 14.99, imagen: 'https://via.placeholder.com/150' },
 ];
 
+type ProductoCarrito = {
+  id: number;
+  nombre: string;
+  cantidad: number;
+  precio: number;
+};
+
 const Ventas = () => {
   const [nombre, setNombre] = useState('');
   const [codigo, setCodigo] = useState('');
   const [categoria, setCategoria] = useState<'Perros' | 'Gatos' | 'Mixto'>('Mixto');
   const [subcategoria, setSubcategoria] = useState<'Juguetes' | 'Aseo' | 'Accesorios' | 'Hogar' | 'Comederos'>('Juguetes');
+
+  // Estado del carrito en Ventas
+  const [carrito, setCarrito] = useState<ProductoCarrito[]>([]);
+
+  // Función para agregar producto al carrito
+  const agregarAlCarrito = (producto: {id:number; nombre:string; precio:number}) => {
+    setCarrito((prev) => {
+      const productoExistente = prev.find(p => p.id === producto.id);
+      if (productoExistente) {
+        // Si ya existe, aumentamos cantidad
+        return prev.map(p =>
+          p.id === producto.id ? {...p, cantidad: p.cantidad + 1} : p
+        );
+      } else {
+        // Si no existe, lo agregamos con cantidad 1
+        return [...prev, {id: producto.id, nombre: producto.nombre, precio: producto.precio, cantidad: 1}];
+      }
+    });
+  };
+
   return (
     <div className="ventas-container">
-      {/* Columna izquierda: productos */}
       <div className="productos-section">
-        {/* Buscador */}
         <SearchBar
           nombre={nombre}
           codigo={codigo}
@@ -37,11 +62,15 @@ const Ventas = () => {
           onCodigoChange={setCodigo}
         />
 
-        {/* Lista de productos con scroll */}
         <div className="productos-scroll">
           <div className="productos-grid">
             {productos.slice(0, 11).map(({ id, nombre, precio, imagen }) => (
-              <div key={id} className="producto-card">
+              <div
+                key={id}
+                className="producto-card"
+                onClick={() => agregarAlCarrito({id, nombre, precio})}
+                style={{ cursor: 'pointer' }} // para que se note que es clickeable
+              >
                 <img src={imagen} alt={nombre} className="producto-img" />
                 <div className="producto-nombre">{nombre}</div>
                 <div className="producto-precio">s/{precio.toFixed(2)}</div>
@@ -50,18 +79,18 @@ const Ventas = () => {
           </div>
         </div>
 
-        {/* Categorías alineadas a la izquierda */}
         <div style={{ width: '50%', marginTop: '1rem' }}>
           <CategoriesTabs selected={categoria} onChange={setCategoria} />
         </div>
 
-        {/* Subcategorías a todo el ancho */}
         <SubCategoriesTabs selected={subcategoria} onChange={setSubcategoria} />
       </div>
 
-      {/* Columna derecha: resumen de venta */}
       <div className="resumen-section">
-        <ResumenDeOrden />
+        <ResumenDeOrden
+          carrito={carrito}
+          setCarrito={setCarrito}
+        />
       </div>
     </div>
   );

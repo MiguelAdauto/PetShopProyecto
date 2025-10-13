@@ -1,4 +1,3 @@
-
 .sidebar {
   width: 200px;
   height: 100vh;
@@ -11,11 +10,11 @@
 
 /* Logo arriba */
 .logo {
-  font-size: 2rem;
-  margin-bottom: 30px;
+  width: 150px; /* o el tamaño que quieras */
+  height: auto; /* para mantener la proporción */
+  margin-bottom: 30px; /* si quieres mantener espacio abajo */
 }
 
-/* Botones de navegación */
 .nav-btn {
   width: 140px;
   height: 100px;

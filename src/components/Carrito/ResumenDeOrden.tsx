@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import trashIcon from '../../assets/trash.svg';
 import './ResumenDeOrden.css';
-
+import React, { useState } from 'react';
 type ProductoCarrito = {
   id: number;
   nombre: string;
@@ -9,13 +8,12 @@ type ProductoCarrito = {
   precio: number;
 };
 
-const ResumenDeOrden = () => {
-  const [carrito, setCarrito] = useState<ProductoCarrito[]>([
-    { id: 1, nombre: 'Cama de perro', cantidad: 2, precio: 10 },
-    { id: 2, nombre: 'Cama de gato', cantidad: 5, precio: 10 },
-    { id: 3, nombre: 'Cama de gato', cantidad: 3, precio: 10 },
-  ]);
+type Props = {
+  carrito: ProductoCarrito[];
+  setCarrito: React.Dispatch<React.SetStateAction<ProductoCarrito[]>>;
+};
 
+const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
   const [cliente, setCliente] = useState('');
   const [pagoCliente, setPagoCliente] = useState<number | ''>('');
 
@@ -48,6 +46,8 @@ const ResumenDeOrden = () => {
     <div className="resumen-orden">
       <h2 className="titulo-resumen">RESUMEN DE LA ORDEN</h2>
       <hr />
+
+      {carrito.length === 0 && <p>El carrito está vacío</p>}
 
       {carrito.map((producto) => (
         <div key={producto.id} className="item-carrito">
@@ -94,12 +94,12 @@ const ResumenDeOrden = () => {
         <strong>TOTAL A PAGAR: S/{totalPagar.toFixed(2)}</strong>
       </div>
 
-        <div className="metodo-pago-container">
-         <button className="btn pago efectivo">Efectivo</button>
-         <button className="btn pago mixto">Mixto</button>
-         <button className="btn pago yape">Yape</button>
-         <button className="btn pago plin">Plin</button>
-        </div>
+      <div className="metodo-pago-container">
+        <button className="btn pago efectivo">Efectivo</button>
+        <button className="btn pago mixto">Mixto</button>
+        <button className="btn pago yape">Yape</button>
+        <button className="btn pago plin">Plin</button>
+      </div>
     </div>
   );
 };

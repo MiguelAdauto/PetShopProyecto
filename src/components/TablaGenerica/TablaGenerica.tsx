@@ -10,10 +10,16 @@ interface Columna {
 interface TablaGenericaProps {
   columnas: Columna[];
   datos: any[];
-  renderOpciones?: (fila: any) => React.ReactNode; // ✅ Opcional: acciones por fila
+  renderOpciones?: (fila: any) => React.ReactNode;
+  renderCell?: (key: string, value: any, fila: any) => React.ReactNode; // ✅ Nuevo: renderizado personalizado por celda
 }
 
-const TablaGenerica: React.FC<TablaGenericaProps> = ({ columnas, datos, renderOpciones }) => {
+const TablaGenerica: React.FC<TablaGenericaProps> = ({
+  columnas,
+  datos,
+  renderOpciones,
+  renderCell
+}) => {
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
   const sortedDatos = React.useMemo(() => {
@@ -81,7 +87,9 @@ const TablaGenerica: React.FC<TablaGenericaProps> = ({ columnas, datos, renderOp
           {sortedDatos.map((item, idx) => (
             <tr key={idx}>
               {columnas.map(({ key }) => (
-                <td key={key}>{item[key]}</td>
+                <td key={key}>
+                  {renderCell ? renderCell(key, item[key], item) : item[key]}
+                </td>
               ))}
               <td>
                 {renderOpciones ? renderOpciones(item) : (
