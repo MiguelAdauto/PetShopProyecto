@@ -33,20 +33,16 @@ const Ventas = () => {
   const [categoria, setCategoria] = useState<'Perros' | 'Gatos' | 'Mixto'>('Mixto');
   const [subcategoria, setSubcategoria] = useState<'Juguetes' | 'Aseo' | 'Accesorios' | 'Hogar' | 'Comederos'>('Juguetes');
 
-  // Estado del carrito en Ventas
   const [carrito, setCarrito] = useState<ProductoCarrito[]>([]);
 
-  // Función para agregar producto al carrito
   const agregarAlCarrito = (producto: {id:number; nombre:string; precio:number}) => {
     setCarrito((prev) => {
       const productoExistente = prev.find(p => p.id === producto.id);
       if (productoExistente) {
-        // Si ya existe, aumentamos cantidad
         return prev.map(p =>
           p.id === producto.id ? {...p, cantidad: p.cantidad + 1} : p
         );
       } else {
-        // Si no existe, lo agregamos con cantidad 1
         return [...prev, {id: producto.id, nombre: producto.nombre, precio: producto.precio, cantidad: 1}];
       }
     });
@@ -69,7 +65,7 @@ const Ventas = () => {
                 key={id}
                 className="producto-card"
                 onClick={() => agregarAlCarrito({id, nombre, precio})}
-                style={{ cursor: 'pointer' }} // para que se note que es clickeable
+                style={{ cursor: 'pointer' }}
               >
                 <img src={imagen} alt={nombre} className="producto-img" />
                 <div className="producto-nombre">{nombre}</div>

@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import "./TablaGenerica.css";
 
 interface Columna {
-  key: string;         // Clave en el objeto de datos
-  label: string;       // Texto del encabezado
-  sortable?: boolean;  // Si se puede ordenar o no
+  key: string;
+  label: string;
+  sortable?: boolean;
 }
 
 interface TablaGenericaProps {
   columnas: Columna[];
   datos: any[];
   renderOpciones?: (fila: any) => React.ReactNode;
-  renderCell?: (key: string, value: any, fila: any) => React.ReactNode; // ✅ Nuevo: renderizado personalizado por celda
+  renderCell?: (key: string, value: any, fila: any) => React.ReactNode;
 }
 
 const TablaGenerica: React.FC<TablaGenericaProps> = ({

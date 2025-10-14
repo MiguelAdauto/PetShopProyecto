@@ -20,7 +20,7 @@ const VendedorLayout = () => {
       <Sidebar />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <Header title={title} />
-        <main style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+        <main style={{ flex: 1, overflowY: 'auto' }}>
           <Outlet />
         </main>
       </div>

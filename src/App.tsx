@@ -9,8 +9,7 @@ import RutaProtegida from './components/RutaProtegida/RutaProtegida';
 import './Styles/global.css';
 import CategoriasListado from './pages/Vendedor/Categorias/CategoriasListado';
 import ProductosListado from './pages/Vendedor/Productos/ProductosListado';
-
-const Perfil = () => <div>Perfil</div>;
+import Perfil from './pages/Vendedor/Perfil/Perfil';
 
 function App() {
   return (

@@ -39,3 +39,22 @@ input[type="date"]:focus {
 .boton-buscar:hover {
   background-color: #218838; 
 }
+
+/* === SELECTS GENERALES === */
+select {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 220px;
+  margin: 0 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+  background-color: white;
+}
+
+select:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5);
+}

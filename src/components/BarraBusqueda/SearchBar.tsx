@@ -27,7 +27,7 @@ const SearchBar = ({ nombre, codigo, onNombreChange, onCodigoChange }: Props) =>
         />
       </label>
 
-      <button className="buscar-btn">Buscar</button> {/* Estilo global */}
+      <button className="buscar-btn">Buscar</button>
     </div>
   );
 };
