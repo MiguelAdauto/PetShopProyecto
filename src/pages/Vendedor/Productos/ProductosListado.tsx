@@ -16,7 +16,6 @@ const columnasProductos = [
   { key: 'stock', label: 'Stock', sortable: true },
 ];
 
-// Simulación de muchos productos
 const datosProductos = Array.from({ length: 23 }, (_, index) => ({
   id: index + 1,
   imagen: cuerdaImg,
