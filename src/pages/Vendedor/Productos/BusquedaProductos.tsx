@@ -1,21 +1,34 @@
 import { useState } from "react";
 
-const BusquedaProductos = ({ onBuscar }: { onBuscar: (filtros: any) => void }) => {
-  const [filtros, setFiltros] = useState({
+interface FiltrosProductos {
+  codigo: string;
+  nombre: string;
+  tipo: string;
+  categoria: string;
+}
+
+interface Props {
+  onBuscar: (filtros: FiltrosProductos) => void;
+}
+
+const BusquedaProductos = ({ onBuscar }: Props) => {
+  const [filtros, setFiltros] = useState<FiltrosProductos>({
     codigo: "",
     nombre: "",
-    tipo: "Mixto",
-    categoria: "Juguete",
+    tipo: "",       // Dejo vacío para que "Todos" sea vacío
+    categoria: "",  // Igual para categorías
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFiltros(prev => ({ ...prev, [name]: value }));
+    setFiltros((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleBuscar = () => {
-    console.log("Buscar con filtros:", filtros);
-    onBuscar(filtros); // Enviamos los filtros al padre
+    // Aquí solo envías filtros sin filtrar nada internamente
+    onBuscar(filtros);
   };
 
   return (
@@ -30,6 +43,7 @@ const BusquedaProductos = ({ onBuscar }: { onBuscar: (filtros: any) => void }) =
           onChange={handleChange}
         />
       </label>
+
       <label>
         Nombre:
         <input
@@ -40,6 +54,7 @@ const BusquedaProductos = ({ onBuscar }: { onBuscar: (filtros: any) => void }) =
           onChange={handleChange}
         />
       </label>
+
       <label>
         Tipo:
         <select name="tipo" value={filtros.tipo} onChange={handleChange}>
@@ -49,17 +64,19 @@ const BusquedaProductos = ({ onBuscar }: { onBuscar: (filtros: any) => void }) =
           <option value="Gato">Gato</option>
         </select>
       </label>
+
       <label>
         Categoría:
         <select name="categoria" value={filtros.categoria} onChange={handleChange}>
           <option value="">Todas</option>
-          <option value="Juguete">Juguete</option>
+          <option value="Juguetes">Juguetes</option>
           <option value="Aseo">Aseo</option>
           <option value="Accesorios">Accesorios</option>
           <option value="Hogar">Hogar</option>
-          <option value="Comedores">Comedores</option>
+          <option value="Comederos">Comederos</option>
         </select>
       </label>
+
       <button className="boton-buscar" onClick={handleBuscar}>
         Buscar
       </button>

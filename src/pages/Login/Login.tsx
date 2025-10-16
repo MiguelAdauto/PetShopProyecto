@@ -10,12 +10,28 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  // Lista de usuarios de prueba
+  const users = [
+    { email: 'admin@example.com', password: 'admin123', role: 'admin' },
+    { email: 'vendedor@example.com', password: 'vendedor123', role: 'vendedor' }
+  ];
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === 'app@gmail.com' && password === '123456') {
-      localStorage.setItem('rol', 'vendedor');
-      navigate('/vendedor/ventas');
+    // Buscar el usuario en el arreglo
+    const user = users.find(user => user.email === email && user.password === password);
+
+    if (user) {
+      // Si es admin, redirige al admin dashboard
+      if (user.role === 'admin') {
+        localStorage.setItem('rol', 'admin');
+        navigate('/admin/dashboard'); // Redirige al dashboard del admin
+      } else {
+        // Si es vendedor, redirige al dashboard del vendedor
+        localStorage.setItem('rol', 'vendedor');
+        navigate('/vendedor/ventas'); // Redirige al dashboard del vendedor
+      }
     } else {
       setError('Credenciales incorrectas');
     }
@@ -27,24 +43,29 @@ const Login: React.FC = () => {
         <div className="login-box">
           <img src={logo} alt="Logo" className="login-logo" />
           <form onSubmit={handleLogin}>
-            <label>Correo:</label>
+            <label htmlFor="login-email">Correo:</label>
             <input
               type="email"
-              placeholder="Ingresar correo"
+              id="login-email"
+              placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
 
-            <label>Contraseña:</label>
+            <label htmlFor="login-password">Contraseña:</label>
             <input
               type="password"
-              placeholder="Ingresar contraseña"
+              id="login-password"
+              placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
+
             {error && <p className="error">{error}</p>}
 
-            <button type="submit">Ingresar</button>
+            <button type="submit">Iniciar sesión</button>
           </form>
         </div>
       </div>

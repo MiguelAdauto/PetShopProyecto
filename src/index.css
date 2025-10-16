@@ -10,15 +10,14 @@
 }
 
 /* Definir color de fondo y texto por defecto */
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100vh; /* mínimo la altura completa de pantalla */
   background-color: #ffffff;
   color: #000000;
-  overflow-x: hidden;
+  overflow: hidden; /* mantienes sin scroll general */
   box-sizing: border-box;
 }
 

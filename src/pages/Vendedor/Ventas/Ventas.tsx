@@ -1,4 +1,4 @@
-import SearchBar from '../../../components/BarraBusqueda/SearchBar';
+import BusquedaProductoV from './BusquedaProductoV';
 import CategoriesTabs from '../../../components/Categorías/CategoriesTabs';
 import SubCategoriesTabs from '../../../components/SubCategorias/SubCategoriesTabs';
 import ResumenDeOrden from '../../../components/Carrito/ResumenDeOrden';
@@ -28,22 +28,29 @@ type ProductoCarrito = {
 };
 
 const Ventas = () => {
-  const [nombre, setNombre] = useState('');
-  const [codigo, setCodigo] = useState('');
-  const [categoria, setCategoria] = useState<'Perros' | 'Gatos' | 'Mixto'>('Mixto');
-  const [subcategoria, setSubcategoria] = useState<'Juguetes' | 'Aseo' | 'Accesorios' | 'Hogar' | 'Comederos'>('Juguetes');
-
+  const [filtros, setFiltros] = useState<Record<string, string>>({});
   const [carrito, setCarrito] = useState<ProductoCarrito[]>([]);
 
-  const agregarAlCarrito = (producto: {id:number; nombre:string; precio:number}) => {
+  const [categoria, setCategoria] = useState<'Perros' | 'Gatos' | 'Mixto'>('Mixto');
+  const [subcategoria, setSubcategoria] = useState<
+    'Juguetes' | 'Aseo' | 'Accesorios' | 'Hogar' | 'Comederos'
+  >('Juguetes');
+
+  const productosFiltrados = productos.filter((p) => {
+    const coincideNombre = !filtros.nombre || p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
+    const coincideCodigo = !filtros.codigo || String(p.id).includes(filtros.codigo);
+    return coincideNombre && coincideCodigo;
+  });
+
+  const agregarAlCarrito = (producto: { id: number; nombre: string; precio: number }) => {
     setCarrito((prev) => {
-      const productoExistente = prev.find(p => p.id === producto.id);
+      const productoExistente = prev.find((p) => p.id === producto.id);
       if (productoExistente) {
-        return prev.map(p =>
-          p.id === producto.id ? {...p, cantidad: p.cantidad + 1} : p
+        return prev.map((p) =>
+          p.id === producto.id ? { ...p, cantidad: p.cantidad + 1 } : p
         );
       } else {
-        return [...prev, {id: producto.id, nombre: producto.nombre, precio: producto.precio, cantidad: 1}];
+        return [...prev, { id: producto.id, nombre: producto.nombre, precio: producto.precio, cantidad: 1 }];
       }
     });
   };
@@ -51,20 +58,15 @@ const Ventas = () => {
   return (
     <div className="ventas-container">
       <div className="productos-section">
-        <SearchBar
-          nombre={nombre}
-          codigo={codigo}
-          onNombreChange={setNombre}  
-          onCodigoChange={setCodigo}
-        />
+        <BusquedaProductoV onBuscar={setFiltros} />
 
         <div className="productos-scroll">
           <div className="productos-grid">
-            {productos.slice(0, 11).map(({ id, nombre, precio, imagen }) => (
+            {productosFiltrados.map(({ id, nombre, precio, imagen }) => (
               <div
                 key={id}
                 className="producto-card"
-                onClick={() => agregarAlCarrito({id, nombre, precio})}
+                onClick={() => agregarAlCarrito({ id, nombre, precio })}
                 style={{ cursor: 'pointer' }}
               >
                 <img src={imagen} alt={nombre} className="producto-img" />
@@ -83,10 +85,7 @@ const Ventas = () => {
       </div>
 
       <div className="resumen-section">
-        <ResumenDeOrden
-          carrito={carrito}
-          setCarrito={setCarrito}
-        />
+        <ResumenDeOrden carrito={carrito} setCarrito={setCarrito} />
       </div>
     </div>
   );

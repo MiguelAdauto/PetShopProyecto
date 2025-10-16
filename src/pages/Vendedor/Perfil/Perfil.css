@@ -1,23 +1,27 @@
+/* Perfil container */
 .perfil-container {
   display: flex;
   justify-content: center;
-  align-items: start;
-  padding: 40px 0;
-  background-color: #eef3f9;
-  height: calc(100vh - 70px); /* Ajusta según tu cabecera */
+  align-items: flex-start;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  min-height: calc(100vh - 70px);
   width: 100%;
   box-sizing: border-box;
 }
 
+/* Formulario de perfil */
 .perfil-form {
-  background-color: rgb(255, 255, 255);
-  padding: 40px;
+  background-color: #fff;
+  padding: 40px 30px;
   border-radius: 12px;
   width: 100%;
   max-width: 800px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
+/* Avatar */
 .perfil-avatar {
   display: flex;
   flex-direction: column;
@@ -26,50 +30,90 @@
 }
 
 .perfil-avatar img {
-  width: 300px !important;
-  height: 300px !important;
-  border-radius: 100% !important;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
   object-fit: cover;
   border: 3px solid #ccc;
   background-color: #0a1c1c;
-}
-.perfil-avatar .overlay-text {
-  margin-top: 10px;
-  color: #333;
-  font-size: 14px;
-}
-.perfil-avatar img {
-  border: 10px solid red;
+  box-sizing: border-box;
 }
 
+/* Estilo del botón "Cargar foto" */
+.cargar-foto-btn {
+  background-color: #42baff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Cambiar color cuando el botón está en hover */
+.cargar-foto-btn:hover {
+  background-color: #3fa7e4;
+}
+
+/* Campos del formulario */
 .perfil-fields {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
+/* Fila para los inputs */
 .perfil-fields .row {
   display: flex;
   justify-content: space-between;
   gap: 30px;
+  flex-wrap: wrap;
 }
 
+/* Cada div en la fila con inputs */
 .perfil-fields .row > div {
   flex: 1;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
 
+/* Estilo de las etiquetas */
 .perfil-fields label {
   font-weight: 600;
   font-size: 14px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Para separar el ícono del texto */
 }
 
+/* Estilo de todos los inputs */
 .perfil-fields input {
+  width: 100%;            /* El input ocupe todo el ancho */
+  box-sizing: border-box; /* Para que el padding no aumente el ancho */
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #f8f8f8;
+  margin: 0; /* Para evitar margen extra */
+}
+
+/* Estilo para el input al estar enfocado (cuando el usuario hace click) */
+.perfil-fields input:focus {
+  border-color: #646cff;
+  outline: none;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 600px) {
+  .perfil-fields .row > div {
+    flex: 1 1 100%; /* Hace que cada div ocupe todo el ancho */
+    min-width: auto;
+  }
 }

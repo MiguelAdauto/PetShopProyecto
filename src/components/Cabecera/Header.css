@@ -1,5 +1,14 @@
 .header {
-  background-color: #42baff;
-  padding:  0.0rem;
+  padding: 0.5em;
   color: white;
+}
+
+/* Estilo para vendedor */
+.vendedor-header {
+  background-color: #42baff;
+}
+
+/* Estilo para admin */
+.admin-header {
+  background-color: #191A4A;
 }

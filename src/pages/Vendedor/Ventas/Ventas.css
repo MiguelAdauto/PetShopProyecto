@@ -1,12 +1,13 @@
-  .ventas-container {
-  flex: 1;
+/* Contenedor principal de la página */
+.ventas-container {
   display: flex;
   overflow: hidden;
   padding: 1rem;
   box-sizing: border-box;
+  height: 100vh; /* altura de pantalla completa */
 }
 
-/* Contenedor izquierdo: buscador, productos, tabs */
+/* Sección izquierda: productos, buscador y tabs */
 .productos-section {
   flex: 1;
   display: flex;
@@ -16,84 +17,88 @@
   overflow: hidden;
 }
 
-/* Buscador arriba */
+/* Barra de búsqueda arriba */
 .productos-section > .search-bar {
   flex-shrink: 0;
   margin-bottom: 1rem;
 }
 
-/* Productos con scroll */
+/* Sección con scroll interno para los productos */
 .productos-scroll {
-  flex: 1;
+  height: 550px; /* 👈 suficiente para 2 filas de productos */
   overflow-y: auto;
+  padding: 1rem 0.5rem 1rem 1rem;
   background-color: #f9f9f9;
-  padding: 1rem;
   border-radius: 8px;
   border: 1px solid #ddd;
-  min-height: 0;
-}
-/* Encabezado productos */
-.productos-header {
-  margin: 0 0 1rem 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #333;
-  border-bottom: 2px solid #3399ff;
-  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-/* Grid productos */
+/* Efecto visual de sombra al final para mostrar que hay más productos */
+.productos-scroll::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.05));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Grid de productos */
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
   gap: 1rem;
 }
 
-/* Tarjeta producto */
+/* Tarjeta de producto */
 .producto-card {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 0.5rem;
   text-align: center;
   background-color: white;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .producto-card:hover {
-  box-shadow: 0 4px 10px rgb(0 0 0 / 0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Imagen producto */
+/* Imagen del producto */
 .producto-img {
   max-width: 50%;
   height: auto;
   border-radius: 6px;
 }
 
-/* Nombre producto */
+/* Nombre del producto */
 .producto-nombre {
   font-weight: 600;
   margin-top: 0.5rem;
   color: #222;
 }
 
-/* Precio producto */
+/* Precio del producto */
 .producto-precio {
   color: #3399ff;
   margin-top: 0.25rem;
   font-weight: 700;
 }
 
-/* Tabs fijos abajo */
+/* Tabs de categorías y subcategorías */
 .productos-section > .categories-tabs,
 .productos-section > .subcategories-tabs {
   flex-shrink: 0;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
-/* Contenedor derecho: resumen */
+/* Sección derecha: resumen del carrito */
 .resumen-section {
   width: 300px;
   background-color: #f2f2f2;

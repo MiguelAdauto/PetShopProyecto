@@ -1,10 +1,19 @@
 import { useState } from "react";
 
-interface Props {
-  onFiltrarVentas: (ventas: any[]) => void;
+interface Venta {
+  nro: string;
+  tipoPago: string;
+  fecha: string;
+  cliente: string;
+  total: string;
 }
 
-const BusquedaVentas = ({ onFiltrarVentas }: Props) => {
+interface Props {
+  ventas: Venta[]; // datos completos
+  onFiltrarVentas: (ventas: Venta[]) => void;
+}
+
+const BusquedaVentas = ({ ventas, onFiltrarVentas }: Props) => {
   const [filtros, setFiltros] = useState({
     nroBoleta: "",
     tipoPago: "",
@@ -20,22 +29,14 @@ const BusquedaVentas = ({ onFiltrarVentas }: Props) => {
   };
 
   const handleBuscar = () => {
-    console.log("Buscar ventas con filtros:", filtros);
-
-    const ventasSimuladas = Array.from({ length: 25 }, (_, index) => ({
-      nroBoleta: String(index + 1).padStart(3, "0"),
-      tipoPago: ["Yape", "Plin", "Mixto"][index % 3],
-      fecha: "2023-10-10",
-      total: 100 + index,
-    }));
-
-    const ventasFiltradas = ventasSimuladas.filter((venta) => {
-      const coincideBoleta = !filtros.nroBoleta || venta.nroBoleta.includes(filtros.nroBoleta);
+    // Filtrar sobre el arreglo que viene como prop
+    const ventasFiltradas = ventas.filter((venta) => {
+      const coincideNro = !filtros.nroBoleta || venta.nro.includes(filtros.nroBoleta);
       const coincideTipoPago = !filtros.tipoPago || venta.tipoPago === filtros.tipoPago;
       const coincideFechaInicio = !filtros.fechaInicio || venta.fecha >= filtros.fechaInicio;
       const coincideFechaFin = !filtros.fechaFin || venta.fecha <= filtros.fechaFin;
 
-      return coincideBoleta && coincideTipoPago && coincideFechaInicio && coincideFechaFin;
+      return coincideNro && coincideTipoPago && coincideFechaInicio && coincideFechaFin;
     });
 
     onFiltrarVentas(ventasFiltradas);
