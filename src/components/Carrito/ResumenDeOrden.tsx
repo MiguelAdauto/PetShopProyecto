@@ -1,6 +1,7 @@
 import trashIcon from '../../assets/trash.svg';
 import './ResumenDeOrden.css';
 import React, { useState } from 'react';
+
 type ProductoCarrito = {
   id: number;
   nombre: string;
@@ -47,58 +48,64 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
       <h2 className="titulo-resumen">RESUMEN DE LA ORDEN</h2>
       <hr />
 
-      {carrito.length === 0 && <p>El carrito está vacío</p>}
+      {/* Contenedor scrollable para lista de productos */}
+      <div className="lista-productos">
+        {carrito.length === 0 && <p>El carrito está vacío</p>}
 
-      {carrito.map((producto) => (
-        <div key={producto.id} className="item-carrito">
-          <div className="item-info">
-            <span>{producto.nombre}</span>
-            <div className="item-controles">
-              <button onClick={() => disminuirCantidad(producto.id)}>-</button>
-              <span>{producto.cantidad}</span>
-              <button onClick={() => aumentarCantidad(producto.id)}>+</button>
-              <span>S/{(producto.precio * producto.cantidad).toFixed(2)}</span>
-              <button className="eliminar" onClick={() => eliminarProducto(producto.id)}>
-                <img src={trashIcon} alt="Eliminar" className="trash-icon" />
-              </button>
+        {carrito.map((producto) => (
+          <div key={producto.id} className="item-carrito">
+            <div className="item-info">
+              <span>{producto.nombre}</span>
+              <div className="item-controles">
+                <button onClick={() => disminuirCantidad(producto.id)}>-</button>
+                <span>{producto.cantidad}</span>
+                <button onClick={() => aumentarCantidad(producto.id)}>+</button>
+                <span>S/{(producto.precio * producto.cantidad).toFixed(2)}</span>
+                <button className="eliminar" onClick={() => eliminarProducto(producto.id)}>
+                  <img src={trashIcon} alt="Eliminar" className="trash-icon" />
+                </button>
+              </div>
+              <small>S/{producto.precio.toFixed(2)} / unidad</small>
             </div>
-            <small>S/{producto.precio.toFixed(2)} / unidad</small>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <hr />
 
-      <div className="formulario-cliente">
-        <label>Nombre del cliente:</label>
-        <input
-          type="text"
-          value={cliente}
-          onChange={(e) => setCliente(e.target.value)}
-          placeholder="(opcional)"
-        />
+      {/* Zona fija con formulario y botones */}
+      <div className="footer-resumen">
+        <div className="formulario-cliente">
+          <label>Nombre del cliente:</label>
+          <input
+            type="text"
+            value={cliente}
+            onChange={(e) => setCliente(e.target.value)}
+            placeholder="(opcional)"
+          />
 
-        <label>Total pagado por el cliente:</label>
-        <input
-          type="number"
-          value={pagoCliente}
-          onChange={(e) => setPagoCliente(Number(e.target.value))}
-          placeholder="Ej: 50"
-        />
+          <label>Total pagado por el cliente:</label>
+          <input
+            type="number"
+            value={pagoCliente}
+            onChange={(e) => setPagoCliente(Number(e.target.value))}
+            placeholder="Ej: 50"
+          />
 
-        <label>Cambio al cliente:</label>
-        <input type="text" value={`S/${vuelto.toFixed(2)}`} disabled />
-      </div>
+          <label>Cambio al cliente:</label>
+          <input type="text" value={`S/${vuelto.toFixed(2)}`} disabled />
+        </div>
 
-      <div className="total">
-        <strong>TOTAL A PAGAR: S/{totalPagar.toFixed(2)}</strong>
-      </div>
+        <div className="total">
+          <strong>TOTAL A PAGAR: S/{totalPagar.toFixed(2)}</strong>
+        </div>
 
-      <div className="metodo-pago-container">
-        <button className="btn pago efectivo">Efectivo</button>
-        <button className="btn pago mixto">Mixto</button>
-        <button className="btn pago yape">Yape</button>
-        <button className="btn pago plin">Plin</button>
+        <div className="metodo-pago-container">
+          <button className="btn pago efectivo">Efectivo</button>
+          <button className="btn pago mixto">Mixto</button>
+          <button className="btn pago yape">Yape</button>
+          <button className="btn pago plin">Plin</button>
+        </div>
       </div>
     </div>
   );

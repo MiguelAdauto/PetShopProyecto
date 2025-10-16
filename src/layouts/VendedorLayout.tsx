@@ -1,4 +1,4 @@
-import Sidebar from '../components/BarraLateral/Sidebar';
+import Sidebar from '../components/BarraLateral/SidebarVendedor';
 import Header from '../components/Cabecera/Header';
 import { Outlet, useLocation } from 'react-router-dom';
 
@@ -16,11 +16,12 @@ const VendedorLayout = () => {
   const title = getTitle(location.pathname);
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    
+    <div style={{ display: 'flex', minHeight: '100vh', overflow: 'hidden' }}>
       <Sidebar />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <Header title={title} />
-        <main style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Header title={title} tipo="vendedor" />
+        <main style={{ flex: 1 }}>
           <Outlet />
         </main>
       </div>

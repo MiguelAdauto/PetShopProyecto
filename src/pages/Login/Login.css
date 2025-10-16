@@ -1,3 +1,27 @@
+/* Asegúrate de usar clases específicas para el login */
+.login-page input {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #f8f8f8;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-page button {
+  background-color: #2d8cf0;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
 .login-page {
   display: flex;
   height: 100vh;

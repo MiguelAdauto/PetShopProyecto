@@ -6,17 +6,21 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-height: 82vh;   /* o ajusta según el espacio disponible */
+  overflow-y: auto;
 }
-.resumen-orden h2 {
-  text-align: center;      /* Centra el texto */
-  font-size: 1.2rem;       /* Tamaño más pequeño (ajusta como prefieras) */
-  margin-bottom: 1rem;     /* Opcional: espacio abajo para separar del contenido */
-}
-
 .titulo-resumen {
   text-align: center;
   font-size: 1.2rem;
-  margin: 1rem 0; /* margen arriba y abajo */
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.1; /* Ajusta para que el texto ocupe menos espacio vertical */
+}
+
+.lista-productos {
+  flex: 0 0 auto;  /* crece para llenar espacio */
+  overflow-y: auto; /* scroll para la lista de productos */
+  min-height: 0; /* muy importante para scroll en flexbox */
 }
 
 .item-carrito {
@@ -24,7 +28,6 @@
   padding-bottom: 0.9rem;
   margin-bottom: 0.8rem;
 }
-
 
 .item-info {
   display: flex;
@@ -47,10 +50,11 @@
 }
 
 .item-controles .eliminar {
-  color: red;
+  color: rgb(255, 0, 0);
   background-color: transparent;
   border: none;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .formulario-cliente {
@@ -109,7 +113,7 @@
   color: #fff;
 }
 
-.btn.plin { 
+.btn.plin {
   background-color: #58cfc9; /* celeste */
   color: #fff;
 }
@@ -122,14 +126,4 @@
   width: 16px;
   height: 16px;
   object-fit: contain;
-}
-
-.eliminar {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

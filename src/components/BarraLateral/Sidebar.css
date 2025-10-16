@@ -1,4 +1,4 @@
-.sidebar {
+.vendedor-sidebar {
   width: 200px;
   height: 100vh;
   background-color: #42baff;
@@ -9,13 +9,13 @@
 }
 
 /* Logo arriba */
-.logo {
-  width: 150px; /* o el tamaño que quieras */
-  height: auto; /* para mantener la proporción */
-  margin-bottom: 30px; /* si quieres mantener espacio abajo */
+.vendedor-sidebar .logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 30px;
 }
 
-.nav-btn {
+.vendedor-sidebar .nav-btn {
   width: 140px;
   height: 100px;
   margin: 10px 0;
@@ -30,19 +30,20 @@
   transition: transform 0.2s ease;
 }
 
-.nav-btn:nth-child(2) { background-color: #28a745; color: white;}   /* Ventas - verde */
-.nav-btn:nth-child(3) { background-color: #3399ff; color: white;}   /* Listado de ventas - azul */
-.nav-btn:nth-child(4) { background-color: #ff8800; color: white;}   /* Productos - naranja */
-.nav-btn:nth-child(5) { background-color: #ffdd33; color: white; } /* Categorías - amarillo */
-.nav-btn:nth-child(6) { background-color: #cccccc; color: white; } /* Perfil - gris */
+
+.vendedor-sidebar .nav-btn:nth-child(2) { background-color: #28a745; color: white;}   /* Ventas - verde */
+.vendedor-sidebar .nav-btn:nth-child(3) { background-color: #3399ff; color: white;}   /* Listado de ventas - azul */
+.vendedor-sidebar .nav-btn:nth-child(4) { background-color: #ff8800; color: white;}   /* Productos - naranja */
+.vendedor-sidebar .nav-btn:nth-child(5) { background-color: #ffdd33; color: white; } /* Categorías - amarillo */
+.vendedor-sidebar .nav-btn:nth-child(6) { background-color: #cccccc; color: white; } /* Perfil - gris */
 
 /* Efecto al pasar el mouse */
-.nav-btn:hover {
+.vendedor-sidebar .nav-btn:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
 
 /* Activo */
-.nav-btn.active {
+.vendedor-sidebar .nav-btn.active {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
