@@ -1,16 +1,33 @@
-import './SidebarAdmin.css';
+import SidebarBase from './SidebarBase';
 import logo from '/src/assets/LogoBlanco1.png';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SidebarAdmin = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('usuario');
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    navigate('/login');
+  };
+
+  const links = [
+    { to: '/admin/dashboard', label: 'Dashboard' },
+    { to: '/admin/productos', label: 'Productos' },
+    { to: '/admin/usuarios', label: 'Usuarios' },
+    { to: '/admin/reportes', label: 'Reportes' },
+    { to: '/admin/perfil', label: 'Perfil' },
+  ];
+
   return (
-    <div className="admin-sidebar">
-      <img src={logo} alt="Logo" className="logo" />
-
-      <NavLink to="/admin/dashboard" className="nav-btn">Dashboard</NavLink>
-
-      <NavLink to="/admin/productos" className="nav-btn">Productos</NavLink>
-    </div>
+    <SidebarBase
+      logo={logo}
+      bgColor="#191A4A"
+      buttonColor="#4143BE"
+      links={links}
+      onLogout={handleLogout}
+    />
   );
 };
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";  // Importamos useNavigate para navegar a otras rutas
 
 interface FiltrosProductos {
   codigo: string;
@@ -19,6 +20,8 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
     categoria: "",
   });
 
+  const navigate = useNavigate();  // Hook para la navegación
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -28,6 +31,11 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
 
   const handleBuscar = () => {
     onBuscar(filtros);
+  };
+
+  const handleBotonAdmin = () => {
+    // Navegar a la página de agregar producto
+    navigate("/admin/agregar-producto");
   };
 
   return (
@@ -75,10 +83,8 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
           <option value="Comederos">Comederos</option>
         </select>
       </label>
-
-      <button className="boton-buscar" onClick={handleBuscar}>
-        Buscar
-      </button>
+      <button className="boton-buscar" onClick={handleBuscar}>Buscar</button>
+      <button className="boton-admin" onClick={handleBotonAdmin}>Agregar</button>
     </div>
   );
 };

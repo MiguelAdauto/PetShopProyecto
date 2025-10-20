@@ -3,18 +3,19 @@ import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import cuerdaImg from '../../../assets/cuerda.jpg';
 import BusquedaProductos from "./BusquedaProductos";
 import verIcon from '../../../assets/ver.svg';
+import Paginacion from "../../../components/Paginacion/Paginacion";
 import '../../../Styles/PaginasListado.css';
 
 const columnasProductosAdmin = [
   { key: 'id', label: '#', sortable: true },
-  { key: 'imagen', label: 'Imagen' },
-  { key: 'codigo', label: 'Código', sortable: true },
-  { key: 'nombre', label: 'Nombre', sortable: true },
-  { key: 'precioCompra', label: 'Precio Compra', sortable: true },
-  { key: 'precioVenta', label: 'Precio Venta', sortable: true },
-  { key: 'total', label: 'Precio Total', sortable: true },
-  { key: 'tipo', label: 'Tipo', sortable: true },
-  { key: 'categoria', label: 'Categoría', sortable: true },
+  { key: 'imagen', label: 'Imagen ' },
+  { key: 'codigo', label: 'Código ', sortable: true },
+  { key: 'nombre', label: 'Nombre ', sortable: true },
+  { key: 'precioCompra', label: 'Precio Compra ', sortable: true },
+  { key: 'precioVenta', label: 'Precio Venta ', sortable: true },
+  { key: 'precioTotal', label: 'Precio Total ', sortable: true },
+  { key: 'tipo', label: 'Tipo ', sortable: true },
+  { key: 'categoria', label: 'Categoría ', sortable: true },
   { key: 'stock', label: 'Stock', sortable: true },
 ];
 
@@ -23,7 +24,9 @@ const datosProductos = Array.from({ length: 23 }, (_, index) => ({
   imagen: cuerdaImg,
   codigo: `P${String(index + 1).padStart(3, '0')}`,
   nombre: `Producto ${index + 1}`,
-  precio: (Math.random() * 100).toFixed(2),
+  precioCompra: (Math.random() * 100).toFixed(2),
+  precioVenta: (Math.random() * 100).toFixed(2),
+  precioTotal: (Math.random() * 100).toFixed(2),
   tipo: ['Mixto', 'Perro', 'Gato'][index % 3],
   categoria: ['Juguete', 'Aseo', 'Accesorios'][index % 3],
   stock: Math.floor(Math.random() * 50 + 1),
@@ -91,23 +94,12 @@ const ProductosListado = () => {
         renderCell={renderCustomCell}
       />
 
-      <div className="paginacion">
-        <button
-          onClick={() => setPaginaActual(p => Math.max(1, p - 1))}
-          disabled={paginaActual === 1}
-        >
-          ← Anterior
-        </button>
-
-        <span>Página {paginaActual} de {totalPaginas}</span>
-
-        <button
-          onClick={() => setPaginaActual(p => Math.min(totalPaginas, p + 1))}
-          disabled={paginaActual === totalPaginas}
-        >
-          Siguiente →
-        </button>
-      </div>
+      <Paginacion
+        paginaActual={paginaActual}
+        totalPaginas={totalPaginas}
+        onPaginaChange={setPaginaActual}
+        tipo="admin"
+      />
     </div>
   );
 };

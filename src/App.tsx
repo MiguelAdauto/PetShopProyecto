@@ -25,6 +25,7 @@ import Perfil from './pages/Vendedor/Perfil/Perfil';
 // Páginas - Admin
 import AdminDashboard from './pages/Administrador/Dashboard/AdminDashboard';
 import ProductosAdmin from './pages/Administrador/ProductosAmd/ProductosListado';
+import AgregarProducto from "./pages/Administrador/ProductosAmd/AgregarProducto";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="productos" element={<ProductosAdmin />} />
+          <Route path="/admin/agregar-producto" element={<AgregarProducto />} />  {/* Ruta para Agregar Producto */}
         </Route>
 
         {/* Ruta por defecto (404 o sin coincidencias) */}

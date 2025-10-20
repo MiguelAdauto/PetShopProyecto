@@ -1,0 +1,48 @@
+.btn-paginacion {
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+/* =============================== */
+/* Color base y hover para vendedor */
+/* =============================== */
+
+/* Color base para vendedor */
+.btn-vendedor {
+  background-color: #28a745 !important; /* verde */
+}
+
+/* Hover para vendedor */
+.btn-vendedor:hover:not(:disabled) {
+  background-color: #218838 !important; /* verde más oscuro */
+}
+
+/* =============================== */
+/* Color base y hover para admin */
+/* =============================== */
+
+/* Color base para admin */
+.btn-admin {
+  background-color: #007bff !important; /* azul */
+}
+
+/* Hover para admin */
+.btn-admin:hover:not(:disabled) {
+  background-color: #0069d9 !important; /* azul más oscuro */
+}
+
+/* =============================== */
+/* Deshabilitado (tanto para admin como vendedor) */
+/* =============================== */
+
+.btn-paginacion:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

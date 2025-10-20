@@ -4,8 +4,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 const getTitle = (path: string) => {
   if (path.includes('/admin/dashboard')) return 'Dashboard';
-  if (path.includes('/admin/usuarios')) return 'Gestión de Usuarios';
-  if (path.includes('/admin/reportes')) return 'Reportes';
+  if (path.includes('/admin/productos')) return 'Productos';
+  if (path.includes('/admin/agregar-producto')) return 'Agregar Productos';
   return 'Administrador';
 };
 

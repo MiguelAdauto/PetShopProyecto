@@ -3,6 +3,7 @@ import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaProductos from "./BusquedaProductos";
 import cuerdaImg from '../../../assets/cuerda.jpg';
 import verIcon from '../../../assets/ver.svg';
+import Paginacion from "../../../components/Paginacion/Paginacion";
 import '../../../Styles/PaginasListado.css';
 
 const columnasProductos = [
@@ -89,23 +90,12 @@ const ProductosListado = () => {
         renderCell={renderCustomCell}
       />
 
-      <div className="paginacion">
-        <button
-          onClick={() => setPaginaActual(p => Math.max(1, p - 1))}
-          disabled={paginaActual === 1}
-        >
-          ← Anterior
-        </button>
-
-        <span>Página {paginaActual} de {totalPaginas}</span>
-
-        <button
-          onClick={() => setPaginaActual(p => Math.min(totalPaginas, p + 1))}
-          disabled={paginaActual === totalPaginas}
-        >
-          Siguiente →
-        </button>
-      </div>
+      <Paginacion
+        paginaActual={paginaActual}
+        totalPaginas={totalPaginas}
+        onPaginaChange={setPaginaActual}
+        tipo="vendedor"
+      />
     </div>
   );
 };

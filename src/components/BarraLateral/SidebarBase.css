@@ -1,23 +1,20 @@
-.vendedor-sidebar {
+.sidebar {
   width: 200px;
   height: 100vh;
-  background-color: #42baff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* 👈 Esto mantiene el botón abajo */
+  justify-content: space-between;
   padding-top: 20px;
   box-sizing: border-box;
 }
 
-/* Logo arriba */
-.vendedor-sidebar .logo {
+.logo {
   width: 150px;
   height: auto;
   margin-bottom: 30px;
 }
 
-/* Contenedor para los botones */
 .nav-links {
   display: flex;
   flex-direction: column;
@@ -25,8 +22,7 @@
   width: 100%;
 }
 
-/* Botones de navegación */
-.vendedor-sidebar .nav-btn {
+.nav-btn {
   width: 140px;
   height: 100px;
   margin: 10px 0;
@@ -41,38 +37,16 @@
   transition: transform 0.2s ease;
 }
 
-/* Colores específicos por ruta (mejor que nth-child) */
-.nav-btn[href*="ventas"] {
-  background-color: #0da5fd; /* verde */
-}
-
-.nav-btn[href*="listado"] {
-  background-color: #0da5fd; /* azul */
-}
-
-.nav-btn[href*="productos"] {
-  background-color: #0da5fd; /* naranja */
-}
-
-.nav-btn[href*="categorias"] {
-  background-color: #0da5fd; /* amarillo */
-}
-.nav-btn[href*="perfil"] {
-  background-color: #0da5fd; /* amarillo */
-}
-
-/* Efecto al pasar el mouse */
-.vendedor-sidebar .nav-btn:hover {
+.nav-btn:hover {
   transform: scale(1.05);
   cursor: pointer;
+  color: white;
 }
 
-/* Activo */
-.vendedor-sidebar .nav-btn.active {
+.nav-btn.active {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
-/* 🔻 Contenedor del botón de cerrar sesión */
 .logout-container {
   width: 100%;
   display: flex;
@@ -80,9 +54,8 @@
   padding-bottom: 20px;
 }
 
-/* 🔻 Botón rojo de cerrar sesión */
 .logout-btn {
-  background-color: rgb(255, 61, 61);
+  background-color: #ff0404;
   color: white;
   font-weight: bold;
   border: none;
@@ -93,6 +66,7 @@
 }
 
 .logout-btn:hover {
-  background-color: #ff0404;
+  background-color: #db0909;
   transform: scale(1.05);
 }
+

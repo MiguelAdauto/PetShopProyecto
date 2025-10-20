@@ -59,10 +59,14 @@ const TablaGenerica: React.FC<TablaGenericaProps> = ({
     setSortConfig({ key, direction });
   };
 
-  const getSortIndicator = (key: string) => {
-    if (!sortConfig || sortConfig.key !== key) return null;
-    return sortConfig.direction === 'asc' ? '  ▲' : '  ▼';
-  };
+const getSortIndicator = (key: string) => {
+  if (!sortConfig || sortConfig.key !== key) return null;
+
+  const iconClass =
+    sortConfig.direction === 'asc' ? ' bi bi-caret-up-fill' : ' bi bi-caret-down-fill';
+
+  return <i className={iconClass}></i>;
+};
 
   return (
     <div className="tabla-contenedor">

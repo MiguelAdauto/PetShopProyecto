@@ -1,0 +1,131 @@
+/* === Estilos ESPECÍFICOS para INPUTS y SELECTS dentro de AgregarProducto === */
+.contenedor-agregar-producto input[type="text"],
+.contenedor-agregar-producto input[type="date"],
+.contenedor-agregar-producto input[type="number"],
+.contenedor-agregar-producto select,
+.contenedor-agregar-producto input[type="file"] {
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  width: 100%; /* Asegura que los inputs ocupen el 100% del contenedor */
+  box-sizing: border-box; /* Asegura que el padding no afecte el tamaño total */
+  display: block; /* Esto ayuda a alinear los inputs */
+}
+
+/* Estilo cuando el campo está en foco */
+.contenedor-agregar-producto input[type="text"]:focus,
+.contenedor-agregar-producto input[type="number"]:focus,
+.contenedor-agregar-producto select:focus,
+.contenedor-agregar-producto input[type="file"]:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5);
+}
+
+/* === ESTILO PARA LOS BOTONES dentro del formulario === */
+.contenedor-agregar-producto .guardar-btn,
+.contenedor-agregar-producto .limpiar-btn {
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+  min-width: 150px;
+  margin: 15px;
+}
+
+.contenedor-agregar-producto .guardar-btn:hover,
+.contenedor-agregar-producto .limpiar-btn:hover {
+  background-color: #218838;
+}
+
+/* Botón Guardar Producto */
+.contenedor-agregar-producto .guardar-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.contenedor-agregar-producto .guardar-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Botón Limpiar */
+.contenedor-agregar-producto .limpiar-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.contenedor-agregar-producto .limpiar-btn:hover {
+  background-color: #218838;
+}
+
+/* === FORMULARIO ESTILOS ESPECÍFICOS === */
+
+/* Contenedor principal del formulario */
+.contenedor-agregar-producto {
+  width: 60%;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Distribuir los campos en dos columnas */
+.contenedor-agregar-producto .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Estilo para cada input y select dentro del formulario */
+.contenedor-agregar-producto .input-group {
+  width: calc(50% - 10px); /* Los inputs ocupan el 48% de la fila */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Estilo para los botones dentro del formulario */
+.contenedor-agregar-producto button {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  width: 48%;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+  .contenedor-agregar-producto {
+    width: 90%;
+  }
+
+  .contenedor-agregar-producto .form-row {
+    flex-direction: column;
+  }
+
+  .contenedor-agregar-producto .input-group {
+    width: 100%;
+  }
+
+  .contenedor-agregar-producto button {
+    width: 100%;
+  }
+}

@@ -3,7 +3,7 @@
   width: 100%;
   min-height: 100vh;
   padding: 40px;
-  background-color: #ebebeb;
+  background-color: #f9f9f9;
   box-sizing: border-box;
 }
 
@@ -82,7 +82,7 @@
 }
 
 .tabla-detalle thead th {
-  background-color: #4ec3ff;
+  background-color: #80d4ff;
   color: white;
 }
 
@@ -99,7 +99,7 @@
 }
 
 .boton-descargar button {
-  background-color: #4ec3ff;
+  background-color: #80d4ff;
   border: none;
   padding: 10px 25px;
   color: white;
