@@ -30,12 +30,12 @@
 
 /* Color base para admin */
 .btn-admin {
-  background-color: #007bff !important; /* azul */
+  background-color: #191A4A !important; /* azul */
 }
 
 /* Hover para admin */
 .btn-admin:hover:not(:disabled) {
-  background-color: #0069d9 !important; /* azul más oscuro */
+  background-color: #23245c !important; /* azul más oscuro */
 }
 
 /* =============================== */

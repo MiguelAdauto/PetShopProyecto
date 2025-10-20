@@ -61,13 +61,18 @@ const ProductosListado = () => {
 
   const renderOpciones = (fila: any) => (
     <div style={{ display: 'flex', gap: '8px' }}>
-      <img
-        src={verIcon}
-        alt="Ver producto"
-        title="Ver producto"
-        className="icono-opcion"
-        onClick={() => console.log('Ver producto:', fila)}
-      />
+      <i
+        className="bi bi-trash icono-opcion"
+        title="Descargar PDF"
+        onClick={() => console.log("Descargar PDF de venta:", fila)}
+        style={{ cursor: "pointer", fontSize: "20px" }}
+      ></i>
+      <i
+        className="bi bi-pencil-square icono-opcion"
+        title="Descargar PDF"
+        onClick={() => console.log("Descargar PDF de venta:", fila)}
+        style={{ cursor: "pointer", fontSize: "20px" }}
+      ></i>
     </div>
   );
 

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaProductos from "./BusquedaProductos";
 import cuerdaImg from '../../../assets/cuerda.jpg';
-import verIcon from '../../../assets/ver.svg';
 import Paginacion from "../../../components/Paginacion/Paginacion";
 import '../../../Styles/PaginasListado.css';
 
@@ -56,13 +55,12 @@ const ProductosListado = () => {
 
   const renderOpciones = (fila: any) => (
     <div style={{ display: 'flex', gap: '8px' }}>
-      <img
-        src={verIcon}
-        alt="Ver producto"
-        title="Ver producto"
-        className="icono-opcion"
-        onClick={() => console.log('Ver producto:', fila)}
-      />
+      <i
+        className="bi bi-display icono-opcion"
+        title="Descargar PDF"
+        onClick={() => console.log("Descargar PDF de venta:", fila)}
+        style={{ cursor: "pointer", fontSize: "20px" }}
+      ></i>
     </div>
   );
 
