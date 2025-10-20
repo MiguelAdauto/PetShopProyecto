@@ -1,8 +1,20 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+// Layouts
 import VendedorLayout from './layouts/VendedorLayout';
 import AdminLayout from './layouts/AdminLayout';
 
+// Componentes
+import RutaProtegida from './components/RutaProtegida/RutaProtegida';
+
+// Estilos globales
+import './Styles/global.css';
+
+// Páginas - Login
+import Login from './pages/Login/Login';
+
+// Páginas - Vendedor
 import Ventas from './pages/Vendedor/Ventas/Ventas';
 import VentasListado from './pages/Vendedor/VentasListado/VentasListado';
 import DetalleVenta from './pages/Vendedor/VentasListado/DetalleVenta';
@@ -10,13 +22,9 @@ import ProductosListado from './pages/Vendedor/Productos/ProductosListado';
 import CategoriasListado from './pages/Vendedor/Categorias/CategoriasListado';
 import Perfil from './pages/Vendedor/Perfil/Perfil';
 
-import AdminDashboard from './pages/Administrador/Dashboard/AdminDashboard'; // Asegúrate de tener este archivo
-// Puedes agregar más páginas admin aquí, como Usuarios, Reportes, etc.
-
-import Login from './pages/Login/Login';
-import RutaProtegida from './components/RutaProtegida/RutaProtegida';
-
-import './Styles/global.css';
+// Páginas - Admin
+import AdminDashboard from './pages/Administrador/Dashboard/AdminDashboard';
+import ProductosAdmin from './pages/Administrador/ProductosAmd/ProductosListado';
 
 function App() {
   return (
@@ -25,10 +33,10 @@ function App() {
         {/* Redirección inicial */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Página de Login */}
+        {/* Login */}
         <Route path="/login" element={<Login />} />
 
-        {/* Rutas protegidas para VENDEDOR */}
+        {/* Rutas protegidas - Vendedor */}
         <Route
           path="/vendedor"
           element={
@@ -45,7 +53,7 @@ function App() {
           <Route path="perfil" element={<Perfil />} />
         </Route>
 
-        {/* Rutas protegidas para ADMINISTRADOR */}
+        {/* Rutas protegidas - Admin */}
         <Route
           path="/admin"
           element={
@@ -55,10 +63,10 @@ function App() {
           }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
-          {/* Aquí puedes agregar más rutas como /usuarios, /reportes, etc. */}
+          <Route path="productos" element={<ProductosAdmin />} />
         </Route>
 
-        {/* Si la ruta no existe */}
+        {/* Ruta por defecto (404 o sin coincidencias) */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

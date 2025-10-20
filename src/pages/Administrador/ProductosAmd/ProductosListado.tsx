@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
-import BusquedaProductos from "./BusquedaProductos";
 import cuerdaImg from '../../../assets/cuerda.jpg';
+import BusquedaProductos from "./BusquedaProductos";
 import verIcon from '../../../assets/ver.svg';
 import '../../../Styles/PaginasListado.css';
 
-const columnasProductos = [
+const columnasProductosAdmin = [
   { key: 'id', label: '#', sortable: true },
   { key: 'imagen', label: 'Imagen' },
   { key: 'codigo', label: 'Código', sortable: true },
   { key: 'nombre', label: 'Nombre', sortable: true },
-  { key: 'precio', label: 'Precio', sortable: true },
+  { key: 'precioCompra', label: 'Precio Compra', sortable: true },
+  { key: 'precioVenta', label: 'Precio Venta', sortable: true },
+  { key: 'total', label: 'Precio Total', sortable: true },
   { key: 'tipo', label: 'Tipo', sortable: true },
   { key: 'categoria', label: 'Categoría', sortable: true },
   { key: 'stock', label: 'Stock', sortable: true },
@@ -26,6 +28,7 @@ const datosProductos = Array.from({ length: 23 }, (_, index) => ({
   categoria: ['Juguete', 'Aseo', 'Accesorios'][index % 3],
   stock: Math.floor(Math.random() * 50 + 1),
 }));
+
 const ProductosListado = () => {
   const [productos, setProductos] = useState(datosProductos);
   const [paginaActual, setPaginaActual] = useState(1);
@@ -47,7 +50,7 @@ const ProductosListado = () => {
     setPaginaActual(1);
   };
 
-
+  
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
   const productosPaginados = productos.slice(inicio, fin);
@@ -80,10 +83,9 @@ const ProductosListado = () => {
 
   return (
     <div className="contenedor-pagina-listado">
-      <BusquedaProductos onBuscar={buscarProductos} />
-
+    <BusquedaProductos onBuscar={buscarProductos} />
       <TablaGenerica
-        columnas={columnasProductos}
+        columnas={columnasProductosAdmin}
         datos={productosPaginados}
         renderOpciones={renderOpciones}
         renderCell={renderCustomCell}

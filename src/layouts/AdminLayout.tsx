@@ -1,5 +1,4 @@
-// src/layouts/AdminLayout.tsx
-import SidebarAdmin from '../components/BarraLateral/SidebarAdmin'; // Lo crearás
+import SidebarAdmin from '../components/BarraLateral/SidebarAdmin';
 import Header from '../components/Cabecera/Header';
 import { Outlet, useLocation } from 'react-router-dom';
 

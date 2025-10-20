@@ -10,7 +10,6 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Lista de usuarios de prueba
   const users = [
     { email: 'admin@example.com', password: 'admin123', role: 'admin' },
     { email: 'vendedor@example.com', password: 'vendedor123', role: 'vendedor' }
@@ -19,18 +18,15 @@ const Login: React.FC = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Buscar el usuario en el arreglo
     const user = users.find(user => user.email === email && user.password === password);
 
     if (user) {
-      // Si es admin, redirige al admin dashboard
       if (user.role === 'admin') {
         localStorage.setItem('rol', 'admin');
-        navigate('/admin/dashboard'); // Redirige al dashboard del admin
+        navigate('/admin/dashboard');
       } else {
-        // Si es vendedor, redirige al dashboard del vendedor
         localStorage.setItem('rol', 'vendedor');
-        navigate('/vendedor/ventas'); // Redirige al dashboard del vendedor
+        navigate('/vendedor/ventas');
       }
     } else {
       setError('Credenciales incorrectas');
@@ -52,7 +48,6 @@ const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-
             <label htmlFor="login-password">Contraseña:</label>
             <input
               type="password"
@@ -62,7 +57,6 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-
             {error && <p className="error">{error}</p>}
 
             <button type="submit">Iniciar sesión</button>

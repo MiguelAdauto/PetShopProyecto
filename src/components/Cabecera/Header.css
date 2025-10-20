@@ -1,14 +1,64 @@
+/* ====== CONTENEDOR PRINCIPAL DEL HEADER ====== */
 .header {
-  padding: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #42baff; /* Fondo principal celeste */
   color: white;
+  padding: 0.7em 1.5em; /* Espaciado interno (arriba-abajo, izquierda-derecha) */
 }
 
-/* Estilo para vendedor */
-.vendedor-header {
-  background-color: #42baff;
+/* ====== TÍTULO ====== */
+.header-title {
+  font-size: 1.5em; 
+  font-weight: 700; 
 }
 
-/* Estilo para admin */
+/* ====== BLOQUE DE INFORMACIÓN DEL USUARIO ====== */
+.user-info {
+  display: flex; 
+  align-items: center;
+  gap: 30px; 
+}
+
+/* ====== BLOQUE DE TEXTO ====== */
+.user-text {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-end;
+}
+
+/* ====== NOMBRE DEL USUARIO ====== */
+.user-name {
+  font-size: 1.3em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ====== ROL DEL USUARIO  ====== */
+.user-role {
+  font-size: 1em;
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* ====== LÍNEA SEPARADORA ENTRE TEXTO E IMAGEN ====== */
+.divider {
+  width: 2px;
+  height: 40px;
+  background-color: #FFFFFF;
+}
+
+/* ====== IMAGEN DE PERFIL ====== */
+.user-image {
+  width: 55px; 
+  height: 55px; 
+  border-radius: 50%; /* Hace la imagen circular */
+  object-fit: cover; /* Evita que se deforme la imagen */
+  background-color: #e0e0e0; /* Color de fondo si no hay imagen cargada */
+}
+
+
 .admin-header {
   background-color: #191A4A;
 }

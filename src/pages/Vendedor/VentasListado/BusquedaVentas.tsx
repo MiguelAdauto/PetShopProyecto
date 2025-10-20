@@ -9,7 +9,7 @@ interface Venta {
 }
 
 interface Props {
-  ventas: Venta[]; // datos completos
+  ventas: Venta[];
   onFiltrarVentas: (ventas: Venta[]) => void;
 }
 
@@ -29,7 +29,6 @@ const BusquedaVentas = ({ ventas, onFiltrarVentas }: Props) => {
   };
 
   const handleBuscar = () => {
-    // Filtrar sobre el arreglo que viene como prop
     const ventasFiltradas = ventas.filter((venta) => {
       const coincideNro = !filtros.nroBoleta || venta.nro.includes(filtros.nroBoleta);
       const coincideTipoPago = !filtros.tipoPago || venta.tipoPago === filtros.tipoPago;

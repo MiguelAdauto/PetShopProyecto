@@ -47,8 +47,6 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
     <div className="resumen-orden">
       <h2 className="titulo-resumen">RESUMEN DE LA ORDEN</h2>
       <hr />
-
-      {/* Contenedor scrollable para lista de productos */}
       <div className="lista-productos">
         {carrito.length === 0 && <p>El carrito está vacío</p>}
 
@@ -72,8 +70,6 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
       </div>
 
       <hr />
-
-      {/* Zona fija con formulario y botones */}
       <div className="footer-resumen">
         <div className="formulario-cliente">
           <label>Nombre del cliente:</label>

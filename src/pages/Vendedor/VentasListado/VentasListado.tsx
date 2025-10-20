@@ -33,7 +33,7 @@ const datosVentasIniciales: Venta[] = Array.from({ length: 25 }, (_, index) => (
 const VentasListado = () => {
   const [paginaActual, setPaginaActual] = useState(1);
   const [ventasFiltradas, setVentasFiltradas] = useState<Venta[]>(datosVentasIniciales);
-  const filasPorPagina = 11;
+  const filasPorPagina = 10;
   const navigate = useNavigate();
 
   const inicio = (paginaActual - 1) * filasPorPagina;

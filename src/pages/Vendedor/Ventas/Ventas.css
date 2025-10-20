@@ -25,7 +25,7 @@
 
 /* Sección con scroll interno para los productos */
 .productos-scroll {
-  height: 550px; /* 👈 suficiente para 2 filas de productos */
+  height: 550px;
   overflow-y: auto;
   padding: 1rem 0.5rem 1rem 1rem;
   background-color: #f9f9f9;

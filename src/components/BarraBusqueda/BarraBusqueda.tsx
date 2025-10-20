@@ -1,11 +1,10 @@
-// src/components/BarraBusqueda/BarraBusqueda.tsx
 import { useState } from "react";
 
 type Filtro = {
   label: string;
   name: string;
   type: "text" | "select" | "date";
-  options?: string[]; // Solo si type === "select"
+  options?: string[];
   placeholder?: string;
 };
 

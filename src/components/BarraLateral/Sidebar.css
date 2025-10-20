@@ -5,7 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between; /* 👈 Esto mantiene el botón abajo */
   padding-top: 20px;
+  box-sizing: border-box;
 }
 
 /* Logo arriba */
@@ -15,6 +17,15 @@
   margin-bottom: 30px;
 }
 
+/* Contenedor para los botones */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Botones de navegación */
 .vendedor-sidebar .nav-btn {
   width: 140px;
   height: 100px;
@@ -30,12 +41,25 @@
   transition: transform 0.2s ease;
 }
 
+/* Colores específicos por ruta (mejor que nth-child) */
+.nav-btn[href*="ventas"] {
+  background-color: #0da5fd; /* verde */
+}
 
-.vendedor-sidebar .nav-btn:nth-child(2) { background-color: #28a745; color: white;}   /* Ventas - verde */
-.vendedor-sidebar .nav-btn:nth-child(3) { background-color: #3399ff; color: white;}   /* Listado de ventas - azul */
-.vendedor-sidebar .nav-btn:nth-child(4) { background-color: #ff8800; color: white;}   /* Productos - naranja */
-.vendedor-sidebar .nav-btn:nth-child(5) { background-color: #ffdd33; color: white; } /* Categorías - amarillo */
-.vendedor-sidebar .nav-btn:nth-child(6) { background-color: #cccccc; color: white; } /* Perfil - gris */
+.nav-btn[href*="listado"] {
+  background-color: #0da5fd; /* azul */
+}
+
+.nav-btn[href*="productos"] {
+  background-color: #0da5fd; /* naranja */
+}
+
+.nav-btn[href*="categorias"] {
+  background-color: #0da5fd; /* amarillo */
+}
+.nav-btn[href*="perfil"] {
+  background-color: #0da5fd; /* amarillo */
+}
 
 /* Efecto al pasar el mouse */
 .vendedor-sidebar .nav-btn:hover {
@@ -45,5 +69,30 @@
 
 /* Activo */
 .vendedor-sidebar .nav-btn.active {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* 🔻 Contenedor del botón de cerrar sesión */
+.logout-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+/* 🔻 Botón rojo de cerrar sesión */
+.logout-btn {
+  background-color: rgb(255, 61, 61);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 25px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #ff0404;
+  transform: scale(1.05);
 }

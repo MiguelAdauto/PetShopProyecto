@@ -1,5 +1,3 @@
-// src/pages/Vendedor/Ventas/BusquedaProductoV.tsx
-
 import BarraBusqueda from "../../../components/BarraBusqueda/BarraBusqueda";
 
 interface Props {

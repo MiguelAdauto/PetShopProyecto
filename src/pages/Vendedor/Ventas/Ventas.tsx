@@ -71,7 +71,7 @@ const Ventas = () => {
               >
                 <img src={imagen} alt={nombre} className="producto-img" />
                 <div className="producto-nombre">{nombre}</div>
-                <div className="producto-precio">s/{precio.toFixed(2)}</div>
+                <div className="producto-precio">S/{precio.toFixed(2)}</div>
               </div>
             ))}
           </div>

@@ -6,13 +6,8 @@ const Perfil: React.FC = () => {
     <div className="perfil-container">
   <div className="perfil-form">
     <div className="perfil-avatar">
-      {/* Imagen de perfil */}
-      <img src="/src/assets/cuerda.jpg" alt="Perfil" />
-
-      {/* Input de tipo file escondido */}
+      <img src="/src/assets/LogoBlanco.png" alt="Perfil" />
       <input type="file" id="fotoPerfil" hidden />
-      
-      {/* Botón para cargar la foto */}
       <label htmlFor="fotoPerfil" className="cargar-foto-btn">Cargar foto</label>
     </div>
 
