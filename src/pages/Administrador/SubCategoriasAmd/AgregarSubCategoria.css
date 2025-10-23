@@ -1,0 +1,61 @@
+/* Contenedor general de la barra de búsqueda */
+.barra-busqueda {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: rgb(255, 0, 0);
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+}
+
+/* Inputs y selects */
+.barra-busqueda input,
+.barra-busqueda select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.barra-busqueda input:focus,
+.barra-busqueda select:focus {
+  border-color: #4143BE;
+  box-shadow: 0 0 5px rgba(65, 67, 190, 0.4);
+}
+
+/* Botón Buscar (Admin style azul oscuro) */
+.boton-buscar-admin {
+  background-color: #4143BE;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.boton-buscar-admin:hover {
+  background-color: #2c2e86;
+}
+
+/* Botón Agregar (gris oscuro, igual que en productos) */
+.boton-buscar-vendedor {
+  background-color: #000;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.boton-buscar-vendedor:hover {
+  background-color: #2a2a2a;
+}

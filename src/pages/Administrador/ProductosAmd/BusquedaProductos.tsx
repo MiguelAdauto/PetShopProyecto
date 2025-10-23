@@ -20,7 +20,7 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
     categoria: "",
   });
 
-  const navigate = useNavigate();  // Hook para la navegación
+  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -83,8 +83,8 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
           <option value="Comederos">Comederos</option>
         </select>
       </label>
-      <button className="boton-buscar" onClick={handleBuscar}>Buscar</button>
-      <button className="boton-admin" onClick={handleBotonAdmin}>Agregar</button>
+      <button className="boton-buscar-admin" onClick={handleBuscar}>Buscar</button>
+      <button className="boton-buscar-vendedor" onClick={handleBotonAdmin}>Agregar</button>
     </div>
   );
 };

@@ -15,8 +15,9 @@ const SidebarAdmin = () => {
   const links = [
     { to: '/admin/dashboard', label: 'Dashboard' },
     { to: '/admin/productos', label: 'Productos' },
-    { to: '/admin/usuarios', label: 'Usuarios' },
-    { to: '/admin/reportes', label: 'Reportes' },
+    { to: '/admin/subcategorias', label: 'SubCategorias' },
+    { to: '/admin/configuracion', label: 'Configuracion' },
+    { to: '/admin/reportes', label: 'Reporte Mensual' },
     { to: '/admin/perfil', label: 'Perfil' },
   ];
 

@@ -1,15 +1,18 @@
+////Aparttado de categorias
 import { useState, useEffect } from "react";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
-import BusquedaCategorias from "./BusquedaCategorias";
-import verIcon from '../../../assets/ver.svg';
+import BusquedaCategorias from "./BusquedaSubCategorias";
+import './BusquedaSubCategorias';
 import '../../../Styles/PaginasListado.css';
-import './BusquedaCategorias';
 
 const columnasCategorias = [
     { key: 'id', label: 'ID', sortable: true },
     { key: 'nombre', label: 'Nombre', sortable: true },
     { key: 'descripcion', label: 'Descripcion', sortable: true },
+    // Elimina esta línea para evitar la columna vacía
+    // { key: 'productos', label: 'Ver Productos', sortable: true },
 ];
+
 
 const datosCategoriasEstaticos = [
     {
@@ -30,14 +33,33 @@ const datosCategoriasEstaticos = [
 ];
 
 const renderAccionesCatogira = (fila: any) => (
-    <div style={{ display: 'flex', gap: '8px' }}>
-        <img
-            src={verIcon}
-            alt="Ver Categoria"
-            title="Ver Categoria"
-            className="icono-opcion"
-            onClick={() => console.log('Ver:', fila)}
-        />
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        {/* Botón Ver Productos */}
+        <button
+          title="Ver Productos"
+          onClick={() => console.log('Ver productos de categoría:', fila)}
+          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
+        >
+          <i className="bi bi-box-seam" style={{ fontSize: '18px', color: '#4143BE' }}></i>
+        </button>
+
+        {/* Botón Editar */}
+        <button
+          title="Editar Categoría"
+          onClick={() => console.log('Editar categoría:', fila)}
+          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
+        >
+          <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#2c2e86' }}></i>
+        </button>
+
+        {/* Botón Borrar */}
+        <button
+          title="Borrar Categoría"
+          onClick={() => console.log('Borrar categoría:', fila)}
+          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
+        >
+          <i className="bi bi-trash-fill" style={{ fontSize: '18px', color: '#d9534f' }}></i>
+        </button>
     </div>
 );
 
@@ -62,7 +84,7 @@ const CategoriasListado = () => {
 
     return (
         <div className="contenedor-pagina-listado">
-            <BusquedaCategorias />
+            <BusquedaCategorias onBuscar={(filtros) => console.log("Buscando con filtros:", filtros)} />
             <TablaGenerica
                 columnas={columnasCategorias}
                 datos={categorias}

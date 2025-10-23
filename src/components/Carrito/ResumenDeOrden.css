@@ -58,15 +58,30 @@
 }
 
 .formulario-cliente {
+  max-width: 300px;   /* ancho fijo para el formulario */
+  margin: 0 auto;     /* centrar todo el formulario */
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 12px;
+  padding: 0;
+}
+
+.formulario-cliente label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .formulario-cliente input {
-  padding: 6px;
-  border-radius: 4px;
+  width: 100%;         /* que ocupe todo el ancho posible */
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: inherit;
+  margin: 0;           /* evitar márgenes extra */
+  display: block;
 }
 
 .total {

@@ -1,1 +1,0 @@
-////Aparttado de categorias

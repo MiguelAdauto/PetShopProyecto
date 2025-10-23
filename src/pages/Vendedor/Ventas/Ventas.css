@@ -4,7 +4,7 @@
   overflow: hidden;
   padding: 1rem;
   box-sizing: border-box;
-  height: 100vh; /* altura de pantalla completa */
+  height: 100vh; 
 }
 
 /* Sección izquierda: productos, buscador y tabs */
@@ -25,10 +25,10 @@
 
 /* Sección con scroll interno para los productos */
 .productos-scroll {
-  height: 550px;
+  height: 580px;
   overflow-y: auto;
   padding: 1rem 0.5rem 1rem 1rem;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-radius: 8px;
   border: 1px solid #ddd;
   margin-bottom: 1rem;

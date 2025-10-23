@@ -5,7 +5,7 @@ const BusquedaCategorias = () => {
         Nombre:
         <input type="text" placeholder="nombre de la categoria" />
       </label>
-      <button className="boton-buscar">Buscar</button>
+      <button className="boton-buscar-vendedor">Buscar</button>
     </div>
   );
 };

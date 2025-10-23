@@ -19,13 +19,18 @@ import Ventas from './pages/Vendedor/Ventas/Ventas';
 import VentasListado from './pages/Vendedor/VentasListado/VentasListado';
 import DetalleVenta from './pages/Vendedor/VentasListado/DetalleVenta';
 import ProductosListado from './pages/Vendedor/Productos/ProductosListado';
-import CategoriasListado from './pages/Vendedor/Categorias/CategoriasListado';
+import CategoriasListado from './pages/Vendedor/SubCategorias/SubCategoriasListado';
 import Perfil from './pages/Vendedor/Perfil/Perfil';
 
 // Páginas - Admin
 import AdminDashboard from './pages/Administrador/Dashboard/AdminDashboard';
 import ProductosAdmin from './pages/Administrador/ProductosAmd/ProductosListado';
 import AgregarProducto from "./pages/Administrador/ProductosAmd/AgregarProducto";
+import SubCategoriasAmd from "./pages/Administrador/SubCategoriasAmd/SubCategoriasAmd";
+import AgregarSubCategoria from "./pages/Administrador/SubCategoriasAmd/AgregarSubCategoria";
+import AdmConfiguracion from "./pages/Administrador/Configuracion/Configuracion";
+import Categorias from "./pages/Administrador/Configuracion/Categorias";
+import AdministradorCierre from './pages/Administrador/ReporteMensual/CierresCajaAdmin';
 
 function App() {
   return (
@@ -65,7 +70,12 @@ function App() {
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="productos" element={<ProductosAdmin />} />
-          <Route path="/admin/agregar-producto" element={<AgregarProducto />} />  {/* Ruta para Agregar Producto */}
+          <Route path="agregar-producto" element={<AgregarProducto />} />
+          <Route path="subcategorias" element={<SubCategoriasAmd />} />
+          <Route path="agregar-subcategoria" element={<AgregarSubCategoria />} />
+          <Route path="configuracion" element={<AdmConfiguracion />} />
+          <Route path="categorias" element={<Categorias />} />
+          <Route path="reportes" element={<AdministradorCierre />} />
         </Route>
 
         {/* Ruta por defecto (404 o sin coincidencias) */}

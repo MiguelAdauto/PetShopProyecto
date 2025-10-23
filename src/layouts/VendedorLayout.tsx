@@ -6,7 +6,7 @@ const getTitle = (path: string) => {
   if (path.includes('/vendedor/listado')) return 'Listado de Ventas';
   if (path.includes('/vendedor/ventas')) return 'Ventas';
   if (path.includes('/vendedor/productos')) return 'Productos';
-  if (path.includes('/vendedor/categorias')) return 'Categorías';
+  if (path.includes('/vendedor/categorias')) return 'SubCategorías';
   if (path.includes('/vendedor/perfil')) return 'Perfil';
   return 'Vendedor';
 };

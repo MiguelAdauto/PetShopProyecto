@@ -54,8 +54,8 @@ const BarraBusqueda = ({ filtros, onBuscar }: Props) => {
           )}
         </label>
       ))}
-
-      <button className="boton-buscar" onClick={handleBuscar}>
+  
+      <button className="boton-buscar-vendedor" onClick={handleBuscar}>
         Buscar
       </button>
     </div>

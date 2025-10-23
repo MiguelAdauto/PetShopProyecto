@@ -4,7 +4,7 @@ input[type="text"],
 input[type="date"] {
   padding: 8px 12px; 
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #bdbdbd;
   border-radius: 4px;
   width: 220px;
   margin: 0 10px; 
@@ -14,30 +14,9 @@ input[type="date"] {
 
 input[type="text"]:focus,
 input[type="date"]:focus {
-  border-color: #28a745;
+  border-color: #bdbdbd;
   outline: none;
-  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5); 
-}
-
-/* === BOTONES GENERALES === */
-.buscar-btn,
-.boton-buscar {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 18px; 
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: flex-start;
-  min-width: 150px;
-  margin: 15px;
-}
-
-.buscar-btn:hover,
-.boton-buscar:hover {
-  background-color: #218838; 
+  box-shadow: 0 0 4px rgba(190, 190, 190, 0.5); 
 }
 
 /* === SELECTS GENERALES === */
@@ -54,9 +33,9 @@ select {
 }
 
 select:focus {
-  border-color: #28a745;
+  border-color: #bdbdbd;
   outline: none;
-  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5);
+  box-shadow: 0 0 4px rgba(190, 190, 190, 0.5);
 }
 
 html, body {
@@ -66,3 +45,49 @@ html, body {
   background-color: #fafafa; /* o el color que quieras de fondo */
   font-family: system-ui, sans-serif;
 }
+
+
+/* === BOTONES GENERALES === */
+.boton-buscar-vendedor,
+.boton-buscar {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 18px; 
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+  min-width: 150px;
+  margin:
+   15px;
+}
+
+.boton-buscar-vendedor:hover,
+.boton-buscar:hover {
+  background-color: #218838; /* un verde más oscuro, por ejemplo */
+}
+
+/*Administrador*/
+.boton-buscar-admin,
+.boton-buscar {
+  background-color: #4143BE;
+  color: white;
+  border: none;
+  padding: 10px 18px; 
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+  min-width: 150px;
+  margin: 15px;
+}
+
+.boton-buscar-admin:hover,
+.boton-buscar:hover {
+  background-color: #3234bd; /* un verde más oscuro, por ejemplo */
+}
+
+

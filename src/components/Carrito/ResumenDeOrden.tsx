@@ -45,7 +45,7 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
 
   return (
     <div className="resumen-orden">
-      <h2 className="titulo-resumen">RESUMEN DE LA ORDEN</h2>
+      <h2 className="titulo-resumen">RESUMEN DE LA ORDEN <i className="bi bi-cart-fill"></i></h2>
       <hr />
       <div className="lista-productos">
         {carrito.length === 0 && <p>El carrito está vacío</p>}

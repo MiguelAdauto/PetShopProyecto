@@ -2,7 +2,6 @@ import { useState } from 'react';
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import cuerdaImg from '../../../assets/cuerda.jpg';
 import BusquedaProductos from "./BusquedaProductos";
-import verIcon from '../../../assets/ver.svg';
 import Paginacion from "../../../components/Paginacion/Paginacion";
 import '../../../Styles/PaginasListado.css';
 
@@ -61,17 +60,18 @@ const ProductosListado = () => {
 
   const renderOpciones = (fila: any) => (
     <div style={{ display: 'flex', gap: '8px' }}>
-      <i
-        className="bi bi-trash icono-opcion"
-        title="Descargar PDF"
-        onClick={() => console.log("Descargar PDF de venta:", fila)}
-        style={{ cursor: "pointer", fontSize: "20px" }}
-      ></i>
+      
       <i
         className="bi bi-pencil-square icono-opcion"
-        title="Descargar PDF"
-        onClick={() => console.log("Descargar PDF de venta:", fila)}
-        style={{ cursor: "pointer", fontSize: "20px" }}
+        title="Editar Producto"
+        onClick={() => console.log("Editar Producto", fila)}
+        style={{ cursor: "pointer", fontSize: "20px",color: '#2c2e86' }}
+      ></i>
+      <i
+        className="bi bi-trash icono-opcion"
+        title="Eliminar Producto"
+        onClick={() => console.log("Eliminar Producto:", fila)}
+        style={{ cursor: "pointer", fontSize: "20px" ,color: '#d9534f'}}
       ></i>
     </div>
   );

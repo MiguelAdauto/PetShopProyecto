@@ -30,7 +30,7 @@
 }
 
 .subcategory-btn:hover {
-  color: #000000; /* texto en celeste claro */
-  background-color: #f0faff; /* fondo azul claro muy suave */
+  color: #000000;
+  background-color: #f0faff; 
   border-radius: 4px;
 }
