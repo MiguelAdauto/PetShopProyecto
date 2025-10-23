@@ -20,6 +20,7 @@ import VentasListado from './pages/Vendedor/VentasListado/VentasListado';
 import DetalleVenta from './pages/Vendedor/VentasListado/DetalleVenta';
 import ProductosListado from './pages/Vendedor/Productos/ProductosListado';
 import CategoriasListado from './pages/Vendedor/SubCategorias/SubCategoriasListado';
+import CierresMensuales from './pages/Vendedor/CierresMensuales/CierresMensuales';
 import Perfil from './pages/Vendedor/Perfil/Perfil';
 
 // Páginas - Admin
@@ -56,6 +57,7 @@ function App() {
           <Route path="listado/:id" element={<DetalleVenta />} />
           <Route path="productos" element={<ProductosListado />} />
           <Route path="categorias" element={<CategoriasListado />} />
+          <Route path="reportes" element={<CierresMensuales />} />
           <Route path="perfil" element={<Perfil />} />
         </Route>
 

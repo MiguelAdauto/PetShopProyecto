@@ -9,8 +9,8 @@ const getTitle = (path: string) => {
   if (path.includes('/admin/subcategorias')) return 'Subcategorías';
   if (path.includes('/admin/agregar-subcategoria')) return 'Agregar Subcategoría';
   if (path.includes('/admin/configuracion')) return 'Configuraciones';
-    if (path.includes('/admin/categorias')) return 'Categorias';
-    if (path.includes('/admin/reportes')) return 'Reporte Mensual';
+  if (path.includes('/admin/categorias')) return 'Categorias';
+  if (path.includes('/admin/reportes')) return 'Reporte Mensual';
   return 'Administrador';
 };
 

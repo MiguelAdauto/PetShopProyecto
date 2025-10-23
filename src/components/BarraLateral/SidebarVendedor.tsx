@@ -17,6 +17,7 @@ const SidebarVendedor = () => {
     { to: '/vendedor/listado', label: 'Listado de ventas' },
     { to: '/vendedor/productos', label: 'Productos' },
     { to: '/vendedor/categorias', label: 'SubCategorías' },
+    { to: '/vendedor/reportes', label: 'Reporte Mensual' },
     { to: '/vendedor/perfil', label: 'Perfil' },
   ];
 

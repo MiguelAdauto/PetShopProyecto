@@ -8,6 +8,7 @@ const getTitle = (path: string) => {
   if (path.includes('/vendedor/productos')) return 'Productos';
   if (path.includes('/vendedor/categorias')) return 'SubCategorías';
   if (path.includes('/vendedor/perfil')) return 'Perfil';
+  if (path.includes('/vendedor/reportes')) return 'Reporte Mensual';
   return 'Vendedor';
 };
 
