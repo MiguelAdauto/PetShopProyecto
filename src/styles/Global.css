@@ -91,3 +91,20 @@ html, body {
 }
 
 
+.boton-buscar-cierreCaja {
+  background-color: #4143be;
+  color: white;
+  border: none;
+  padding: 10px 18px; 
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+  min-width: 150px;
+  margin: 15px;
+}
+
+.boton-buscar-cierreCaja:hover{
+  background-color: #4143be; /* un verde más oscuro, por ejemplo */
+}

@@ -33,7 +33,7 @@ const datosCategoriasEstaticos = [
 ];
 
 const renderAccionesCatogira = (fila: any) => (
-    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: '12px'}}>
         {/* Botón Ver Productos */}
         <button
           title="Ver Productos"
@@ -47,7 +47,7 @@ const renderAccionesCatogira = (fila: any) => (
         <button
           title="Editar Categoría"
           onClick={() => console.log('Editar categoría:', fila)}
-          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
+          style={{ cursor: 'pointer', background: 'none'}}
         >
           <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#2c2e86' }}></i>
         </button>

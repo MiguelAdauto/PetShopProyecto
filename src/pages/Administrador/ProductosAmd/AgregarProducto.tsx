@@ -57,6 +57,7 @@ const AgregarProducto = () => {
           ></i>{" "}
           Volver
         </button>
+        <h2>Agregar Subcategoría</h2>
         <div className="form-row">
           <div className="input-group">
             <label>
@@ -156,9 +157,7 @@ const AgregarProducto = () => {
               onChange={(e) => setTipo(e.target.value)}
               required
             >
-              <option value="" disabled hidden>
-                seleccione un tipo de mascota
-              </option>
+              <option value="" disabled hidden>seleccione un tipo de mascota</option>
               <option value="Mixto">Mixto</option>
               <option value="Perro">Perro</option>
               <option value="Gato">Gato</option>

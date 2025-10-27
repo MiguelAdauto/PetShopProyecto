@@ -1,4 +1,4 @@
-/* Perfil container */
+/* Estilos comunes */
 .perfil-container {
   display: flex;
   justify-content: center;
@@ -17,8 +17,13 @@
   border-radius: 12px;
   width: 100%;
   max-width: 800px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.perfil-form:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 /* Avatar */
@@ -30,32 +35,36 @@
 }
 
 .perfil-avatar img {
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #ccc;
+  border: 4px solid #42baff;
   background-color: #0a1c1c;
   box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.perfil-avatar img:hover {
+  border-color: #3388cc;
 }
 
 /* Estilo del botón "Cargar foto" */
 .cargar-foto-btn {
   background-color: #42baff;
   color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
   display: inline-block;
   text-align: center;
-  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
-/* Cambiar color cuando el botón está en hover */
 .cargar-foto-btn:hover {
-  background-color: #3fa7e4;
+  background-color: #3388cc;
 }
 
 /* Campos del formulario */
@@ -73,7 +82,6 @@
   flex-wrap: wrap;
 }
 
-/* Cada div en la fila con inputs */
 .perfil-fields .row > div {
   flex: 1;
   display: flex;
@@ -89,31 +97,72 @@
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: 6px; /* Para separar el ícono del texto */
+  gap: 6px;
+  color: #333;
 }
 
 /* Estilo de todos los inputs */
 .perfil-fields input {
-  width: 100%;            /* El input ocupe todo el ancho */
-  box-sizing: border-box; /* Para que el padding no aumente el ancho */
-  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #f8f8f8;
-  margin: 0; /* Para evitar margen extra */
+  margin: 0;
+  transition: border-color 0.3s ease;
 }
 
-/* Estilo para el input al estar enfocado (cuando el usuario hace click) */
 .perfil-fields input:focus {
-  border-color: #646cff;
+  border-color: #42baff;
   outline: none;
+}
+
+.perfil-fields input:hover {
+  border-color: #3388cc;
+}
+
+/* Estilos para Vendedor */
+.perfil-container.vendedor .perfil-avatar img {
+  border-color: #42baff;
+}
+
+.perfil-container.vendedor .cargar-foto-btn {
+  background-color: #42baff;
+}
+
+.perfil-container.vendedor .cargar-foto-btn:hover {
+  background-color: #3388cc;
+}
+
+/* Estilos para Admin */
+.perfil-container.admin .perfil-avatar img {
+  border-color: #4143BE;
+}
+
+.perfil-container.admin .cargar-foto-btn {
+  background-color: #4143BE;
+}
+
+.perfil-container.admin .cargar-foto-btn:hover {
+  background-color: #5557c7;
 }
 
 /* Responsive para pantallas pequeñas */
 @media (max-width: 600px) {
   .perfil-fields .row > div {
-    flex: 1 1 100%; /* Hace que cada div ocupe todo el ancho */
+    flex: 1 1 100%;
     min-width: auto;
+  }
+
+  .perfil-avatar img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .cargar-foto-btn {
+    font-size: 12px;
+    padding: 8px 18px;
   }
 }

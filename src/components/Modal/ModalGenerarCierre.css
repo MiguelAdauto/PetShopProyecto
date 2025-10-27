@@ -34,11 +34,12 @@
   cursor: pointer;
 }
 
-.modal-botones button.cancelar {
-  background-color: #ccc;
+
+.modal-botones button.cancelar-vendedor {
+  background-color: #ff0000;
 }
 
 .modal-botones button.generar {
-  background-color: #4CAF50;
+  background-color: #000000;
   color: white;
 }

@@ -21,7 +21,7 @@ import DetalleVenta from './pages/Vendedor/VentasListado/DetalleVenta';
 import ProductosListado from './pages/Vendedor/Productos/ProductosListado';
 import CategoriasListado from './pages/Vendedor/SubCategorias/SubCategoriasListado';
 import CierresMensuales from './pages/Vendedor/CierresMensuales/CierresMensuales';
-import Perfil from './pages/Vendedor/Perfil/Perfil';
+import Perfil from './pages/Vendedor/Perfil/PerfilVendedor.tsx';
 
 // Páginas - Admin
 import AdminDashboard from './pages/Administrador/Dashboard/AdminDashboard';
@@ -32,6 +32,7 @@ import AgregarSubCategoria from "./pages/Administrador/SubCategoriasAmd/AgregarS
 import AdmConfiguracion from "./pages/Administrador/Configuracion/Configuracion";
 import Categorias from "./pages/Administrador/Configuracion/Categorias";
 import AdministradorCierre from './pages/Administrador/ReporteMensual/CierresCajaAdmin';
+import PerfilAdmin from './pages/Administrador/Perfil/PerfilAdmin.tsx';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
           <Route path="configuracion" element={<AdmConfiguracion />} />
           <Route path="categorias" element={<Categorias />} />
           <Route path="reportes" element={<AdministradorCierre />} />
+          <Route path="perfil" element={<PerfilAdmin />} />
         </Route>
 
         {/* Ruta por defecto (404 o sin coincidencias) */}

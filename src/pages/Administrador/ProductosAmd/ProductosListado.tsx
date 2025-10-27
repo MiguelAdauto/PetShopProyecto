@@ -52,27 +52,30 @@ const ProductosListado = () => {
     setPaginaActual(1);
   };
 
-  
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
   const productosPaginados = productos.slice(inicio, fin);
   const totalPaginas = Math.ceil(productos.length / filasPorPagina);
 
   const renderOpciones = (fila: any) => (
-    <div style={{ display: 'flex', gap: '8px' }}>
-      
-      <i
-        className="bi bi-pencil-square icono-opcion"
+    <div style={{ display: 'flex', gap: '12px' }}>
+      {/* Botón Editar Producto */}
+      <button
         title="Editar Producto"
         onClick={() => console.log("Editar Producto", fila)}
-        style={{ cursor: "pointer", fontSize: "20px",color: '#2c2e86' }}
-      ></i>
-      <i
-        className="bi bi-trash icono-opcion"
+        style={{ cursor: "pointer", background: "none", border: "none" }}
+      >
+        <i className="bi bi-pencil-square" style={{ fontSize: "20px", color: '#000000ff' }}></i>
+      </button>
+
+      {/* Botón Eliminar Producto */}
+      <button
         title="Eliminar Producto"
         onClick={() => console.log("Eliminar Producto:", fila)}
-        style={{ cursor: "pointer", fontSize: "20px" ,color: '#d9534f'}}
-      ></i>
+        style={{ cursor: "pointer", background: "none", border: "none" }}
+      >
+        <i className="bi bi-trash" style={{ fontSize: "20px", color: '#000000ff' }}></i>
+      </button>
     </div>
   );
 
@@ -91,7 +94,7 @@ const ProductosListado = () => {
 
   return (
     <div className="contenedor-pagina-listado">
-    <BusquedaProductos onBuscar={buscarProductos} />
+      <BusquedaProductos onBuscar={buscarProductos} />
       <TablaGenerica
         columnas={columnasProductosAdmin}
         datos={productosPaginados}

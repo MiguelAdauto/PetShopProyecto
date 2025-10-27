@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaCategorias from "./BusquedaSubCategorias";
-import verIcon from '../../../assets/ver.svg';
 import '../../../Styles/PaginasListado.css';
 import './BusquedaSubCategorias';
 
@@ -29,17 +28,6 @@ const datosCategoriasEstaticos = [
     },
 ];
 
-const renderAccionesCatogira = (fila: any) => (
-    <div style={{ display: 'flex', gap: '8px' }}>
-        <img
-            src={verIcon}
-            alt="Ver Categoria"
-            title="Ver Categoria"
-            className="icono-opcion"
-            onClick={() => console.log('Ver:', fila)}
-        />
-    </div>
-);
 
 const CategoriasListado = () => {
     const [categorias, setCategorias] = useState(datosCategoriasEstaticos);
@@ -66,7 +54,6 @@ const CategoriasListado = () => {
             <TablaGenerica
                 columnas={columnasCategorias}
                 datos={categorias}
-                renderOpciones={renderAccionesCatogira}
             />
         </div>
     );

@@ -1,0 +1,141 @@
+/* Fondo oscuro para el overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Contenedor del modal */
+.modal-content {
+  background-color: #fff;
+  border-radius: 15px;
+  max-width: 900px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;  /* Cambiar a columna */
+  align-items: center;     /* Centrar todo */
+  gap: 30px;               /* Espaciado */
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Botón de cerrar */
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #e74c3c;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.close-button:hover {
+  background-color: #c0392b;
+}
+
+/* Título */
+.modal-content h2 {
+  font-size: 32px;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 2px solid #e0e0e0;
+  width: 100%;
+}
+
+/* Contenedor de los detalles del producto */
+.modal-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Imagen del producto */
+.modal-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 3px solid #ddd;
+}
+
+/* Contenedor de los datos */
+.modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 18px;
+  color: #555;
+  width: 100%;
+  max-width: 500px;  /* Limitar el tamaño de los detalles */
+}
+
+.modal-info p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+.modal-info p strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Estilo de los detalles */
+.modal-info p {
+  background-color: #f9f9f9;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Diseño responsivo */
+@media (max-width: 768px) {
+  .modal-content {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .modal-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .modal-image {
+    margin-bottom: 20px;
+  }
+
+  .modal-info {
+    max-width: 100%;
+  }
+}

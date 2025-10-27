@@ -1,9 +1,17 @@
 const AgregarSubCategoria = () => {
   return (
     <div className="contenedor-agregar-producto">
-      <button className="volver-btn">
-        <i className="bi bi-arrow-left"></i> Volver
-      </button>
+      <button
+          type="button"
+          className="volver-btn"
+          onClick={() => window.history.back()}
+        >
+          <i
+            className="bi bi-arrow-left-circle-fill"
+            style={{ marginRight: "8px" }}
+          ></i>{" "}
+          Volver
+        </button>
 
       <h2>Agregar Subcategoría</h2>
 

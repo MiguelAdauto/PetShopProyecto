@@ -28,7 +28,6 @@ const CierresMensuales = () => {
     { key: "cantidadVentas", label: "Cantidad de Ventas" },
     { key: "fechaGeneracion", label: "Fecha Generación" },
     { key: "archivo", label: "Archivo" },
-    { key: "accion", label: "Acción" },
   ];
 
   const handleCerrarCaja = (mes: string, anio: string) => {
@@ -36,21 +35,25 @@ const CierresMensuales = () => {
       alert("Selecciona mes y año.");
       return;
     }
+
+    // Mostrar el modal para confirmar el cierre
     setMesSeleccionado(mes);
     setAnioSeleccionado(anio);
     setModalOpen(true);
   };
 
-  const handleGenerarCierre = () => {
+  const handleGenerarCierre = (mes: string, anio: string) => {
+    // Generar un nuevo cierre con los datos pasados
     const nuevoCierre: Cierre = {
-      id: cierres.length + 1,
-      mes: mesSeleccionado,
-      anio: anioSeleccionado,
+      id: cierres.length + 1,  // Solo para generar un id único
+      mes: mes,
+      anio: anio,
       totalVentas: Math.floor(Math.random() * 5000),
       cantidadVentas: Math.floor(Math.random() * 50 + 1),
-      fechaGeneracion: new Date().toISOString().slice(0, 16).replace("T"," "),
+      fechaGeneracion: new Date().toISOString().slice(0, 16).replace("T", " "),
       archivo: "Disponible",
     };
+
     setCierres([...cierres, nuevoCierre]);
     setModalOpen(false);
   };
@@ -75,17 +78,25 @@ const CierresMensuales = () => {
           columnas={columnas} 
           datos={datosFiltrados} 
           renderOpciones={(fila) => (
-            <button onClick={() => alert(`Descargando archivo de ${fila.mes} ${fila.anio}`)}>Descargar</button>
+            // Aquí reemplazamos el botón por un ícono en la columna de "Acción"
+            <i
+              className="bi bi-download icono-opcion"
+              title="Descargar PDF"
+              onClick={() => alert(`Descargando archivo de ${fila.mes} ${fila.anio}`)}  // Aquí iría tu lógica de descarga
+              style={{ cursor: "pointer", fontSize: "20px" }}
+            ></i>
           )} 
         />
       )}
 
+      {/* Modal */}
       {modalOpen && (
         <ModalGenerarCierre
           mes={mesSeleccionado}
           anio={anioSeleccionado}
           onClose={() => setModalOpen(false)}
-          onGenerar={handleGenerarCierre}
+          // Aquí pasamos una función sin parámetros que luego llama a `handleGenerarCierre`
+          onGenerar={() => handleGenerarCierre(mesSeleccionado, anioSeleccionado)}
         />
       )}
     </div>

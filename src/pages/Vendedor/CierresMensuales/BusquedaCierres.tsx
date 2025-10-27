@@ -3,40 +3,80 @@ import "./CierresMensuales.css";
 
 interface BusquedaProps {
   onCerrarCaja: (mes: string, anio: string) => void;
-  onBuscar: (mes: string, anio: string) => void;
+  onBuscar: (mes: string, anio: string, vendedor: string) => void;
 }
 
 const BusquedaCierres: React.FC<BusquedaProps> = ({ onCerrarCaja, onBuscar }) => {
-  const [mes, setMes] = useState("");
-  const [anio, setAnio] = useState("");
+  const [filtros, setFiltros] = useState({
+    mes: "",
+    anio: "",
+    vendedor: ""
+  });
+
+  const mesesNombres = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+
+  // Función para manejar cambios en los inputs
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFiltros(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Función para manejar la búsqueda
+  const handleBuscar = () => {
+    const { mes, anio, vendedor } = filtros;
+    onBuscar(mes, anio, vendedor);  // Pasamos los filtros de mes, año y vendedor
+  };
+
+  // Función para cerrar caja automáticamente con la fecha actual
+  const handleCerrarCajaAutomatico = () => {
+    const fecha = new Date();
+    const mesActual = mesesNombres[fecha.getMonth()];  // Obtenemos el mes actual por nombre
+    const anioActual = fecha.getFullYear().toString();  // Obtenemos el año actual
+    onCerrarCaja(mesActual, anioActual);  // Llamamos a la función onCerrarCaja con el mes y año actuales
+  };
 
   return (
-    <div className="busqueda-cierres">
-      <select value={mes} onChange={(e) => setMes(e.target.value)}>
-        <option value="">Mes</option>
-        <option value="Enero">Enero</option>
-        <option value="Febrero">Febrero</option>
-        <option value="Marzo">Marzo</option>
-        <option value="Abril">Abril</option>
-        <option value="Mayo">Mayo</option>
-        <option value="Junio">Junio</option>
-        <option value="Julio">Julio</option>
-        <option value="Agosto">Agosto</option>
-        <option value="Septiembre">Septiembre</option>
-        <option value="Octubre">Octubre</option>
-        <option value="Noviembre">Noviembre</option>
-        <option value="Diciembre">Diciembre</option>
-      </select>
+    <div className="barra-busqueda">
+      {/* Select para el mes */}
+      <label>
+        Mes:
+        <select name="mes" value={filtros.mes} onChange={handleChange}>
+          <option value="">Todos</option>
+          {mesesNombres.map((mes) => (
+            <option key={mes} value={mes}>
+              {mes}
+            </option>
+          ))}
+        </select>
+      </label>
 
-      <input 
-        type="number" 
-        placeholder="Año" 
-        value={anio} 
-        onChange={(e) => setAnio(e.target.value)}
-      />
+      {/* Input para el año */}
+      <label>
+        Año: 
+        <input
+          type="number"
+          name="anio"
+          placeholder="Año"
+          value={filtros.anio}
+          onChange={handleChange}
+        />
+      </label>
 
-      <button onClick={() => onCerrarCaja(mes, anio)}>Cerrar Caja</button>
-      <button onClick={() => onBuscar(mes, anio)}>Buscar</button>
+      {/* Botón que cierra caja automáticamente con la fecha actual */}
+      <button className="boton-buscar-cierreCaja" onClick={handleCerrarCajaAutomatico}>
+        Cerrar Caja
+      </button>
+
+      {/* Botón para realizar la búsqueda */}
+      <button className="boton-buscar-vendedor" onClick={handleBuscar}>
+        Buscar
+      </button>
     </div>
   );
 };

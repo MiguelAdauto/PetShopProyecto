@@ -1,0 +1,87 @@
+/* Estilo general del modal */
+.modal-edicion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-edicion-contenido {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-edicion h3 {
+  margin-bottom: 20px;
+}
+
+/* Estilo del input */
+.modal-edicion input {
+  width: calc(100% - 42px);
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin: 0 20px 20px 10px;
+}
+
+/* Botones del modal */
+.modal-edicion-botones {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-edicion-botones button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilos generales para ambos */
+.modal-edicion-botones .cancelar {
+  background-color: #ff4f4f;
+  color: white;
+}
+
+.modal-edicion-botones .cancelar:hover {
+  background-color: #e43e3e;
+}
+
+.modal-edicion-botones .guardar {
+  background-color: #42baff;
+  color: white;
+}
+
+.modal-edicion-botones .guardar:hover {
+  background-color: #4244cf;
+}
+
+/* Estilo específico para el vendedor */
+.modal-edicion.vendedor .modal-edicion-botones .guardar {
+  background-color: #42baff;  /* Azul para vendedor */
+}
+
+.modal-edicion.vendedor .modal-edicion-botones .guardar:hover {
+  background-color: #3388cc;
+}
+
+/* Estilo específico para el admin */
+.modal-edicion.admin .modal-edicion-botones .guardar {
+  background-color: #4143BE;  /* Azul para admin */
+}
+
+.modal-edicion.admin .modal-edicion-botones .guardar:hover {
+  background-color: #5557c7;
+}
