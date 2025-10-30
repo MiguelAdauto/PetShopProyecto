@@ -26,7 +26,6 @@ const BusquedaCategorias = ({ onBuscar }: Props) => {
   };
 
   const handleBotonAdmin = () => {
-    // Navegar a la página para agregar una nueva subcategoría
     navigate("/admin/agregar-subcategoria");
   };
 
@@ -39,17 +38,11 @@ const BusquedaCategorias = ({ onBuscar }: Props) => {
           name="nombre"
           placeholder="Nombre de la categoría"
           value={filtros.nombre}
-          onChange={handleChange}
-        />
+          onChange={handleChange}/>
       </label>
 
-      <button className="boton-buscar-admin" onClick={handleBuscar}>
-        Buscar
-      </button>
-
-      <button className="boton-buscar-vendedor" onClick={handleBotonAdmin}>
-        Agregar
-      </button>
+      <button className="boton-buscar-admin" onClick={handleBuscar}>Buscar</button>
+      <button className="boton-buscar-vendedor" onClick={handleBotonAdmin}>Agregar</button>
     </div>
   );
 };

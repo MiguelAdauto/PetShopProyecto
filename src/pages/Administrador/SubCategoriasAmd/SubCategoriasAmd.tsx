@@ -1,5 +1,6 @@
 ////Aparttado de categorias
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaCategorias from "./BusquedaSubCategorias";
 import './BusquedaSubCategorias';
@@ -8,11 +9,8 @@ import '../../../Styles/PaginasListado.css';
 const columnasCategorias = [
     { key: 'id', label: 'ID', sortable: true },
     { key: 'nombre', label: 'Nombre', sortable: true },
-    { key: 'descripcion', label: 'Descripcion', sortable: true },
-    // Elimina esta línea para evitar la columna vacía
-    // { key: 'productos', label: 'Ver Productos', sortable: true },
+    { key: 'descripcion', label: 'Descripcion', sortable: true }
 ];
-
 
 const datosCategoriasEstaticos = [
     {
@@ -32,40 +30,27 @@ const datosCategoriasEstaticos = [
     },
 ];
 
-const renderAccionesCatogira = (fila: any) => (
-    <div style={{ display: 'flex', gap: '12px'}}>
-        {/* Botón Ver Productos */}
-        <button
-          title="Ver Productos"
-          onClick={() => console.log('Ver productos de categoría:', fila)}
-          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
-        >
-          <i className="bi bi-box-seam" style={{ fontSize: '18px', color: '#4143BE' }}></i>
-        </button>
-
-        {/* Botón Editar */}
-        <button
-          title="Editar Categoría"
-          onClick={() => console.log('Editar categoría:', fila)}
-          style={{ cursor: 'pointer', background: 'none'}}
-        >
-          <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#2c2e86' }}></i>
-        </button>
-
-        {/* Botón Borrar */}
-        <button
-          title="Borrar Categoría"
-          onClick={() => console.log('Borrar categoría:', fila)}
-          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
-        >
-          <i className="bi bi-trash-fill" style={{ fontSize: '18px', color: '#d9534f' }}></i>
-        </button>
-    </div>
-);
 
 const CategoriasListado = () => {
     const [categorias, setCategorias] = useState(datosCategoriasEstaticos);
+    const navigate = useNavigate();
 
+const renderAccionesCatogira = (fila: any) => (
+  <div style={{ display: 'flex', gap: '12px' }}>
+    <button
+      title="Editar Categoría"
+      onClick={() => navigate(`/admin/editar-subcategoria/${fila.id}`, { state: fila })}
+      style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
+      <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#000000ff' }}></i>
+    </button>
+    <button
+      title="Borrar Categoría"
+      onClick={() => console.log('Borrar categoría:', fila)}
+      style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
+      <i className="bi bi-trash" style={{ fontSize: '18px', color: '#000000ff' }}></i>
+    </button>
+  </div>
+);
     useEffect(() => {
         // Aquí iría la lógica para obtener los datos del backend
         // Por ahora, estamos simulando con los datos estáticos.

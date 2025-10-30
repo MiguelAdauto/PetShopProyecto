@@ -14,14 +14,18 @@ interface TablaGenericaProps {
   renderCell?: (key: string, value: any, fila: any) => React.ReactNode;
 }
 
+/**
+ * Componente genérico reutilizable para mostrar tablas.
+ * Admite ordenamiento, renderizado de imágenes y personalización de opciones.
+ */
 const TablaGenerica: React.FC<TablaGenericaProps> = ({
   columnas,
   datos,
   renderOpciones,
-  renderCell
 }) => {
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
+  // 🔽 Ordenamiento dinámico
   const sortedDatos = React.useMemo(() => {
     if (!sortConfig) return datos;
 
@@ -39,9 +43,7 @@ const TablaGenerica: React.FC<TablaGenericaProps> = ({
         return sortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
       }
 
-      return sortConfig.direction === 'asc'
-        ? String(aVal).localeCompare(String(bVal))
-        : String(bVal).localeCompare(String(aVal));
+      return 0;
     });
 
     return sorted;
@@ -51,22 +53,43 @@ const TablaGenerica: React.FC<TablaGenericaProps> = ({
     if (!sortable) return;
 
     let direction: 'asc' | 'desc' = 'asc';
-
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
     }
-
     setSortConfig({ key, direction });
   };
 
-const getSortIndicator = (key: string) => {
-  if (!sortConfig || sortConfig.key !== key) return null;
+  const getSortIndicator = (key: string) => {
+    if (!sortConfig || sortConfig.key !== key) return null;
+    const iconClass =
+      sortConfig.direction === 'asc' ? 'bi bi-caret-up-fill' : 'bi bi-caret-down-fill';
+    return <i className={iconClass} style={{ marginLeft: 6 }}></i>;
+  };
 
-  const iconClass =
-    sortConfig.direction === 'asc' ? ' bi bi-caret-up-fill' : ' bi bi-caret-down-fill';
-
-  return <i className={iconClass}></i>;
-};
+  const renderCellContent = (key: string, value: any, fila: any) => {
+    if (key === "imagen" && value) {
+      return (
+        <img
+          src={value}
+          alt={fila.nombre || "imagen"}
+          style={{
+            width: "60px",
+            height: "60px",
+            objectFit: "cover",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+          }}
+        />
+      );
+    }
+    if (typeof value === "boolean") {
+      return value ? "Sí" : "No";
+    }
+    if (value === null || value === undefined) {
+      return "-";
+    }
+    return value;
+  };
 
   return (
     <div className="tabla-contenedor">
@@ -84,27 +107,27 @@ const getSortIndicator = (key: string) => {
                 {getSortIndicator(key)}
               </th>
             ))}
-            <th>Opciones</th>
+            {renderOpciones && <th>Opciones</th>}
           </tr>
         </thead>
+
         <tbody>
-          {sortedDatos.map((item, idx) => (
-            <tr key={idx}>
-              {columnas.map(({ key }) => (
-                <td key={key}>
-                  {renderCell ? renderCell(key, item[key], item) : item[key]}
-                </td>
-              ))}
-              <td>
-                {renderOpciones ? renderOpciones(item) : (
-                  <>
-                    <span className="icono-opcion" title="Ver" />
-                    <span className="icono-opcion" title="Eliminar" />
-                  </>
-                )}
+          {sortedDatos.length > 0 ? (
+            sortedDatos.map((item, idx) => (
+              <tr key={idx}>
+                {columnas.map(({ key }) => (
+                  <td key={key}>{renderCellContent(key, item[key], item)}</td>
+                ))}
+                {renderOpciones && <td>{renderOpciones(item)}</td>}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={columnas.length + 1} style={{ textAlign: "center", padding: "20px" }}>
+                No se encontraron resultados
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

@@ -34,7 +34,7 @@ const datosProductos = Array.from({ length: 23 }, (_, index) => ({
 const ProductosListado = () => {
   const [productos, setProductos] = useState(datosProductos);
   const [paginaActual, setPaginaActual] = useState(1);
-  const filasPorPagina = 7;
+  const filasPorPagina = 6;
 
   const buscarProductos = (filtros: any) => {
     console.log("Aplicando filtros (simulado):", filtros);
@@ -65,7 +65,7 @@ const ProductosListado = () => {
         onClick={() => console.log("Editar Producto", fila)}
         style={{ cursor: "pointer", background: "none", border: "none" }}
       >
-        <i className="bi bi-pencil-square" style={{ fontSize: "20px", color: '#000000ff' }}></i>
+        <i className="bi bi-pencil-square" style={{ fontSize: "18px", color: '#000000ff' }}></i>
       </button>
 
       {/* Botón Eliminar Producto */}
@@ -74,7 +74,7 @@ const ProductosListado = () => {
         onClick={() => console.log("Eliminar Producto:", fila)}
         style={{ cursor: "pointer", background: "none", border: "none" }}
       >
-        <i className="bi bi-trash" style={{ fontSize: "20px", color: '#000000ff' }}></i>
+        <i className="bi bi-trash" style={{ fontSize: "18px", color: '#000000ff' }}></i>
       </button>
     </div>
   );
