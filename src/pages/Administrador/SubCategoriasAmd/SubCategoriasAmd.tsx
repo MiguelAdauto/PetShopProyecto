@@ -12,7 +12,6 @@ interface Categoria {
 }
 
 const columnasCategorias = [
-<<<<<<< HEAD
   { key: 'id', label: 'ID', sortable: true },
   { key: 'nombre', label: 'Nombre', sortable: true },
   { key: 'descripcion', label: 'Descripcion', sortable: true }
@@ -34,55 +33,6 @@ const CategoriasListado = () => {
   useEffect(() => {
     setTimeout(() => setCategorias(datosCategoriasEstaticos), 2000);
   }, []);
-=======
-    { key: 'id', label: 'ID', sortable: true },
-    { key: 'nombre', label: 'Nombre', sortable: true },
-    { key: 'descripcion', label: 'Descripcion', sortable: true }
-];
-
-const datosCategoriasEstaticos = [
-    {
-        id: '1',
-        nombre: 'Juguetes',
-        descripcion: 'Ubicado en la parte derecha de la pared'
-    },
-    {
-        id: '2',
-        nombre: 'Hogar',
-        descripcion: 'Ubicados en la parte delantera del local'
-    },
-    {
-        id: '3',
-        nombre: 'Higiene',
-        descripcion: 'Ubicado en el segundo nivel del estante delantero'
-    },
-];
-
-
-const CategoriasListado = () => {
-    const [categorias, setCategorias] = useState(datosCategoriasEstaticos);
-    const navigate = useNavigate();
-
-const renderAccionesCatogira = (fila: any) => (
-  <div style={{ display: 'flex', gap: '12px' }}>
-    <button
-      title="Editar Categoría"
-      onClick={() => navigate(`/admin/editar-subcategoria/${fila.id}`, { state: fila })}
-      style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
-      <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#000000ff' }}></i>
-    </button>
-    <button
-      title="Borrar Categoría"
-      onClick={() => console.log('Borrar categoría:', fila)}
-      style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
-      <i className="bi bi-trash" style={{ fontSize: '18px', color: '#000000ff' }}></i>
-    </button>
-  </div>
-);
-    useEffect(() => {
-        // Aquí iría la lógica para obtener los datos del backend
-        // Por ahora, estamos simulando con los datos estáticos.
->>>>>>> a1afedf21c6b3b13de449cf0d4f4f0b487640225
 
   // ✅ Filtrar desde buscador
   const handleBuscar = (filtros: { nombre: string }) => {

@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 interface LinkItem {
   to: string;
   label: string;
+  icon: string;  // Ahora es un string con el nombre del icono
 }
 
 interface SidebarBaseProps {
@@ -25,8 +26,10 @@ const SidebarBase = ({ logo, bgColor, buttonColor, links, onLogout }: SidebarBas
               key={index}
               to={link.to}
               className="nav-btn"
-              style={{ backgroundColor: buttonColor }}>
-              {link.label}
+              style={{ backgroundColor: buttonColor }}
+            >
+              <i className={`bi bi-${link.icon}`} style={{ fontSize: '1.5rem' }}></i>
+              <span>{link.label}</span> {/* Aseguramos que el texto esté debajo */}
             </NavLink>
           ))}
         </div>

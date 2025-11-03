@@ -1,3 +1,4 @@
+/* Estilos del Sidebar */
 .sidebar {
   width: 200px;
   height: 100vh;
@@ -7,14 +8,19 @@
   justify-content: space-between;
   padding-top: 20px;
   box-sizing: border-box;
+  overflow-y: auto; /* Agrega el scroll vertical */
+  overflow-x: hidden; /* Evitar que haya scroll horizontal */
+  direction: rtl; /* Mover el scroll a la izquierda */
 }
 
+/* Logo */
 .logo {
   width: 150px;
   height: auto;
   margin-bottom: 30px;
 }
 
+/* Contenedor de enlaces */
 .nav-links {
   display: flex;
   flex-direction: column;
@@ -22,31 +28,43 @@
   width: 100%;
 }
 
+/* Estilos de los botones de navegación */
 .nav-btn {
-  width: 140px;
-  height: 100px;
+  width: 160px; /* Más grande para ser rectangular */
+  height: 100px; /* Ajusta la altura */
   margin: 10px 0;
   border-radius: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; /* Apilar icono y texto verticalmente */
+  align-items: center; /* Centrar icono y texto */
+  justify-content: center; /* Centrar el contenido verticalmente */
   font-weight: bold;
   color: white;
-  text-align: center;
+  text-align: center; /* Alinea el texto al centro */
   text-decoration: none;
   transition: transform 0.2s ease;
+  padding: 0; /* Quitar padding extra */
 }
 
+/* Estilo del icono dentro del botón */
+.nav-btn i {
+  margin-bottom: 5px; /* Espacio entre el icono y el texto */
+  font-size: 1.5rem; /* Ajusta el tamaño del icono */
+}
+
+/* Efecto hover */
 .nav-btn:hover {
   transform: scale(1.05);
   cursor: pointer;
   color: white;
 }
 
+/* Estilos cuando el botón está activo */
 .nav-btn.active {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
+/* Contenedor del botón de logout */
 .logout-container {
   width: 100%;
   display: flex;
@@ -54,6 +72,7 @@
   padding-bottom: 20px;
 }
 
+/* Estilos del botón de logout */
 .logout-btn {
   background-color: #ff0404;
   color: white;
@@ -70,3 +89,15 @@
   transform: scale(1.05);
 }
 
+/* Responsividad: cuando la pantalla es más pequeña, el sidebar se ajusta */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px; /* Reducir un poco el tamaño */
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 60px; /* Reducir aún más el tamaño en móviles */
+  }
+}

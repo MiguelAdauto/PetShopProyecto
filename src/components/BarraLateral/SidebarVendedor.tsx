@@ -12,13 +12,14 @@ const SidebarVendedor = () => {
     navigate('/login');
   };
 
+  // Ahora cada link tiene un 'icon' además de 'to' y 'label'
   const links = [
-    { to: '/vendedor/ventas', label: 'Ventas' },
-    { to: '/vendedor/listado', label: 'Listado de ventas' },
-    { to: '/vendedor/productos', label: 'Productos' },
-    { to: '/vendedor/categorias', label: 'SubCategorías' },
-    { to: '/vendedor/reportes', label: 'Reporte Mensual' },
-    { to: '/vendedor/perfil', label: 'Perfil' },
+    { to: '/vendedor/ventas', label: 'Ventas', icon: 'bar-chart' },
+    { to: '/vendedor/listado', label: 'Listado de ventas', icon: 'list-ul' },
+    { to: '/vendedor/productos', label: 'Productos', icon: 'box' },
+    { to: '/vendedor/categorias', label: 'SubCategorías', icon: 'tags' },
+    { to: '/vendedor/reportes', label: 'Reporte Mensual', icon: 'calendar' },
+    { to: '/vendedor/perfil', label: 'Perfil', icon: 'person' },
   ];
 
   return (

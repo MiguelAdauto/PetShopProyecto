@@ -3,7 +3,7 @@ import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import cuerdaImg from '../../../assets/cuerda.jpg';
 import BusquedaProductos from "./BusquedaProductos";
 import Paginacion from "../../../components/Paginacion/Paginacion";
-import ModalProducto from "../../../components/Modal/ModalProducto"; // Importamos el ModalProducto
+import ModalProducto from "../../../components/Modal/ModalProducto";
 import '../../../Styles/PaginasListado.css';
 
 const columnasProductosAdmin = [
