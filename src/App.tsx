@@ -21,17 +21,20 @@ import DetalleVenta from './pages/Vendedor/VentasListado/DetalleVenta';
 import ProductosListado from './pages/Vendedor/Productos/ProductosListado';
 import CategoriasListado from './pages/Vendedor/SubCategorias/SubCategoriasListado';
 import CierresMensuales from './pages/Vendedor/CierresMensuales/CierresMensuales';
-import Perfil from './pages/Vendedor/Perfil/PerfilVendedor.tsx';
+import PerfilVendedor  from './pages/Vendedor/Perfil/PerfilVendedor.tsx';
 
 // Páginas - Admin
 import AdminDashboard from './pages/Administrador/Dashboard/AdminDashboard';
 import ProductosAdmin from './pages/Administrador/ProductosAmd/ProductosListado';
-import AgregarProducto from "./pages/Administrador/ProductosAmd/AgregarProducto";
+import FormProductos from "./pages/Administrador/ProductosAmd/FormProductos";
 import SubCategoriasAmd from "./pages/Administrador/SubCategoriasAmd/SubCategoriasAmd";
-import AgregarSubCategoria from "./pages/Administrador/SubCategoriasAmd/AgregarSubCategoria";
+import FormSubCategoria from "./pages/Administrador/SubCategoriasAmd/FormSubCategoria";
 import AdmConfiguracion from "./pages/Administrador/Configuracion/Configuracion";
 import Categorias from "./pages/Administrador/Configuracion/Categorias";
-import AdministradorCierre from './pages/Administrador/ReporteMensual/CierresCajaAdmin';
+import UsuariosListado from './pages/Administrador/Configuracion/UsuariosListado';
+import TablaCierres from "./pages/Administrador/ReporteMensual/TablaCierres";
+import AgregarUsuario from "./pages/Administrador/Configuracion/AgregarUsuario.tsx";
+
 import PerfilAdmin from './pages/Administrador/Perfil/PerfilAdmin.tsx';
 
 function App() {
@@ -59,7 +62,7 @@ function App() {
           <Route path="productos" element={<ProductosListado />} />
           <Route path="categorias" element={<CategoriasListado />} />
           <Route path="reportes" element={<CierresMensuales />} />
-          <Route path="perfil" element={<Perfil />} />
+          <Route path="perfil" element={<PerfilVendedor  />} />
         </Route>
 
         {/* Rutas protegidas - Admin */}
@@ -73,15 +76,20 @@ function App() {
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="productos" element={<ProductosAdmin />} />
-          <Route path="agregar-producto" element={<AgregarProducto />} />
+          <Route path="agregar-producto" element={<FormProductos modo="agregar" />} />
+        <Route path="editar-producto" element={<FormProductos modo="editar" />} />
           <Route path="subcategorias" element={<SubCategoriasAmd />} />
-          <Route path="agregar-subcategoria" element={<AgregarSubCategoria />} />
+          <Route path="agregar-subcategoria" element={<FormSubCategoria modo="agregar" />} />
+          <Route path="editar-subcategoria/:id" element={<FormSubCategoria modo="editar" />} />
           <Route path="configuracion" element={<AdmConfiguracion />} />
           <Route path="categorias" element={<Categorias />} />
-          <Route path="reportes" element={<AdministradorCierre />} />
+          <Route path="usuarios" element={<UsuariosListado />} />
+          <Route path="reportes" element={<TablaCierres />} />
+          <Route path="agregar-usuario" element={<AgregarUsuario />} />
+
           <Route path="perfil" element={<PerfilAdmin />} />
         </Route>
-
+        
         {/* Ruta por defecto (404 o sin coincidencias) */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

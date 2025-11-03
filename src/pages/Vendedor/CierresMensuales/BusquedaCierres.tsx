@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./CierresMensuales.css";
 
 interface BusquedaProps {
   onCerrarCaja: (mes: string, anio: string) => void;

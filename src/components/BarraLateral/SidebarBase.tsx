@@ -25,8 +25,7 @@ const SidebarBase = ({ logo, bgColor, buttonColor, links, onLogout }: SidebarBas
               key={index}
               to={link.to}
               className="nav-btn"
-              style={{ backgroundColor: buttonColor }}
-            >
+              style={{ backgroundColor: buttonColor }}>
               {link.label}
             </NavLink>
           ))}
@@ -34,9 +33,7 @@ const SidebarBase = ({ logo, bgColor, buttonColor, links, onLogout }: SidebarBas
       </div>
       {onLogout && (
         <div className="logout-container">
-          <button className="logout-btn" onClick={onLogout}>
-            Cerrar Sesión
-          </button>
+          <button className="logout-btn" onClick={onLogout}>Cerrar Sesión</button>
         </div>
       )}
     </div>

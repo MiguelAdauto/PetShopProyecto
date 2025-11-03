@@ -36,7 +36,7 @@ const ProductosListado = () => {
   const [productos, setProductos] = useState(datosProductos);
   const [paginaActual, setPaginaActual] = useState(1);
   const [productoSeleccionado, setProductoSeleccionado] = useState<any>(null);
-  const filasPorPagina = 7;
+  const filasPorPagina = 6;
 
   const buscarProductos = (filtros: any) => {
     const filtrados = datosProductos.filter(p => {

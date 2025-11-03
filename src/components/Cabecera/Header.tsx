@@ -13,7 +13,6 @@ const Header = ({ title, tipo = 'vendedor' }: HeaderProps) => {
   return (
     <header className={`header ${tipo}-header`}>
       <h1 className="header-title">{title}</h1>
-
       <div className="user-info">
         <div className="user-text">
           <span className="user-name">{nombreUsuario}</span>

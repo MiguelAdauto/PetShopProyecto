@@ -18,7 +18,9 @@ const Configuracion: React.FC = () => {
         </div>
 
         {/* Tarjeta Usuarios */}
-        <div className="config-card">
+        <div className="config-card"
+        onClick={() => navigate("/admin/usuarios")}
+        >
           <i className="bi bi-people config-icon"></i>
           <h2>Usuarios</h2>
         </div>

@@ -77,8 +77,7 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
             type="text"
             value={cliente}
             onChange={(e) => setCliente(e.target.value)}
-            placeholder="(opcional)"
-          />
+            placeholder="(opcional)"/>
 
           <label>Total pagado por el cliente:</label>
           <input

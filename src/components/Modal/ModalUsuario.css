@@ -1,4 +1,4 @@
-/* Fondo oscuro para el overlay */
+/* Fondo oscuro del modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -13,26 +13,26 @@
   padding: 20px;
 }
 
-/* Contenedor del modal */
+/* Contenedor principal del modal */
 .modal-content {
   background-color: #fff;
   border-radius: 15px;
-  max-width: 900px;
+  max-width: 700px;
   width: 100%;
   padding: 30px;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
   position: relative;
   display: flex;
-  flex-direction: column;  /* Cambiar a columna */
-  align-items: center;     /* Centrar todo */
-  gap: 30px;               /* Espaciado */
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Animación de entrada */
+/* Animación */
 @keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Botón de cerrar */
@@ -40,10 +40,10 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  background: #3DB5FF;
+  background: #ff0000;
   border: none;
   color: white;
-  font-size: 20px;
+  font-size: 10px;
   cursor: pointer;
   padding: 10px 15px;
   border-radius: 50%;
@@ -51,12 +51,12 @@
 }
 
 .close-button:hover {
-  background-color: #2aacfd;
+  background-color: #ff0000;
 }
 
 /* Título */
 .modal-content h2 {
-  font-size: 32px;
+  font-size: 30px;
   color: #333;
   font-weight: 600;
   text-align: center;
@@ -66,27 +66,27 @@
   width: 100%;
 }
 
-/* Contenedor de los detalles del producto */
+/* Cuerpo del modal */
 .modal-body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 40px;
   flex-wrap: wrap;
 }
 
-/* Imagen del producto */
+/* Imagen del usuario */
 .modal-image {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 50%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 3px solid #ddd;
 }
 
-/* Contenedor de los datos */
+/* Contenedor de la información */
 .modal-info {
   display: flex;
   flex-direction: column;
@@ -94,13 +94,17 @@
   font-size: 18px;
   color: #555;
   width: 100%;
-  max-width: 500px;  /* Limitar el tamaño de los detalles */
+  max-width: 400px;
 }
 
 .modal-info p {
   margin: 0;
   display: flex;
   justify-content: space-between;
+  background-color: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-weight: 500;
 }
 
@@ -109,20 +113,11 @@
   font-weight: 600;
 }
 
-/* Estilo de los detalles */
-.modal-info p {
-  background-color: #f9f9f9;
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
 /* Diseño responsivo */
 @media (max-width: 768px) {
   .modal-content {
-    flex-direction: column;
-    gap: 20px;
     padding: 20px;
+    gap: 15px;
   }
 
   .modal-body {
@@ -133,6 +128,8 @@
 
   .modal-image {
     margin-bottom: 20px;
+    width: 150px;
+    height: 150px;
   }
 
   .modal-info {

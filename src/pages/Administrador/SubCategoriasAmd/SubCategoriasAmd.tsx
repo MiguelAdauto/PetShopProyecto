@@ -1,97 +1,90 @@
-////Aparttado de categorias
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaCategorias from "./BusquedaSubCategorias";
-import './BusquedaSubCategorias';
+import Paginacion from "../../../components/Paginacion/Paginacion";
 import '../../../Styles/PaginasListado.css';
 
+interface Categoria {
+  id: number;
+  nombre: string;
+  descripcion: string;
+}
+
 const columnasCategorias = [
-    { key: 'id', label: 'ID', sortable: true },
-    { key: 'nombre', label: 'Nombre', sortable: true },
-    { key: 'descripcion', label: 'Descripcion', sortable: true },
-    // Elimina esta línea para evitar la columna vacía
-    // { key: 'productos', label: 'Ver Productos', sortable: true },
+  { key: 'id', label: 'ID', sortable: true },
+  { key: 'nombre', label: 'Nombre', sortable: true },
+  { key: 'descripcion', label: 'Descripcion', sortable: true }
 ];
 
-
-const datosCategoriasEstaticos = [
-    {
-        id: '1',
-        nombre: 'Juguetes',
-        descripcion: 'Ubicado en la parte derecha de la pared'
-    },
-    {
-        id: '2',
-        nombre: 'Hogar',
-        descripcion: 'Ubicados en la parte delantera del local'
-    },
-    {
-        id: '3',
-        nombre: 'Higiene',
-        descripcion: 'Ubicado en el segundo nivel del estante delantero'
-    },
+const datosCategoriasEstaticos: Categoria[] = [
+  { id: 1, nombre: 'Juguetes', descripcion: 'Ubicado en la parte derecha de la pared' },
+  { id: 2, nombre: 'Hogar', descripcion: 'Ubicados en la parte delantera del local' },
+  { id: 3, nombre: 'Higiene', descripcion: 'Ubicado en el segundo nivel del estante delantero' },
 ];
-
-const renderAccionesCatogira = (fila: any) => (
-    <div style={{ display: 'flex', gap: '12px'}}>
-        {/* Botón Ver Productos */}
-        <button
-          title="Ver Productos"
-          onClick={() => console.log('Ver productos de categoría:', fila)}
-          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
-        >
-          <i className="bi bi-box-seam" style={{ fontSize: '18px', color: '#4143BE' }}></i>
-        </button>
-
-        {/* Botón Editar */}
-        <button
-          title="Editar Categoría"
-          onClick={() => console.log('Editar categoría:', fila)}
-          style={{ cursor: 'pointer', background: 'none'}}
-        >
-          <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#2c2e86' }}></i>
-        </button>
-
-        {/* Botón Borrar */}
-        <button
-          title="Borrar Categoría"
-          onClick={() => console.log('Borrar categoría:', fila)}
-          style={{ cursor: 'pointer', background: 'none', border: 'none' }}
-        >
-          <i className="bi bi-trash-fill" style={{ fontSize: '18px', color: '#d9534f' }}></i>
-        </button>
-    </div>
-);
 
 const CategoriasListado = () => {
-    const [categorias, setCategorias] = useState(datosCategoriasEstaticos);
+  const [categorias, setCategorias] = useState<Categoria[]>(datosCategoriasEstaticos);
+  const [categoriasFiltradas, setCategoriasFiltradas] = useState<Categoria[]>(datosCategoriasEstaticos);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const filasPorPagina = 5;
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // Aquí iría la lógica para obtener los datos del backend
-        // Por ahora, estamos simulando con los datos estáticos.
+  useEffect(() => {
+    setTimeout(() => setCategorias(datosCategoriasEstaticos), 2000);
+  }, []);
 
-        // Ejemplo de una llamada API que puedes usar más adelante:
-        // fetch('https://api.example.com/categorias')
-        //   .then(response => response.json())
-        //   .then(data => setCategorias(data))
-        //   .catch(error => console.error('Error al cargar las categorías:', error));
-
-        // Este bloque simula que los datos llegan de una API después de 2 segundos
-        setTimeout(() => {
-            setCategorias(datosCategoriasEstaticos);  // Aquí se pueden actualizar con datos reales
-        }, 2000);
-    }, []);
-
-    return (
-        <div className="contenedor-pagina-listado">
-            <BusquedaCategorias onBuscar={(filtros) => console.log("Buscando con filtros:", filtros)} />
-            <TablaGenerica
-                columnas={columnasCategorias}
-                datos={categorias}
-                renderOpciones={renderAccionesCatogira}
-            />
-        </div>
+  // ✅ Filtrar desde buscador
+  const handleBuscar = (filtros: { nombre: string }) => {
+    const filtrados = categorias.filter(cat =>
+      filtros.nombre === "" || cat.nombre.toLowerCase().includes(filtros.nombre.toLowerCase())
     );
+    setCategoriasFiltradas(filtrados);
+    setPaginaActual(1);
+  };
+
+  // ✅ Paginación
+  const inicio = (paginaActual - 1) * filasPorPagina;
+  const fin = inicio + filasPorPagina;
+  const categoriasPaginadas = categoriasFiltradas.slice(inicio, fin);
+  const totalPaginas = Math.ceil(categoriasFiltradas.length / filasPorPagina);
+
+  // ✅ Opciones de fila
+  const renderOpcionesCategoria = (fila: Categoria) => (
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <button
+        title="Editar Categoría"
+        onClick={() => navigate(`/admin/editar-subcategoria/${fila.id}`, { state: fila })}
+        style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
+        <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#000000ff' }}></i>
+      </button>
+      <button
+        title="Borrar Categoría"
+        onClick={() => console.log('Borrar categoría:', fila)}
+        style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
+        <i className="bi bi-trash" style={{ fontSize: '18px', color: '#000000ff' }}></i>
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="contenedor-pagina-listado">
+      <BusquedaCategorias onBuscar={handleBuscar} />
+
+      <TablaGenerica
+        columnas={columnasCategorias}
+        datos={categoriasPaginadas}
+        renderOpciones={renderOpcionesCategoria}
+      />
+
+      <Paginacion
+        paginaActual={paginaActual}
+        totalPaginas={totalPaginas}
+        onPaginaChange={setPaginaActual}
+        tipo="admin"
+      />
+    </div>
+  );
 };
 
 export default CategoriasListado;

@@ -1,0 +1,64 @@
+/* CONTENEDOR PRINCIPAL DEL DASHBOARD */
+.admin-dashboard-container {
+  display: flex;
+  height: 100vh; /* ocupa toda la altura visible */
+  background-color: #f0f2f5;
+  overflow: hidden; /* evita scroll global */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*ÁREA CON SCROLL INTERNO */
+.admin-dashboard-scroll {
+  flex: 1;
+  overflow-y: auto; /* solo este hace scroll */
+  padding: 1rem 1.5rem 4rem; /* espacio inferior para scroll completo */
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/*TARJETAS DE RESUMEN (fila superior) */
+.admin-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* FILA DE GRÁFICOS */
+.admin-charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-chart-item {
+  flex: 2;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+}
+
+.admin-chart-item.small {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* TABLA DE HISTORIAL DE VENTAS */
+.admin-table-container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 4rem; /* deja espacio al final para el scroll */
+}

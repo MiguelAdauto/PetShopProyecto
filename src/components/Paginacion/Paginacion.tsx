@@ -1,7 +1,4 @@
 import './Paginacion.css';
-
-
-
 interface PaginacionProps {
   paginaActual: number;
   totalPaginas: number;

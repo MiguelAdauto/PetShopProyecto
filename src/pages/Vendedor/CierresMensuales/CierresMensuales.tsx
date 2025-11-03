@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import BusquedaCierres from "./BusquedaCierres";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import ModalGenerarCierre from "../../../components/Modal/ModalGenerarCierre";
-import "./CierresMensuales.css";
 
 interface Cierre {
   id: number;

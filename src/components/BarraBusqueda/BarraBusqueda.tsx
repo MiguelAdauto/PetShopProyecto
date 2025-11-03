@@ -34,13 +34,10 @@ const BarraBusqueda = ({ filtros, onBuscar }: Props) => {
             <select
               name={filtro.name}
               value={valores[filtro.name] || ""}
-              onChange={handleChange}
-            >
+              onChange={handleChange}>
               <option value="">Todos</option>
               {filtro.options?.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
+              <option key={opt} value={opt}>{opt}</option>
               ))}
             </select>
           ) : (
@@ -49,15 +46,11 @@ const BarraBusqueda = ({ filtros, onBuscar }: Props) => {
               name={filtro.name}
               placeholder={filtro.placeholder}
               value={valores[filtro.name] || ""}
-              onChange={handleChange}
-            />
+              onChange={handleChange}/>
           )}
         </label>
       ))}
-  
-      <button className="boton-buscar-vendedor" onClick={handleBuscar}>
-        Buscar
-      </button>
+      <button className="boton-buscar-vendedor" onClick={handleBuscar}>Buscar</button>
     </div>
   );
 };
