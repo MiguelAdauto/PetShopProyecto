@@ -29,14 +29,14 @@ const SidebarBase = ({ logo, bgColor, buttonColor, links, onLogout }: SidebarBas
               style={{ backgroundColor: buttonColor }}
             >
               <i className={`bi bi-${link.icon}`} style={{ fontSize: '1.5rem' }}></i>
-              <span>{link.label}</span> {/* Aseguramos que el texto esté debajo */}
+              <span>{link.label}</span>
             </NavLink>
           ))}
         </div>
       </div>
       {onLogout && (
         <div className="logout-container">
-          <button className="logout-btn" onClick={onLogout}>Cerrar Sesión</button>
+          <button className="logout-btn" onClick={onLogout}>Cerrar Sesión <i className="bi bi-box-arrow-left" style={{ fontSize: "16px", color: "#ffffffff" }}></i></button>
         </div>
       )}
     </div>

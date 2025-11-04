@@ -75,6 +75,7 @@ const CierresListado = () => {
   //Opciones de cada fila
   const renderOpciones = (fila: Cierre) => (
     <div style={{ display: "flex", gap: "12px" }}>
+      <button onClick={() => navigate(`/admin/detalle-cierre/${fila.id}`)}>Ver Detalle</button>
       <button
         title="Descargar PDF"
         onClick={() => console.log("Descargar PDF:", fila)}

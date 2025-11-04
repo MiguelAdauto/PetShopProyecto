@@ -12,14 +12,14 @@ const SidebarAdmin = () => {
     navigate('/login');
   };
 
-  const links = [
-    { to: '/admin/dashboard', label: 'Dashboard' },
-    { to: '/admin/productos', label: 'Productos' },
-    { to: '/admin/subcategorias', label: 'SubCategorias' },
-    { to: '/admin/configuracion', label: 'Configuracion' },
-    { to: '/admin/reportes', label: 'Reporte Mensual' },
-    { to: '/admin/perfil', label: 'Perfil' },
-  ];
+ const links = [
+  { to: '/admin/dashboard', label: 'Dashboard', icon: 'bar-chart-fill' },
+  { to: '/admin/productos', label: 'Productos', icon: 'box-seam' },
+  { to: '/admin/subcategorias', label: 'SubCategorias', icon: 'tags-fill' },
+  { to: '/admin/configuracion', label: 'Configuracion', icon: 'gear-fill' },
+  { to: '/admin/reportes', label: 'Reporte Mensual', icon: 'file-earmark-bar-graph' },
+  { to: '/admin/perfil', label: 'Perfil', icon: 'person-circle' },
+];
 
   return (
     <SidebarBase

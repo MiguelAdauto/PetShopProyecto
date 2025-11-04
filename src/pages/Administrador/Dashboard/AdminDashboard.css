@@ -62,3 +62,71 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 4rem; /* deja espacio al final para el scroll */
 }
+
+.date-picker-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.btn-limpiar {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.btn-limpiar:hover {
+  background-color: #c0392b;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.btn-cancelar, .btn-confirmar {
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  flex: 1;
+  margin: 0 0.4rem;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: #bdc3c7;
+}
+
+.btn-confirmar {
+  background: #27ae60;
+  color: white;
+}

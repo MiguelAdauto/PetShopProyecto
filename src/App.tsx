@@ -31,11 +31,14 @@ import SubCategoriasAmd from "./pages/Administrador/SubCategoriasAmd/SubCategori
 import FormSubCategoria from "./pages/Administrador/SubCategoriasAmd/FormSubCategoria";
 import AdmConfiguracion from "./pages/Administrador/Configuracion/Configuracion";
 import Categorias from "./pages/Administrador/Configuracion/Categorias";
-import UsuariosListado from './pages/Administrador/Configuracion/UsuariosListado';
+import UsuariosListado from './pages/Administrador/Configuracion/Usuario/UsuariosListado';
 import TablaCierres from "./pages/Administrador/ReporteMensual/TablaCierres";
-import AgregarUsuario from "./pages/Administrador/Configuracion/AgregarUsuario.tsx";
+import FormUsuario from "./pages/Administrador/Configuracion/Usuario/FormUsuario.tsx";
+import DetalleCierreAdmin from "./pages/Administrador/ReporteMensual/DetalleCierreAdmin.tsx";
+
 
 import PerfilAdmin from './pages/Administrador/Perfil/PerfilAdmin.tsx';
+
 
 function App() {
   return (
@@ -77,16 +80,17 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="productos" element={<ProductosAdmin />} />
           <Route path="agregar-producto" element={<FormProductos modo="agregar" />} />
-        <Route path="editar-producto" element={<FormProductos modo="editar" />} />
+          <Route path="editar-producto" element={<FormProductos modo="editar" />} />
           <Route path="subcategorias" element={<SubCategoriasAmd />} />
           <Route path="agregar-subcategoria" element={<FormSubCategoria modo="agregar" />} />
           <Route path="editar-subcategoria/:id" element={<FormSubCategoria modo="editar" />} />
           <Route path="configuracion" element={<AdmConfiguracion />} />
           <Route path="categorias" element={<Categorias />} />
           <Route path="usuarios" element={<UsuariosListado />} />
+          <Route path="agregar-usuario" element={<FormUsuario modo="agregar" />} />
+          <Route path="editar-usuario/:id" element={<FormUsuario modo="editar" />} />
           <Route path="reportes" element={<TablaCierres />} />
-          <Route path="agregar-usuario" element={<AgregarUsuario />} />
-
+          <Route path="detalle-cierre/:id" element={<DetalleCierreAdmin />} />
           <Route path="perfil" element={<PerfilAdmin />} />
         </Route>
         

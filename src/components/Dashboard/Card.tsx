@@ -1,27 +1,25 @@
+// src/components/Dashboard/Card.tsx
 import React from "react";
+import "./Card.css";
 
 type CardProps = {
   title: string;
   value: string | number;
+  icon?: string;
+  rightContent?: React.ReactNode; // calendario u otro elemento
 };
 
-const Card: React.FC<CardProps> = ({ title, value }) => {
+const Card: React.FC<CardProps> = ({ title, value, icon, rightContent }) => {
   return (
-    <div
-      style={{
-        backgroundColor: "#fff",
-        padding: "20px",
-        borderRadius: 8,
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-        flex: 1,
-        margin: "10px",
-        minWidth: 150,
-        textAlign: "center",
-        transition: "transform 0.2s",
-      }}
-    >
-      <h3 style={{ marginBottom: 10, color: "#555", fontSize: "1rem" }}>{title}</h3>
-      <p style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#2c3e50" }}>{value}</p>
+    <div className="dashboard-card">
+      <div className="dashboard-card-header">
+        <div className="dashboard-card-title">
+          {icon && <i className={`bi ${icon}`}></i>}
+          <h3>{title}</h3>
+        </div>
+        <div className="dashboard-card-actions">{rightContent}</div>
+      </div>
+      <div className="dashboard-card-value">{value}</div>
     </div>
   );
 };

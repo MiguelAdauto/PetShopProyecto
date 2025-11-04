@@ -1,7 +1,25 @@
-import React, { useState } from "react";
-import "../../../styles/AgregarGlobal.css";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "../../../../styles/AgregarGlobal.css";
 
-const AgregarUsuario: React.FC = () => {
+interface FormUsuarioProps {
+  modo?: "agregar" | "editar";
+}
+
+interface Usuario {
+  nombre: string;
+  apellido: string;
+  telefono: string;
+  email: string;
+  rol: string;
+  dni: string;
+  imagen?: File | null;
+}
+
+const FormUsuario: React.FC<FormUsuarioProps> = ({ modo = "agregar" }) => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
   // Estados controlados
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -10,23 +28,43 @@ const AgregarUsuario: React.FC = () => {
   const [rol, setRol] = useState("");
   const [dni, setDni] = useState("");
   const [imagen, setImagen] = useState<File | null>(null);
+  const [cargando, setCargando] = useState(false);
+
+  // Si estamos en modo editar, cargamos los datos del usuario
+  useEffect(() => {
+    if (modo === "editar" && id) {
+      setCargando(true);
+      // Simulación de fetch; reemplazar con tu API real
+      fetch(`/api/usuarios/${id}`)
+        .then(res => res.json())
+        .then((data: Usuario) => {
+          setNombre(data.nombre);
+          setApellido(data.apellido);
+          setTelefono(data.telefono);
+          setEmail(data.email);
+          setRol(data.rol);
+          setDni(data.dni);
+          setImagen(data.imagen || null);
+        })
+        .finally(() => setCargando(false));
+    }
+  }, [modo, id]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const nuevoUsuario = {
-      nombre,
-      apellido,
-      telefono,
-      email,
-      rol,
-      dni,
-      imagen,
-    };
+    const usuario: Usuario = { nombre, apellido, telefono, email, rol, dni, imagen };
 
-    console.log("🧍‍♂️ Usuario registrado:", nuevoUsuario);
+    if (modo === "agregar") {
+      console.log("🧍‍♂️ Agregando usuario:", usuario);
+      // POST al backend
+    } else {
+      console.log("✏️ Editando usuario:", usuario);
+      // PUT al backend usando id
+    }
 
-    // Aquí podrías enviar el usuario al backend
+    // Redirigir al listado después de guardar
+    navigate("/admin/usuarios");
   };
 
   const handleReset = () => {
@@ -39,26 +77,26 @@ const AgregarUsuario: React.FC = () => {
     setImagen(null);
   };
 
+  if (cargando) return <p>Cargando datos del usuario...</p>;
+
   return (
     <div className="StyleAgregarAmd">
       <button
         type="button"
         className="volver-btn"
-        onClick={() => window.history.back()}
+        onClick={() => navigate(-1)}
       >
         <i className="bi bi-chevron-compact-left" style={{ marginRight: "8px" }}></i>
         Volver
       </button>
 
-      <h2>Registrar nuevo Usuario</h2>
+      <h2>{modo === "agregar" ? "Registrar nuevo Usuario" : "Editar Usuario"}</h2>
 
       <form onSubmit={handleSubmit} onReset={handleReset}>
         {/* Nombre y Apellido */}
         <div className="form-row">
           <div className="input-group">
-            <label>
-              Nombre <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Nombre</label>
             <input
               type="text"
               placeholder="nombre del usuario"
@@ -69,9 +107,7 @@ const AgregarUsuario: React.FC = () => {
           </div>
 
           <div className="input-group">
-            <label>
-              Apellido <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Apellido</label>
             <input
               type="text"
               placeholder="apellido del usuario"
@@ -85,9 +121,7 @@ const AgregarUsuario: React.FC = () => {
         {/* Teléfono y Email */}
         <div className="form-row">
           <div className="input-group">
-            <label>
-              Teléfono <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Teléfono</label>
             <input
               type="tel"
               placeholder="ej: 987654321"
@@ -98,9 +132,7 @@ const AgregarUsuario: React.FC = () => {
           </div>
 
           <div className="input-group">
-            <label>
-              Email <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Email</label>
             <input
               type="email"
               placeholder="correo electrónico"
@@ -114,17 +146,9 @@ const AgregarUsuario: React.FC = () => {
         {/* Rol y DNI */}
         <div className="form-row">
           <div className="input-group">
-            <label>
-              Rol <i className="bi bi-box-arrow-down-left"></i>
-            </label>
-            <select
-              value={rol}
-              onChange={(e) => setRol(e.target.value)}
-              required
-            >
-              <option value="" disabled hidden>
-                seleccione un rol
-              </option>
+            <label>Rol</label>
+            <select value={rol} onChange={(e) => setRol(e.target.value)} required>
+              <option value="" disabled hidden>Seleccione un rol</option>
               <option value="Administrador">Administrador</option>
               <option value="Vendedor">Vendedor</option>
               <option value="Cliente">Cliente</option>
@@ -132,9 +156,7 @@ const AgregarUsuario: React.FC = () => {
           </div>
 
           <div className="input-group">
-            <label>
-              DNI <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>DNI</label>
             <input
               type="text"
               placeholder="número de documento"
@@ -146,9 +168,7 @@ const AgregarUsuario: React.FC = () => {
         </div>
 
         {/* Imagen */}
-        <label>
-          Agregar imagen <i className="bi bi-box-arrow-down-left"></i>
-        </label>
+        <label>Agregar imagen</label>
         <input
           type="file"
           accept="image/*"
@@ -175,4 +195,4 @@ const AgregarUsuario: React.FC = () => {
   );
 };
 
-export default AgregarUsuario;
+export default FormUsuario;

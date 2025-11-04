@@ -1,0 +1,48 @@
+.custom-date-picker {
+  position: relative;
+  display: inline-block;
+}
+
+.date-picker-button {
+  background: #f3f3f3;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.date-picker-button:hover {
+  background-color: #e8e8e8;
+}
+
+.calendar-popup {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  padding: 0.8rem;
+  z-index: 9999;
+}
+
+/* Personalización del calendario */
+.rdp {
+  --rdp-accent-color: #3f51b5;
+  --rdp-background-color: #e8ebff;
+  --rdp-accent-color-dark: #283593;
+}
+
+.rdp-day_selected {
+  background-color: var(--rdp-accent-color) !important;
+  color: white !important;
+}
+
+.rdp-day:hover {
+  background-color: var(--rdp-background-color);
+}

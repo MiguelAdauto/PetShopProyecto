@@ -74,8 +74,7 @@ const ProductosListado = () => {
     <div style={{ display: "flex", gap: "12px" }}>
       <button
         title="Editar Producto"
-        onClick={() =>
-          navigate("/admin/editar-producto", { state: fila })}
+        onClick={() => navigate("/admin/editar-producto", { state: fila })}
         style={{ cursor: "pointer", background: "none", border: "none" }} >
         <i className="bi bi-pencil-square"style={{ fontSize: "18px", color: "#000000ff" }}></i>
       </button>

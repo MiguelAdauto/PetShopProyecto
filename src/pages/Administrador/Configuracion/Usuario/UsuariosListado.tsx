@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
+import TablaGenerica from "../../../../components/TablaGenerica/TablaGenerica";
 import BusquedaUsuarios from "./BusquedaUsuarios";
-import Paginacion from "../../../components/Paginacion/Paginacion";
-import '../../../Styles/PaginasListado.css';
-import userImg from '../../../assets/cuerda.jpg';
-import ModalUsuario from "../../../components/Modal/ModalUsuario";
+import Paginacion from "../../../../components/Paginacion/Paginacion";
+import '../../../../Styles/PaginasListado.css';
+import userImg from '../../../../assets/cuerda.jpg';
+import ModalUsuario from "../../../../components/Modal/ModalUsuario";
 import { useNavigate } from 'react-router-dom';
 
 // Columnas de la tabla
@@ -61,26 +61,29 @@ const UsuariosListado = () => {
 
   // Opciones de cada fila
   const renderOpciones = (fila: any) => (
-    <div style={{ display: 'flex', gap: '12px' }}>
-      <button
-        title="Ver Detalles"
-        onClick={() => setUsuarioSeleccionado(fila)}
-        style={{ cursor: "pointer", background: "none", border: "none" }}>
-        <i className="bi bi-eye" style={{ fontSize: "20px", color: '#000' }}></i>
-      </button>
-      <button
-        title="Editar Usuario"
-        style={{ cursor: "pointer", background: "none", border: "none" }}>
-        <i className="bi bi-pencil-square"style={{ fontSize: "18px", color: "#000000ff" }}></i>
-      </button>
-      <button
-        title="Borrar Usuario"
-        onClick={() => console.log('Borrar usuario:', fila)}
-        style={{ cursor: "pointer", background: "none", border: "none" }}>
-        <i className="bi bi-trash" style={{ fontSize: "18px", color: "#000000ff" }}></i>
-      </button>
-    </div>
-  );
+  <div style={{ display: 'flex', gap: '12px' }}>
+    <button
+      title="Ver Detalles"
+      onClick={() => setUsuarioSeleccionado(fila)}
+      style={{ cursor: "pointer", background: "none", border: "none" }}>
+      <i className="bi bi-eye" style={{ fontSize: "20px", color: '#000' }}></i>
+    </button>
+
+    <button
+      title="Editar Usuario"
+      onClick={() => navigate(`/admin/editar-usuario/${fila.id}`)} // ✅ Aquí
+      style={{ cursor: "pointer", background: "none", border: "none" }}>
+      <i className="bi bi-pencil-square" style={{ fontSize: "18px", color: "#000000ff" }}></i>
+    </button>
+
+    <button
+      title="Borrar Usuario"
+      onClick={() => console.log('Borrar usuario:', fila)}
+      style={{ cursor: "pointer", background: "none", border: "none" }}>
+      <i className="bi bi-trash" style={{ fontSize: "18px", color: "#000000ff" }}></i>
+    </button>
+  </div>
+);
 
   return (
     <div className="contenedor-pagina-listado">

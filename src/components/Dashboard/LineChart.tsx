@@ -13,7 +13,7 @@ const LineChart: React.FC<LineChartProps> = ({ categories, series, title }) => {
     chart: { id: "line-chart" },
     xaxis: { categories },
     stroke: { curve: "smooth" },
-    colors: ["#008FFB"],
+    colors: ["#4143BE"],
     title: {
       text: title,
       align: "left",

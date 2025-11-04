@@ -6,11 +6,17 @@ const getTitle = (path: string) => {
   if (path.includes('/admin/dashboard')) return 'Dashboard';
   if (path.includes('/admin/productos')) return 'Productos';
   if (path.includes('/admin/agregar-producto')) return 'Agregar Producto';
+  if (path.includes('/admin/editar-producto')) return 'Editar Producto';
   if (path.includes('/admin/subcategorias')) return 'Subcategorías';
   if (path.includes('/admin/agregar-subcategoria')) return 'Agregar Subcategoría';
+  if (path.includes('/admin/editar-subcategoria')) return 'Editar Subcategoría';
   if (path.includes('/admin/configuracion')) return 'Configuraciones';
   if (path.includes('/admin/categorias')) return 'Categorias';
+  if (path.includes('/admin/usuarios')) return 'Usuarios';
+  if (path.includes('/admin/agregar-usuario')) return 'Agregar Usuario';
+  if (path.includes('/admin/editar-usuario')) return 'Editar Usuario';
   if (path.includes('/admin/reportes')) return 'Reporte Mensual';
+  if (path.includes('/admin/detalle-cierre')) return 'Detalles de Cierres';
   if (path.includes('/admin/perfil')) return 'Perfil';
   return 'Administrador';
 };

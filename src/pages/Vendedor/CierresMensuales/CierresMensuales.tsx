@@ -23,7 +23,7 @@ const CierresMensuales = () => {
     { key: "id", label: "#" },
     { key: "mes", label: "Mes" },
     { key: "anio", label: "Año" },
-    { key: "totalVentas", label: "Total Ventas" },
+    { key: "totalVentas", label: "Total Ventas s/" },
     { key: "cantidadVentas", label: "Cantidad de Ventas" },
     { key: "fechaGeneracion", label: "Fecha Generación" },
     { key: "archivo", label: "Archivo" },
