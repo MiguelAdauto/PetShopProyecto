@@ -16,7 +16,7 @@ const getTitle = (path: string) => {
   if (path.includes('/admin/agregar-usuario')) return 'Agregar Usuario';
   if (path.includes('/admin/editar-usuario')) return 'Editar Usuario';
   if (path.includes('/admin/reportes')) return 'Reporte Mensual';
-  if (path.includes('/admin/detalle-cierre')) return 'Detalles de Cierres';
+  if (path.includes('/admin/detalle-cierre')) return 'Detalles del Cierre';
   if (path.includes('/admin/perfil')) return 'Perfil';
   return 'Administrador';
 };

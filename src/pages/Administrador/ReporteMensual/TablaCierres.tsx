@@ -12,7 +12,6 @@ interface Cierre {
   total: string;
   cantidad: number;
   fecha: string;
-  archivo: string;
   vendedor: string;
 }
 
@@ -25,7 +24,6 @@ const columnasCierres = [
   { key: "total", label: "Total Ventas", sortable: true },
   { key: "cantidad", label: "Cantidad Ventas", sortable: true },
   { key: "fecha", label: "Fecha Generación", sortable: true },
-  { key: "archivo", label: "Archivo", sortable: false },
 ];
 
 // ✅ Datos simulados
@@ -40,7 +38,6 @@ const datosCierresEstaticos: Cierre[] = Array.from({ length: 15 }, (_, index) =>
   total: `S/${(Math.random() * 5000 + 1000).toFixed(2)}`,
   cantidad: Math.floor(Math.random() * 40 + 10),
   fecha: "2025-10-25",
-  archivo: `cierre_${index + 1}.pdf`,
 }));
 
 const CierresListado = () => {
@@ -75,12 +72,17 @@ const CierresListado = () => {
   //Opciones de cada fila
   const renderOpciones = (fila: Cierre) => (
     <div style={{ display: "flex", gap: "12px" }}>
-      <button onClick={() => navigate(`/admin/detalle-cierre/${fila.id}`)}>Ver Detalle</button>
+      
+      <button
+        title="Ver Detalles"
+        onClick={() => navigate(`/admin/detalle-cierre/${fila.id}`)}
+        style={{ cursor: "pointer", background: "none", border: "none" }}>
+        <i className="bi bi-info-circle" style={{ fontSize: "18px", color: "#000" }}></i>
+      </button>
       <button
         title="Descargar PDF"
         onClick={() => console.log("Descargar PDF:", fila)}
-        style={{ cursor: "pointer", background: "none", border: "none" }}
-      >
+        style={{ cursor: "pointer", background: "none", border: "none" }}>
         <i className="bi bi-download" style={{ fontSize: "18px", color: "#000" }}></i>
       </button>
     </div>

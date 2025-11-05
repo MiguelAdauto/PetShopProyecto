@@ -21,7 +21,7 @@ import DetalleVenta from './pages/Vendedor/VentasListado/DetalleVenta';
 import ProductosListado from './pages/Vendedor/Productos/ProductosListado';
 import CategoriasListado from './pages/Vendedor/SubCategorias/SubCategoriasListado';
 import CierresMensuales from './pages/Vendedor/CierresMensuales/CierresMensuales';
-import PerfilVendedor  from './pages/Vendedor/Perfil/PerfilVendedor.tsx';
+import PerfilVendedor from './pages/Vendedor/Perfil/PerfilVendedor.tsx';
 
 // Páginas - Admin
 import AdminDashboard from './pages/Administrador/Dashboard/AdminDashboard';
@@ -32,13 +32,11 @@ import FormSubCategoria from "./pages/Administrador/SubCategoriasAmd/FormSubCate
 import AdmConfiguracion from "./pages/Administrador/Configuracion/Configuracion";
 import Categorias from "./pages/Administrador/Configuracion/Categorias";
 import UsuariosListado from './pages/Administrador/Configuracion/Usuario/UsuariosListado';
-import TablaCierres from "./pages/Administrador/ReporteMensual/TablaCierres";
 import FormUsuario from "./pages/Administrador/Configuracion/Usuario/FormUsuario.tsx";
+import TablaCierres from "./pages/Administrador/ReporteMensual/TablaCierres";
+import Serie from "./pages/Administrador/Configuracion/Serie/Serie.tsx";
 import DetalleCierreAdmin from "./pages/Administrador/ReporteMensual/DetalleCierreAdmin.tsx";
-
-
 import PerfilAdmin from './pages/Administrador/Perfil/PerfilAdmin.tsx';
-
 
 function App() {
   return (
@@ -65,7 +63,7 @@ function App() {
           <Route path="productos" element={<ProductosListado />} />
           <Route path="categorias" element={<CategoriasListado />} />
           <Route path="reportes" element={<CierresMensuales />} />
-          <Route path="perfil" element={<PerfilVendedor  />} />
+          <Route path="perfil" element={<PerfilVendedor />} />
         </Route>
 
         {/* Rutas protegidas - Admin */}
@@ -84,7 +82,12 @@ function App() {
           <Route path="subcategorias" element={<SubCategoriasAmd />} />
           <Route path="agregar-subcategoria" element={<FormSubCategoria modo="agregar" />} />
           <Route path="editar-subcategoria/:id" element={<FormSubCategoria modo="editar" />} />
-          <Route path="configuracion" element={<AdmConfiguracion />} />
+
+          {/* ✅ Configuración anidada correctamente */}
+          <Route path="configuracion" element={<AdmConfiguracion />}>
+            <Route path="serie" element={<Serie />} />
+          </Route>
+
           <Route path="categorias" element={<Categorias />} />
           <Route path="usuarios" element={<UsuariosListado />} />
           <Route path="agregar-usuario" element={<FormUsuario modo="agregar" />} />
@@ -93,7 +96,7 @@ function App() {
           <Route path="detalle-cierre/:id" element={<DetalleCierreAdmin />} />
           <Route path="perfil" element={<PerfilAdmin />} />
         </Route>
-        
+
         {/* Ruta por defecto (404 o sin coincidencias) */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
