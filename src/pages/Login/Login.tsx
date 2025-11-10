@@ -10,28 +10,37 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const users = [
-    { email: 'admin@example.com', password: 'admin123', role: 'admin' },
-    { email: 'vendedor@example.com', password: 'vendedor123', role: 'vendedor' }
-  ];
+  const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError('');
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  try {
+    const response = await fetch("http://127.0.0.1:5000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ correo: email, contrasena: password }),
+    });
 
-    const user = users.find(user => user.email === email && user.password === password);
+    const data = await response.json();
 
-    if (user) {
-      if (user.role === 'admin') {
-        localStorage.setItem('rol', 'admin');
-        navigate('/admin/dashboard');
+    if (data.status === "ok") {
+      const role = data.user.rol;
+      localStorage.setItem("rol", role);
+
+      if (role === "admin") {
+        navigate("/admin/dashboard");
       } else {
-        localStorage.setItem('rol', 'vendedor');
-        navigate('/vendedor/ventas');
+        navigate("/vendedor/ventas");
       }
     } else {
-      setError('Credenciales incorrectas');
+      setError(data.message);
     }
-  };
+  } catch (err) {
+    setError("Error al conectar con el servidor");
+  }
+};
 
   return (
     <div className="login-page">

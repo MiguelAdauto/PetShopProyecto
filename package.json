@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start-backend": "cd backend && python app.py",
+    "start-all": "start cmd /k npm run start-backend & npm run dev"
   },
   "dependencies": {
     "apexcharts": "^5.3.6",

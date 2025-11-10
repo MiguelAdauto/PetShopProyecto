@@ -10,6 +10,7 @@ import RutaProtegida from './components/RutaProtegida/RutaProtegida';
 
 // Estilos globales
 import './Styles/global.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Páginas - Login
 import Login from './pages/Login/Login';
