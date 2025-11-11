@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../../../styles/AgregarGlobal.css";
+import api from "../../../api/api";
 
 interface ProductoFormProps {
   modo?: "agregar" | "editar";
@@ -9,75 +10,113 @@ interface ProductoFormProps {
 const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
   const location = useLocation();
 
-  // ✅ Datos iniciales que pueden venir del listado al editar
+  // Datos iniciales si venimos de editar
   const datosIniciales = location.state as
     | {
         id?: number;
         nombre: string;
         codigo: string;
-        precioCompra: number;
-        precioVenta: number;
+        precio_compra: number;
+        precio_venta: number;
         stock: number;
-        categoria: string;
-        tipo: string;
-        imagen?: File | null;
+        categoria_id: number;
+        subcategoria_id: number;
+        imagen?: string | null;
       }
     | undefined;
 
-  // ✅ Estados del formulario
+  // Estados del formulario
   const [nombre, setNombre] = useState("");
   const [codigo, setCodigo] = useState("");
   const [precioCompra, setPrecioCompra] = useState<number | "">("");
   const [precioVenta, setPrecioVenta] = useState<number | "">("");
   const [stock, setStock] = useState<number | "">("");
-  const [categoria, setCategoria] = useState("");
-  const [tipo, setTipo] = useState("");
+  const [categoria, setCategoria] = useState<number | "">("");
+  const [subcategoria, setSubcategoria] = useState<number | "">("");
   const [imagen, setImagen] = useState<File | null>(null);
 
-  // ✅ Calcular precio total automáticamente
-  const precioTotal =
-    precioCompra && stock ? Number(precioCompra) * Number(stock) : 0;
+  // Para listar categorías y subcategorías
+  const [categorias, setCategorias] = useState<{ id: number; nombre: string }[]>([]);
+  const [subcategorias, setSubcategorias] = useState<{ id: number; nombre: string; descripcion?: string }[]>([]);
 
-  // ✅ Efecto para cargar los datos si estamos en modo editar
+  // Precio total dinámico
+  const precioTotal = precioCompra && stock ? Number(precioCompra) * Number(stock) : 0;
+
+  // 🔹 Cargar categorías al montar
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const res = await api.get("/categorias");
+        console.log("✅ Categorías cargadas:", res.data);
+        setCategorias(res.data);
+      } catch (err) {
+        console.error("❌ Error cargando categorías:", err);
+      }
+    };
+    fetchCategorias();
+  }, []);
+
+  // 🔹 Cargar subcategorías al cambiar categoría
+  useEffect(() => {
+  const fetchSubcategorias = async () => {
+    try {
+      const res = await api.get("/subcategorias");
+      setSubcategorias(res.data.subcategorias); // usar data.subcategorias si tu API lo devuelve así
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  fetchSubcategorias();
+}, []);
+
+
+  // Si estamos editando, llenar formulario con datos iniciales
   useEffect(() => {
     if (modo === "editar" && datosIniciales) {
       setNombre(datosIniciales.nombre);
       setCodigo(datosIniciales.codigo);
-      setPrecioCompra(datosIniciales.precioCompra);
-      setPrecioVenta(datosIniciales.precioVenta);
+      setPrecioCompra(datosIniciales.precio_compra);
+      setPrecioVenta(datosIniciales.precio_venta);
       setStock(datosIniciales.stock);
-      setCategoria(datosIniciales.categoria);
-      setTipo(datosIniciales.tipo);
-      setImagen(datosIniciales.imagen || null);
+      setCategoria(datosIniciales.categoria_id);
+      setSubcategoria(datosIniciales.subcategoria_id);
     }
   }, [modo, datosIniciales]);
 
-  // ✅ Manejo del envío del formulario
-  const handleSubmit = (e: React.FormEvent) => {
+  // 🔹 Manejar envío del formulario
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const producto = {
-      nombre,
-      codigo,
-      precioCompra: Number(precioCompra),
-      precioVenta: Number(precioVenta),
-      stock: Number(stock),
-      categoria,
-      tipo,
-      imagen,
-      precioTotal,
-    };
+    const formData = new FormData();
+    formData.append("nombre", nombre);
+    formData.append("codigo", codigo);
+    formData.append("precio_compra", String(precioCompra));
+    formData.append("precio_venta", String(precioVenta));
+    formData.append("stock", String(stock));
+    formData.append("categoria_id", String(categoria));
+    formData.append("subcategoria_id", String(subcategoria));
+    if (imagen) formData.append("imagen", imagen);
 
-    if (modo === "editar") {
-      console.log("✏️ Producto actualizado:", producto);
-      // Aquí luego harás el PUT o PATCH con la API
-    } else {
-      console.log("🆕 Producto agregado:", producto);
-      // Aquí luego harás el POST con la API
+    try {
+      if (modo === "editar" && datosIniciales?.id) {
+        await api.put(`/productos/${datosIniciales.id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        alert("✅ Producto actualizado correctamente");
+      } else {
+        await api.post("/productos", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        alert("✅ Producto agregado correctamente");
+      }
+      handleReset();
+    } catch (err) {
+      console.error("❌ Error al guardar producto:", err);
+      alert("Error al guardar el producto. Verifica los datos o el servidor.");
     }
   };
 
-  // ✅ Resetear campos
+  // 🔹 Resetear formulario
   const handleReset = () => {
     setNombre("");
     setCodigo("");
@@ -85,37 +124,26 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
     setPrecioVenta("");
     setStock("");
     setCategoria("");
-    setTipo("");
+    setSubcategoria("");
     setImagen(null);
   };
 
   return (
     <div className="StyleAgregarAmd">
       <form onSubmit={handleSubmit} onReset={handleReset}>
-        <button
-          type="button"
-          className="volver-btn"
-          onClick={() => window.history.back()}
-        >
-          <i
-            className="bi bi-chevron-compact-left"
-            style={{ marginRight: "8px" }}
-          ></i>
+        <button type="button" className="volver-btn" onClick={() => window.history.back()}>
+          <i className="bi bi-chevron-compact-left" style={{ marginRight: "8px" }}></i>
           Volver
         </button>
 
-        <h2>
-          {modo === "editar" ? "Editar Producto" : "Agregar Producto"}
-        </h2>
+        <h2>{modo === "editar" ? "Editar Producto" : "Agregar Producto"}</h2>
 
         {/* Nombre y Código */}
         <div className="form-row">
           <div className="input-group">
-            <label>
-              Nombre del Producto <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Nombre del Producto</label>
             <input
-              placeholder="nombre del producto"
+              placeholder="Nombre del producto"
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
@@ -124,11 +152,9 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
           </div>
 
           <div className="input-group">
-            <label>
-              Código <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Código</label>
             <input
-              placeholder="código del producto"
+              placeholder="Código del producto"
               type="text"
               value={codigo}
               onChange={(e) => setCodigo(e.target.value)}
@@ -140,11 +166,9 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         {/* Precios */}
         <div className="form-row">
           <div className="input-group">
-            <label>
-              Precio de Compra <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Precio de Compra</label>
             <input
-              placeholder="precio de compra"
+              placeholder="Precio de compra"
               type="number"
               value={precioCompra}
               onChange={(e) => setPrecioCompra(Number(e.target.value))}
@@ -154,12 +178,10 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
           </div>
 
           <div className="input-group">
-            <label>
-              Precio de Venta <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Precio de Venta</label>
             <input
               type="number"
-              placeholder="precio de venta"
+              placeholder="Precio de venta"
               value={precioVenta}
               onChange={(e) => setPrecioVenta(Number(e.target.value))}
               min={0}
@@ -171,12 +193,10 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         {/* Stock y Precio Total */}
         <div className="form-row">
           <div className="input-group">
-            <label>
-              Stock <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Stock</label>
             <input
               type="number"
-              placeholder="ingresar el stock"
+              placeholder="Ingresar el stock"
               value={stock}
               onChange={(e) => setStock(Number(e.target.value))}
               min={0}
@@ -190,71 +210,55 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
           </div>
         </div>
 
-        {/* Categoría y Tipo */}
+        {/* Categoría y Subcategoría */}
         <div className="form-row">
           <div className="input-group">
-            <label>
-              Categoría <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Categoría</label>
             <select
               value={categoria}
-              onChange={(e) => setCategoria(e.target.value)}
+              onChange={(e) => setCategoria(Number(e.target.value))}
               required
             >
               <option value="">Seleccione una categoría</option>
-              <option value="Juguetes">Juguetes</option>
-              <option value="Aseo">Aseo</option>
-              <option value="Accesorios">Accesorios</option>
-              <option value="Comederos">Comederos</option>
+              {categorias.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.nombre}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="input-group">
-            <label>
-              Tipo de Mascota <i className="bi bi-box-arrow-down-left"></i>
-            </label>
+            <label>Subcategoría</label>
             <select
-              value={tipo}
-              onChange={(e) => setTipo(e.target.value)}
+              value={subcategoria}
+              onChange={(e) => setSubcategoria(Number(e.target.value))}
               required
             >
-              <option value="">Seleccione un tipo de mascota</option>
-              <option value="Mixto">Mixto</option>
-              <option value="Perro">Perro</option>
-              <option value="Gato">Gato</option>
+              <option value="">Seleccione una subcategoría</option>
+              {subcategorias.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.nombre}
+                </option>
+              ))}
             </select>
           </div>
         </div>
 
         {/* Imagen */}
-        <label>
-          Agregar imagen <i className="bi bi-box-arrow-down-left"></i>
-        </label>
+        <label>Agregar imagen</label>
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              setImagen(e.target.files[0]);
-            }
-          }}
+          onChange={(e) => e.target.files && setImagen(e.target.files[0])}
         />
 
         {/* Botones */}
         <div className="botones-row">
           <button type="submit" className="guardar-btn">
-            <i
-              className="bi bi-floppy-fill"
-              style={{ marginRight: "8px" }}
-            ></i>
             {modo === "editar" ? "Actualizar" : "Guardar"}
           </button>
-
           <button type="reset" className="limpiar-btn">
-            <i
-              className="bi bi-arrow-counterclockwise"
-              style={{ marginRight: "9px" }}
-            ></i>
             Limpiar
           </button>
         </div>

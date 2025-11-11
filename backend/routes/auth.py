@@ -13,7 +13,7 @@ db_config = {
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    data = request.get_json()  # es más seguro que request.json directamente
+    data = request.get_json()
     correo = data.get("correo")
     contrasena = data.get("contrasena")
 
