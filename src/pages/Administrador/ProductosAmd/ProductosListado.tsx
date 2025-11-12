@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaProductos from "./BusquedaProductos";
 import Paginacion from "../../../components/Paginacion/Paginacion";
-import api from "../../../api/api"; // ✅ importamos Axios config
+import api from "../../../api/api"; // Axios config
 import "../../../Styles/PaginasListado.css";
 
 const columnasProductosAdmin = [
@@ -29,6 +29,7 @@ const ProductosListado = () => {
     try {
       const response = await api.get("/productos/");
       if (response.data.status === "ok") {
+        console.log("Productos API:", response.data.productos);
         setProductos(response.data.productos);
       }
     } catch (error) {
@@ -46,7 +47,7 @@ const ProductosListado = () => {
   const productosPaginados = productos.slice(inicio, fin);
   const totalPaginas = Math.ceil(productos.length / filasPorPagina);
 
-  // Renderizar botones de acción (solo admin)
+  // Botones de acción
   const renderOpciones = (fila: any) => (
     <div style={{ display: "flex", gap: "12px" }}>
       <button
@@ -62,7 +63,7 @@ const ProductosListado = () => {
         onClick={async () => {
           if (window.confirm("¿Seguro que deseas eliminar este producto?")) {
             await api.delete(`/productos/${fila.id}`);
-            cargarProductos(); // refresca la tabla
+            cargarProductos();
           }
         }}
         style={{ cursor: "pointer", background: "none", border: "none" }}
@@ -73,18 +74,13 @@ const ProductosListado = () => {
   );
 
   const renderCustomCell = (key: string, value: any) => {
-    if (key === "imagen") {
-      const src = value ? `http://localhost:5000/uploads/${value}` : "/placeholder.jpg";
-      return (
-        <img
-          src={src}
-          alt="Producto"
-          style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "4px" }}
-        />
-      );
-    }
-    return value;
-  };
+  if (key === "imagen") {
+    if (!value) return <span>No hay imagen</span>;
+    const src = `http://localhost:5000/uploads/${value}`; // <- solo el nombre del archivo
+    return <img src={src} alt="Producto" style={{ width: 50, height: 50 }} />;
+  }
+  return value;
+}
 
   return (
     <div className="contenedor-pagina-listado">

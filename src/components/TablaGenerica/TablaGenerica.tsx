@@ -11,7 +11,7 @@ interface TablaGenericaProps {
   columnas: Columna[];
   datos: any[];
   renderOpciones?: (fila: any) => React.ReactNode;
-  renderCell?: (key: string, value: any, fila: any) => React.ReactNode;
+  renderCell?: (key: string, value: any, fila: any) => React.ReactNode; // <- ahora se usará
 }
 
 /**
@@ -22,6 +22,7 @@ const TablaGenerica: React.FC<TablaGenericaProps> = ({
   columnas,
   datos,
   renderOpciones,
+  renderCell,
 }) => {
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
@@ -116,7 +117,9 @@ const TablaGenerica: React.FC<TablaGenericaProps> = ({
             sortedDatos.map((item, idx) => (
               <tr key={idx}>
                 {columnas.map(({ key }) => (
-                  <td key={key}>{renderCellContent(key, item[key], item)}</td>
+                  <td key={key}>
+                    {renderCell ? renderCell(key, item[key], item) : renderCellContent(key, item[key], item)}
+                  </td>
                 ))}
                 {renderOpciones && <td>{renderOpciones(item)}</td>}
               </tr>

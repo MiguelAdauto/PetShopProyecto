@@ -1,7 +1,7 @@
+import os
 from flask import Blueprint, jsonify, request
 import mysql.connector
 from config import Config
-import os
 
 productos_bp = Blueprint("productos", __name__)
 
@@ -12,8 +12,11 @@ db_config = {
     "database": Config.MYSQL_DATABASE
 }
 
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # crea carpeta uploads si no existe
+# ✅ Ruta absoluta a la carpeta uploads (dentro de backend)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(os.path.dirname(BASE_DIR), "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 
 # 🔹 Listar productos
 @productos_bp.route("/", methods=["GET"])
@@ -58,11 +61,11 @@ def agregar_producto():
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # Guardar imagen si se sube
+        # Guardar imagen si se sube (solo nombre)
         imagen_filename = None
         if imagen_file:
-            imagen_filename = os.path.join(UPLOAD_FOLDER, imagen_file.filename)
-            imagen_file.save(imagen_filename)
+            imagen_filename = imagen_file.filename  # SOLO nombre, sin ruta
+            imagen_file.save(os.path.join(UPLOAD_FOLDER, imagen_filename))
 
         # Convertir tipos
         precio_venta = float(data.get("precio_venta"))
@@ -111,11 +114,11 @@ def actualizar_producto(id):
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # Guardar imagen si se sube
+        # Guardar imagen si se sube (solo nombre)
         imagen_filename = None
         if imagen_file:
-            imagen_filename = os.path.join(UPLOAD_FOLDER, imagen_file.filename)
-            imagen_file.save(imagen_filename)
+            imagen_filename = imagen_file.filename  # SOLO nombre, sin ruta
+            imagen_file.save(os.path.join(UPLOAD_FOLDER, imagen_filename))
 
         # Convertir tipos
         precio_venta = float(data.get("precio_venta", 0))

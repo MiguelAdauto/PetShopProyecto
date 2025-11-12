@@ -3,66 +3,99 @@ import { useNavigate } from "react-router-dom";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaCategorias from "./BusquedaSubCategorias";
 import Paginacion from "../../../components/Paginacion/Paginacion";
-import '../../../Styles/PaginasListado.css';
+import "../../../Styles/PaginasListado.css";
 
-interface Categoria {
+interface SubCategoria {
   id: number;
   nombre: string;
   descripcion: string;
 }
 
-const columnasCategorias = [
-  { key: 'id', label: 'ID', sortable: true },
-  { key: 'nombre', label: 'Nombre', sortable: true },
-  { key: 'descripcion', label: 'Descripcion', sortable: true }
+const columnasSubCategorias = [
+  { key: "id", label: "ID", sortable: true },
+  { key: "nombre", label: "Nombre", sortable: true },
+  { key: "descripcion", label: "Descripción", sortable: true },
 ];
 
-const datosCategoriasEstaticos: Categoria[] = [
-  { id: 1, nombre: 'Juguetes', descripcion: 'Ubicado en la parte derecha de la pared' },
-  { id: 2, nombre: 'Hogar', descripcion: 'Ubicados en la parte delantera del local' },
-  { id: 3, nombre: 'Higiene', descripcion: 'Ubicado en el segundo nivel del estante delantero' },
-];
-
-const CategoriasListado = () => {
-  const [categorias, setCategorias] = useState<Categoria[]>(datosCategoriasEstaticos);
-  const [categoriasFiltradas, setCategoriasFiltradas] = useState<Categoria[]>(datosCategoriasEstaticos);
+const SubCategoriasAmd = () => {
+  const [subCategorias, setSubCategorias] = useState<SubCategoria[]>([]);
+  const [filtradas, setFiltradas] = useState<SubCategoria[]>([]);
   const [paginaActual, setPaginaActual] = useState(1);
   const filasPorPagina = 5;
   const navigate = useNavigate();
 
+  // 🔹 Cargar subcategorías desde el backend
   useEffect(() => {
-    setTimeout(() => setCategorias(datosCategoriasEstaticos), 2000);
+    const fetchSubcategorias = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/subcategorias/");
+        const data = await response.json();
+        if (data.status === "ok") {
+          setSubCategorias(data.subcategorias);
+          setFiltradas(data.subcategorias);
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error("Error al cargar subcategorías:", error);
+      }
+    };
+
+    fetchSubcategorias();
   }, []);
 
-  // ✅ Filtrar desde buscador
+  // ✅ Filtrar subcategorías desde buscador
   const handleBuscar = (filtros: { nombre: string }) => {
-    const filtrados = categorias.filter(cat =>
-      filtros.nombre === "" || cat.nombre.toLowerCase().includes(filtros.nombre.toLowerCase())
+    const resultado = subCategorias.filter((sub) =>
+      filtros.nombre === "" || sub.nombre.toLowerCase().includes(filtros.nombre.toLowerCase())
     );
-    setCategoriasFiltradas(filtrados);
+    setFiltradas(resultado);
     setPaginaActual(1);
+  };
+
+  // ✅ Eliminar subcategoría
+  const handleEliminar = async (fila: SubCategoria) => {
+    if (!window.confirm(`¿Eliminar subcategoría "${fila.nombre}"?`)) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/subcategorias/${fila.id}`, { method: "DELETE" });
+      const data = await response.json();
+
+      if (data.status === "ok") {
+        alert("Subcategoría eliminada correctamente");
+        setSubCategorias(subCategorias.filter((sub) => sub.id !== fila.id));
+        setFiltradas(filtradas.filter((sub) => sub.id !== fila.id));
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error al eliminar subcategoría:", error);
+    }
   };
 
   // ✅ Paginación
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
-  const categoriasPaginadas = categoriasFiltradas.slice(inicio, fin);
-  const totalPaginas = Math.ceil(categoriasFiltradas.length / filasPorPagina);
+  const subPaginadas = filtradas.slice(inicio, fin);
+  const totalPaginas = Math.ceil(filtradas.length / filasPorPagina);
 
-  // ✅ Opciones de fila
-  const renderOpcionesCategoria = (fila: Categoria) => (
-    <div style={{ display: 'flex', gap: '12px' }}>
+  // ✅ Botones de acciones
+  const renderOpciones = (fila: SubCategoria) => (
+    <div style={{ display: "flex", gap: "12px" }}>
       <button
-        title="Editar Categoría"
+        title="Editar Subcategoría"
         onClick={() => navigate(`/admin/editar-subcategoria/${fila.id}`, { state: fila })}
-        style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
-        <i className="bi bi-pencil-square" style={{ fontSize: '18px', color: '#000000ff' }}></i>
+        style={{ cursor: "pointer", background: "none", border: "none" }}
+      >
+        <i className="bi bi-pencil-square" style={{ fontSize: "18px", color: "#000" }}></i>
       </button>
+
       <button
-        title="Borrar Categoría"
-        onClick={() => console.log('Borrar categoría:', fila)}
-        style={{ cursor: 'pointer', background: 'none', border: 'none' }}>
-        <i className="bi bi-trash" style={{ fontSize: '18px', color: '#000000ff' }}></i>
+        title="Eliminar Subcategoría"
+        onClick={() => handleEliminar(fila)}
+        style={{ cursor: "pointer", background: "none", border: "none" }}
+      >
+        <i className="bi bi-trash" style={{ fontSize: "18px", color: "#000" }}></i>
       </button>
     </div>
   );
@@ -71,11 +104,7 @@ const CategoriasListado = () => {
     <div className="contenedor-pagina-listado">
       <BusquedaCategorias onBuscar={handleBuscar} />
 
-      <TablaGenerica
-        columnas={columnasCategorias}
-        datos={categoriasPaginadas}
-        renderOpciones={renderOpcionesCategoria}
-      />
+      <TablaGenerica columnas={columnasSubCategorias} datos={subPaginadas} renderOpciones={renderOpciones} />
 
       <Paginacion
         paginaActual={paginaActual}
@@ -87,4 +116,4 @@ const CategoriasListado = () => {
   );
 };
 
-export default CategoriasListado;
+export default SubCategoriasAmd;

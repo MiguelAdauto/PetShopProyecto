@@ -1,6 +1,8 @@
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 import mysql.connector
+import urllib.parse
 from config import Config
 
 from routes.auth import auth_bp
@@ -12,12 +14,27 @@ from routes.subcategorias import subcategorias_bp
 app = Flask(__name__)
 CORS(app)
 
+# Definir la ruta absoluta de la carpeta uploads
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+
 # Registrar blueprints
 app.register_blueprint(categorias_bp, url_prefix="/categorias")
 app.register_blueprint(usuarios_bp, url_prefix="/usuarios")
 app.register_blueprint(productos_bp, url_prefix="/productos")
 app.register_blueprint(auth_bp, url_prefix="/auth") 
 app.register_blueprint(subcategorias_bp, url_prefix="/subcategorias")
+
+# Ruta para servir imágenes
+@app.route("/uploads/<path:filename>")
+def subir_archivo(filename):
+    file_path = os.path.join(app.root_path, "uploads", filename)
+    print(f"🧠 Buscando archivo en: {file_path}")  # para depurar
+
+    if not os.path.exists(file_path):
+        return jsonify({"status": "error", "message": f"Archivo '{filename}' no encontrado"}), 404
+
+    return send_from_directory(os.path.join(app.root_path, "uploads"), filename)
 
 # Ruta de prueba para verificar la conexión
 @app.route("/test-db")
