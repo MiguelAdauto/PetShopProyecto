@@ -20,7 +20,7 @@ const columnasUsuarios = [
 ];
 
 // Datos simulados
-const datosUsuarios = Array.from({ length: 20 }, (_, i) => ({
+const datosUsuarios = Array.from({ length: 3 }, (_, i) => ({
   id: i + 1,
   imagen: userImg,
   nombre: ['Carlos', 'Lucía', 'Pedro', 'María', 'Juan'][i % 5],

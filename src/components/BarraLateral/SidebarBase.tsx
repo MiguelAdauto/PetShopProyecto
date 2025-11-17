@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 interface LinkItem {
   to: string;
   label: string;
-  icon: string;  // Ahora es un string con el nombre del icono
+  icon: string; 
 }
 
 interface SidebarBaseProps {
