@@ -1,5 +1,6 @@
 import os
 from flask import Flask, jsonify, send_from_directory
+from flask import send_from_directory
 from flask_cors import CORS
 import mysql.connector
 import urllib.parse
@@ -29,11 +30,8 @@ app.register_blueprint(subcategorias_bp, url_prefix="/subcategorias")
 @app.route("/uploads/<path:filename>")
 def subir_archivo(filename):
     file_path = os.path.join(app.root_path, "uploads", filename)
-    print(f"🧠 Buscando archivo en: {file_path}")  # para depurar
-
     if not os.path.exists(file_path):
         return jsonify({"status": "error", "message": f"Archivo '{filename}' no encontrado"}), 404
-
     return send_from_directory(os.path.join(app.root_path, "uploads"), filename)
 
 # Ruta de prueba para verificar la conexión

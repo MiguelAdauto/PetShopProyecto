@@ -164,7 +164,7 @@ def actualizar_producto(id):
             conn.close()
 
 
-# 🔹 Eliminar (o desactivar) producto
+# 🔹 Eliminar producto REAL
 @productos_bp.route("/<int:id>", methods=["DELETE"])
 def eliminar_producto(id):
     conn = None
@@ -172,9 +172,11 @@ def eliminar_producto(id):
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
-        cursor.execute("UPDATE productos SET activo = 0 WHERE id = %s", (id,))
+
+        cursor.execute("DELETE FROM productos WHERE id = %s", (id,))
         conn.commit()
-        return jsonify({"status": "ok", "message": "Producto eliminado (inactivo)"})
+
+        return jsonify({"status": "ok", "message": "Producto eliminado correctamente"})
     except mysql.connector.Error as err:
         return jsonify({"status": "error", "message": str(err)}), 500
     finally:

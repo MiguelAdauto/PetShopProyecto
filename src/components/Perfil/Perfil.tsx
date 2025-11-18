@@ -1,109 +1,160 @@
-// src/components/Perfil/Perfil.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Perfil.css';
-import ModalEdicion from './ModalEdicion'; // Modal reutilizable para la edición
+import ModalEdicion from './ModalEdicion';
+import type { Usuario } from '../../types/usuario';
 
 interface PerfilProps {
-  tipo: 'vendedor' | 'admin'; // Tipo de usuario, vendedor o admin
+  tipo: 'vendedor' | 'admin';
 }
 
 const Perfil: React.FC<PerfilProps> = ({ tipo }) => {
-  // Datos del perfil (simulados para el ejemplo)
-  const [nombre, setNombre] = useState(tipo === 'vendedor' ? 'Alberto' : 'Carlos');  // Datos dinámicos
-  const [apellidos, setApellidos] = useState(tipo === 'vendedor' ? 'Perez' : 'Ramirez');
-  const [telefono, setTelefono] = useState('48165789');
-  const [email, setEmail] = useState(tipo === 'vendedor' ? 'vendedor@example.com' : 'admin@example.com');
-  const [dni, setDni] = useState('48165789');
-  const [rol, setRol] = useState(tipo === 'vendedor' ? 'Vendedor' : 'Administrador');  // Rol basado en el tipo
-
+  const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [campoAEditar, setCampoAEditar] = useState<string>(''); // Campo que se editará
-  const [valorCampo, setValorCampo] = useState<string>(''); // Valor actual del campo
+  const [campoAEditar, setCampoAEditar] = useState<string>('');
+  const [valorCampo, setValorCampo] = useState<string>('');
 
-  // Función para abrir el modal y seleccionar el campo a editar
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/usuarios?rol=${tipo}`);
+        const data = await res.json();
+
+        if (data.status === 'ok') {
+          setUsuario(data.usuarios[0]); // Tomamos el primer usuario con ese rol
+        } else {
+          alert('Error al cargar datos del usuario: ' + data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error al conectar con el servidor');
+      }
+    };
+
+    fetchUsuario();
+  }, [tipo]);
+
   const abrirModal = (campo: string, valor: string) => {
     setCampoAEditar(campo);
     setValorCampo(valor);
     setModalAbierto(true);
   };
 
-  // Función para guardar los cambios
-  const guardarEdicion = (nuevoValor: string) => {
-    if (campoAEditar === 'Nombre') {
-      setNombre(nuevoValor);
-    } else if (campoAEditar === 'Apellidos') {
-      setApellidos(nuevoValor);
-    } else if (campoAEditar === 'Teléfono') {
-      setTelefono(nuevoValor);
+  const guardarEdicion = async (nuevoValor: string) => {
+    if (!usuario) return;
+
+    try {
+      // Copiamos todos los campos existentes
+      const body: any = {
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        telefono: usuario.telefono,
+        rol_id: usuario.rol_id
+      };
+
+      // Actualizamos solo el campo que se editó
+      switch (campoAEditar) {
+        case 'Nombre':
+          body.nombre = nuevoValor;
+          break;
+        case 'Apellidos':
+          body.apellido = nuevoValor;
+          break;
+        case 'Teléfono':
+          body.telefono = nuevoValor;
+          break;
+      }
+
+      const formData = new FormData();
+      for (const key in body) {
+        formData.append(key, body[key]);
+      }
+
+      const res = await fetch(`http://localhost:5000/usuarios/${usuario.id}`, {
+        method: 'PUT',
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (data.status === 'ok') {
+        setUsuario({ ...usuario, ...body });
+      } else {
+        alert('Error al actualizar: ' + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error al conectar con el servidor');
+    } finally {
+      setModalAbierto(false);
     }
-    setModalAbierto(false);
   };
+
+  if (!usuario) return <p>Cargando perfil...</p>;
 
   return (
     <div className={`perfil-container ${tipo}`}>
       <div className="perfil-form">
         <div className="perfil-avatar">
-          <img src="/src/assets/LogoBlanco.png" alt="Perfil" />
+          {usuario.imagen ? (
+            <img src={`http://localhost:5000/uploads/${usuario.imagen}`} alt="Perfil" />
+          ) : (
+            <div className="perfil-no-image">Sin foto</div>
+          )}
           <input type="file" id="fotoPerfil" hidden />
-          <label htmlFor="fotoPerfil" className="cargar-foto-btn">Cargar foto</label>
+          <label htmlFor="fotoPerfil" className="cargar-foto-btn">
+            Cargar foto
+          </label>
         </div>
 
         <div className="perfil-fields">
           <div className="row">
             <div>
-              <label>
-                Nombres: <i className="bi bi-box-arrow-down-left"></i>
-              </label>
-              <div className="editable-field" onClick={() => abrirModal('Nombre', nombre)}>
-                <input type="text" value={nombre} />
+              <label>Nombres:</label>
+              <div className="editable-field" onClick={() => abrirModal('Nombre', usuario.nombre)}>
+                <input type="text" value={usuario.nombre} readOnly />
               </div>
             </div>
             <div>
-              <label>
-                Apellidos: <i className="bi bi-box-arrow-down-left"></i>
-              </label>
-              <div className="editable-field" onClick={() => abrirModal('Apellidos', apellidos)}>
-                <input type="text" value={apellidos} />
+              <label>Apellidos:</label>
+              <div className="editable-field" onClick={() => abrirModal('Apellidos', usuario.apellido)}>
+                <input type="text" value={usuario.apellido} readOnly />
               </div>
             </div>
           </div>
 
           <div className="row">
             <div>
-              <label>
-                Teléfono: <i className="bi bi-box-arrow-down-left"></i>
-              </label>
-              <div className="editable-field" onClick={() => abrirModal('Teléfono', telefono)}>
-                <input type="text" value={telefono} />
+              <label>Teléfono:</label>
+              <div className="editable-field" onClick={() => abrirModal('Teléfono', usuario.telefono)}>
+                <input type="text" value={usuario.telefono} readOnly />
               </div>
             </div>
             <div>
               <label>Email:</label>
-              <input type="email" value={email} disabled />
+              <input type="email" value={usuario.correo} disabled />
             </div>
           </div>
 
           <div className="row">
             <div>
               <label>Rol:</label>
-              <input type="text" value={rol} disabled />
+              <input type="text" value={usuario.rol} disabled />
             </div>
             <div>
               <label>DNI:</label>
-              <input type="text" value={dni} disabled />
+              <input type="text" value={usuario.dni} disabled />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mostrar el modal solo si está abierto */}
       {modalAbierto && (
         <ModalEdicion
           campo={campoAEditar}
           valorInicial={valorCampo}
           onGuardar={guardarEdicion}
           onCerrar={() => setModalAbierto(false)}
-          tipo={tipo}  // Pasamos el tipo de usuario (vendedor o admin)
+          tipo={tipo}
         />
       )}
     </div>

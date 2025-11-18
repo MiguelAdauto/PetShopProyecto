@@ -25,7 +25,7 @@ def login():
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             """
-            SELECT u.id, u.nombre, u.apellido, u.correo, r.nombre AS rol
+            SELECT u.id, u.nombre, u.apellido, u.correo, u.imagen, r.nombre AS rol
             FROM usuarios u
             JOIN roles r ON u.rol_id = r.id
             WHERE u.correo = %s AND u.contrasena = %s AND u.estado = 1
@@ -37,8 +37,8 @@ def login():
         conn.close()
 
         if user:
-            # Convierte el rol a un valor 'admin' o 'vendedor' explícito
-            role = "admin" if user["rol"].lower() == "admin" else "vendedor"
+            # Normalizamos los roles
+            role_backend = user["rol"].lower()  # 'admin' o 'vendedor'
             return jsonify({
                 "status": "ok",
                 "user": {
@@ -46,7 +46,8 @@ def login():
                     "nombre": user["nombre"],
                     "apellido": user["apellido"],
                     "correo": user["correo"],
-                    "rol": role
+                    "imagen": user.get("imagen", ""),
+                    "rol": role_backend
                 }
             })
         else:

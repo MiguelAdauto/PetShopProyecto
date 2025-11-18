@@ -11,34 +11,18 @@ db_config = {
     "database": Config.MYSQL_DATABASE
 }
 
-# 🔹 Listar subcategorías
+# 🔹 Listar subcategorías (todas, sin filtro)
 @subcategorias_bp.route("/", methods=["GET"])
 def listar_subcategorias():
-    categoria_id = request.args.get("categoria_id")
-    
     conn = None
     cursor = None
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
 
-        if categoria_id:
-            try:
-                categoria_id = int(categoria_id)
-            except ValueError:
-                return jsonify({"status": "error", "message": "categoria_id debe ser un número"}), 400
-
-            # 🔹 JOIN con tabla intermedia para filtrar por categoría
-            cursor.execute("""
-                SELECT s.id, s.nombre, s.descripcion
-                FROM subcategorias s
-                JOIN categoria_subcategoria cs ON s.id = cs.subcategoria_id
-                WHERE cs.categoria_id = %s
-            """, (categoria_id,))
-        else:
-            cursor.execute("SELECT id, nombre, descripcion FROM subcategorias")
-
+        cursor.execute("SELECT id, nombre, descripcion FROM subcategorias")
         subcategorias = cursor.fetchall()
+
         return jsonify({"status": "ok", "subcategorias": subcategorias})
 
     except mysql.connector.Error as err:
@@ -51,7 +35,7 @@ def listar_subcategorias():
             conn.close()
 
 
-# 🔹 Agregar subcategoría
+# 🔹 Agregar subcategoría (SIN categoria_id)
 @subcategorias_bp.route("/", methods=["POST"])
 def agregar_subcategoria():
     try:
@@ -76,6 +60,7 @@ def agregar_subcategoria():
         )
         conn.commit()
         new_id = cursor.lastrowid
+
         return jsonify({"status": "ok", "message": "Subcategoría agregada exitosamente", "id": new_id}), 201
 
     except mysql.connector.Error as err:
@@ -88,10 +73,13 @@ def agregar_subcategoria():
             conn.close()
 
 
-# 🔹 Editar subcategoría
+# 🔹 Editar subcategoría (SIN categoria_id)
 @subcategorias_bp.route("/<int:id>", methods=["PUT"])
 def editar_subcategoria(id):
-    data = request.get_json(force=True)
+    try:
+        data = request.get_json(force=True)
+    except:
+        return jsonify({"status": "error", "message": "No se pudo leer JSON"}), 400
 
     nombre = data.get("nombre", "").strip()
     descripcion = data.get("descripcion", "").strip()
@@ -109,6 +97,7 @@ def editar_subcategoria(id):
             (nombre, descripcion, id)
         )
         conn.commit()
+
         return jsonify({"status": "ok", "message": "Subcategoría actualizada exitosamente"})
 
     except mysql.connector.Error as err:
@@ -131,6 +120,7 @@ def eliminar_subcategoria(id):
         cursor = conn.cursor()
         cursor.execute("DELETE FROM subcategorias WHERE id=%s", (id,))
         conn.commit()
+
         return jsonify({"status": "ok", "message": "Subcategoría eliminada correctamente"})
 
     except mysql.connector.Error as err:

@@ -1,194 +1,180 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "../../../../styles/AgregarGlobal.css";
 
 interface FormUsuarioProps {
   modo?: "agregar" | "editar";
 }
 
-interface Usuario {
-  nombre: string;
-  apellido: string;
-  telefono: string;
-  email: string;
-  rol: string;
-  dni: string;
-  imagen?: File | null;
-}
-
 const FormUsuario: React.FC<FormUsuarioProps> = ({ modo = "agregar" }) => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();   // ← para recibir datos desde navigate()
   const navigate = useNavigate();
 
-  // Estados controlados
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [email, setEmail] = useState("");
-  const [rol, setRol] = useState("");
-  const [dni, setDni] = useState("");
+  const usuarioInicial = location.state || null;
+
+  const [nombre, setNombre] = useState(usuarioInicial?.nombre || "");
+  const [apellido, setApellido] = useState(usuarioInicial?.apellido || "");
+  const [telefono, setTelefono] = useState(usuarioInicial?.telefono || "");
+  const [correo, setCorreo] = useState(usuarioInicial?.correo || "");
+  const [rolId, setRolId] = useState<number | "">(usuarioInicial?.rol_id || "");
+  const [dni, setDni] = useState(usuarioInicial?.dni || "");
+  const [contrasena, setContrasena] = useState(usuarioInicial?.contrasena || "");
   const [imagen, setImagen] = useState<File | null>(null);
   const [cargando, setCargando] = useState(false);
 
-  // Si estamos en modo editar, cargamos los datos del usuario
+  // Si no llegó usuario desde navigate(), consultar backend
   useEffect(() => {
-    if (modo === "editar" && id) {
+    if (modo === "editar" && id && !usuarioInicial) {
       setCargando(true);
-      // Simulación de fetch; reemplazar con tu API real
-      fetch(`/api/usuarios/${id}`)
-        .then(res => res.json())
-        .then((data: Usuario) => {
-          setNombre(data.nombre);
-          setApellido(data.apellido);
-          setTelefono(data.telefono);
-          setEmail(data.email);
-          setRol(data.rol);
-          setDni(data.dni);
-          setImagen(data.imagen || null);
+      fetch(`http://localhost:5000/usuarios/${id}`) 
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "ok") {
+            const u = data.usuario;
+
+            setNombre(u.nombre);
+            setApellido(u.apellido);
+            setTelefono(u.telefono);
+            setCorreo(u.correo);
+            setRolId(u.rol_id);
+            setDni(u.dni);
+            setContrasena(u.contrasena);
+          }
         })
         .finally(() => setCargando(false));
     }
-  }, [modo, id]);
+  }, [modo, id, usuarioInicial]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleDniChange = (value: string) => {
+    setDni(value);
+    if (modo === "agregar") {
+      setContrasena(value);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const usuario: Usuario = { nombre, apellido, telefono, email, rol, dni, imagen };
+    const formData = new FormData();
+    formData.append("nombre", nombre);
+    formData.append("apellido", apellido);
+    formData.append("telefono", telefono);
+    formData.append("correo", correo);
+    formData.append("rol_id", String(rolId));
+    formData.append("dni", dni);
 
     if (modo === "agregar") {
-      console.log("🧍‍♂️ Agregando usuario:", usuario);
-      // POST al backend
-    } else {
-      console.log("✏️ Editando usuario:", usuario);
-      // PUT al backend usando id
+      formData.append("contrasena", contrasena);
     }
 
-    // Redirigir al listado después de guardar
-    navigate("/admin/usuarios");
+    // Solo enviar archivo si se subió uno nuevo
+    if (imagen) {
+      formData.append("imagen", imagen);
+    }
+
+    const url =
+      modo === "agregar"
+        ? "http://localhost:5000/usuarios/"
+        : `http://localhost:5000/usuarios/${id}`;
+
+    const method = modo === "agregar" ? "POST" : "PUT";
+
+    try {
+      const res = await fetch(url, {
+        method,
+        body: formData, // ← ya NO usamos JSON
+      });
+
+      const data = await res.json();
+      if (data.status === "ok") {
+        alert(modo === "agregar" ? "Usuario agregado" : "Usuario actualizado");
+        navigate("/admin/usuarios");
+      } else {
+        alert(data.message || "Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Ocurrió un error");
+    }
   };
 
-  const handleReset = () => {
-    setNombre("");
-    setApellido("");
-    setTelefono("");
-    setEmail("");
-    setRol("");
-    setDni("");
-    setImagen(null);
-  };
+  if (cargando) return <p>Cargando usuario...</p>;
 
-  if (cargando) return <p>Cargando datos del usuario...</p>;
 
   return (
     <div className="StyleAgregarAmd">
-      <button
-        type="button"
-        className="volver-btn"
-        onClick={() => navigate(-1)}
-      >
-        <i className="bi bi-chevron-compact-left" style={{ marginRight: "8px" }}></i>
-        Volver
+      <button type="button" className="volver-btn" onClick={() => navigate(-1)}>
+        <i className="bi bi-chevron-compact-left"></i> Volver
       </button>
 
       <h2>{modo === "agregar" ? "Registrar nuevo Usuario" : "Editar Usuario"}</h2>
 
-      <form onSubmit={handleSubmit} onReset={handleReset}>
-        {/* Nombre y Apellido */}
+      <form onSubmit={handleSubmit}>
+
         <div className="form-row">
           <div className="input-group">
             <label>Nombre</label>
-            <input
-              type="text"
-              placeholder="nombre del usuario"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              required
-            />
+            <input required value={nombre} onChange={(e) => setNombre(e.target.value)} />
           </div>
 
           <div className="input-group">
             <label>Apellido</label>
-            <input
-              type="text"
-              placeholder="apellido del usuario"
-              value={apellido}
-              onChange={(e) => setApellido(e.target.value)}
-              required
-            />
+            <input required value={apellido} onChange={(e) => setApellido(e.target.value)} />
           </div>
         </div>
 
-        {/* Teléfono y Email */}
         <div className="form-row">
           <div className="input-group">
             <label>Teléfono</label>
-            <input
-              type="tel"
-              placeholder="ej: 987654321"
-              value={telefono}
-              onChange={(e) => setTelefono(e.target.value)}
-              required
-            />
+            <input required value={telefono} onChange={(e) => setTelefono(e.target.value)} />
           </div>
 
           <div className="input-group">
-            <label>Email</label>
+            <label>Correo</label>
             <input
-              type="email"
-              placeholder="correo electrónico"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               required
+              value={correo}
+              disabled={modo === "editar"}
+              onChange={(e) => setCorreo(e.target.value)}
             />
           </div>
         </div>
 
-        {/* Rol y DNI */}
         <div className="form-row">
           <div className="input-group">
             <label>Rol</label>
-            <select value={rol} onChange={(e) => setRol(e.target.value)} required>
-              <option value="" disabled hidden>Seleccione un rol</option>
-              <option value="Administrador">Administrador</option>
-              <option value="Vendedor">Vendedor</option>
-              <option value="Cliente">Cliente</option>
+            <select value={rolId} onChange={(e) => setRolId(Number(e.target.value))} required>
+              <option value="" disabled>Seleccione un rol</option>
+              <option value={1}>Administrador</option>
+              <option value={2}>Vendedor</option>
             </select>
           </div>
 
           <div className="input-group">
             <label>DNI</label>
             <input
-              type="text"
-              placeholder="número de documento"
-              value={dni}
-              onChange={(e) => setDni(e.target.value)}
               required
+              value={dni}
+              disabled={modo === "editar"}
+              onChange={(e) => handleDniChange(e.target.value)}
             />
           </div>
         </div>
 
-        {/* Imagen */}
-        <label>Agregar imagen</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              setImagen(e.target.files[0]);
-            }
-          }}
-        />
+        {modo === "agregar" && (
+          <div className="form-row">
+            <div className="input-group">
+              <label>Contraseña (DNI)</label>
+              <input value={contrasena} disabled />
+            </div>
+          </div>
+        )}
 
-        {/* Botones */}
+        <label>Imagen</label>
+        <input type="file" accept="image/*" onChange={(e) => setImagen(e.target.files?.[0] || null)} />
         <div className="botones-row">
-          <button type="submit" className="guardar-btn">
-            <i className="bi bi-floppy-fill" style={{ marginRight: "8px" }}></i>
-            Guardar
-          </button>
-          <button type="reset" className="limpiar-btn">
-            <i className="bi bi-arrow-counterclockwise" style={{ marginRight: "9px" }}></i>
-            Limpiar
-          </button>
+          <button type="submit" className="guardar-btn">Guardar</button>
         </div>
       </form>
     </div>

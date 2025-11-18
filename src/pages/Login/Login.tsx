@@ -4,6 +4,15 @@ import './Login.css';
 import logo from '../../assets/logo.jpg';
 import fondo from '../../assets/portada.png';
 
+interface Usuario {
+  id: number;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  rol: string;      // "Administrador" o "Vendedor"
+  imagen?: string;  // nombre del archivo en el backend
+}
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -11,36 +20,49 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setError('');
+    e.preventDefault();
+    setError('');
 
-  try {
-    const response = await fetch("http://127.0.0.1:5000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ correo: email, contrasena: password }),
-    });
+    try {
+      const response = await fetch('http://127.0.0.1:5000/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ correo: email, contrasena: password }),
+      });
 
-    const data = await response.json();
+      // Convertimos primero a texto y luego a JSON para evitar errores silenciosos
+      const text = await response.text();
+      console.log('Response text:', text);
+      const data = JSON.parse(text);
 
-    if (data.status === "ok") {
-      const role = data.user.rol;
-      localStorage.setItem("rol", role);
+      if (data.status === 'ok') {
+        const usuario: Usuario = {
+          id: data.user.id,
+          nombre: data.user.nombre,
+          apellido: data.user.apellido,
+          correo: data.user.correo,
+          rol: data.user.rol === 'admin' ? 'Administrador' : 'Vendedor',
+          imagen: data.user.imagen || '',
+        };
 
-      if (role === "admin") {
-        navigate("/admin/dashboard");
+        // Guardamos usuario y rol en localStorage
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        localStorage.setItem('rol', data.user.rol); // 'admin' o 'vendedor'
+
+        // Redirección según rol
+        if (data.user.rol === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/vendedor/ventas');
+        }
       } else {
-        navigate("/vendedor/ventas");
+        setError(data.message);
       }
-    } else {
-      setError(data.message);
+    } catch (err) {
+      console.error(err);
+      setError('Error al conectar con el servidor');
     }
-  } catch (err) {
-    setError("Error al conectar con el servidor");
-  }
-};
+  };
 
   return (
     <div className="login-page">
@@ -67,12 +89,14 @@ const Login: React.FC = () => {
               required
             />
             {error && <p className="error">{error}</p>}
-
             <button type="submit">Iniciar sesión</button>
           </form>
         </div>
       </div>
-      <div className="login-right" style={{ backgroundImage: `url(${fondo})` }}></div>
+      <div
+        className="login-right"
+        style={{ backgroundImage: `url(${fondo})` }}
+      ></div>
     </div>
   );
 };
