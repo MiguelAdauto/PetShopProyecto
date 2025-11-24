@@ -54,10 +54,7 @@ const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose, onToggleE
                 alignItems: 'center',
                 background: '#ccc',
                 color: '#555'
-              }}
-            >
-              Sin foto
-            </div>
+              }}>Sin foto</div>
           )}
 
           <div className="modal-info">
@@ -74,19 +71,15 @@ const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose, onToggleE
                   borderRadius: 5,
                   color: 'white',
                   backgroundColor: usuario.estado ? '#4caf50' : '#f44336'
-                }}
-              >
+                }}>
                 {usuario.estado ? 'Activo' : 'Desactivado'}
               </span>
             </p>
-
             {onToggleEstado && (
               <button
                 style={{ marginTop: 10, padding: '6px 12px', cursor: 'pointer' }}
-                onClick={handleToggleEstado}
-              >
-                {usuario.estado ? 'Desactivar' : 'Activar'}
-              </button>
+                onClick={handleToggleEstado}>
+                {usuario.estado ? 'Desactivar' : 'Activar'}</button>
             )}
           </div>
         </div>

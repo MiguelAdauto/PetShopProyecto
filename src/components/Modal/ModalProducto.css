@@ -139,3 +139,19 @@
     max-width: 100%;
   }
 }
+
+.btn-desactivar {
+  margin-top: 15px;
+  background-color: #d9534f;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.btn-desactivar:hover {
+  background-color: #c9302c;
+}

@@ -1,62 +1,95 @@
 import { useState, useEffect } from "react";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
-import BusquedaCategorias from "./BusquedaSubCategorias";
 import '../../../Styles/PaginasListado.css';
-import './BusquedaSubCategorias';
 
-const columnasCategorias = [
-    { key: 'id', label: 'ID', sortable: true },
-    { key: 'nombre', label: 'Nombre', sortable: true },
-    { key: 'descripcion', label: 'Descripcion', sortable: true },
+interface SubCategoria {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  visible: number; // 0 o 1
+}
+
+const columnasSubCategorias = [
+  { key: "id", label: "ID", sortable: true },
+  { key: "nombre", label: "Nombre", sortable: true },
+  { key: "descripcion", label: "Descripción", sortable: true },
 ];
 
-const datosCategoriasEstaticos = [
-    {
-        id: '1',
-        nombre: 'Juguetes',
-        descripcion: 'Ubicado en la parte derecha de la pared'
-    },
-    {
-        id: '2',
-        nombre: 'Hogar',
-        descripcion: 'Ubicados en la parte delantera del local'
-    },
-    {
-        id: '3',
-        nombre: 'Higiene',
-        descripcion: 'Ubicado en el segundo nivel del estante delantero'
-    },
-];
+const SubCategoriasListado = () => {
+  const [subCategorias, setSubCategorias] = useState<SubCategoria[]>([]);
+  const [cargando, setCargando] = useState(true);
 
+  useEffect(() => {
+    const fetchSubCategorias = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/subcategorias");
+        const data = await res.json();
+        if (data.status === "ok") {
+          setSubCategorias(data.subcategorias || []);
+        }
+      } catch (err) {
+        console.error("Error cargando subcategorías:", err);
+      } finally {
+        setCargando(false);
+      }
+    };
 
-const CategoriasListado = () => {
-    const [categorias, setCategorias] = useState(datosCategoriasEstaticos);
+    fetchSubCategorias();
+  }, []);
 
-    useEffect(() => {
-        // Aquí iría la lógica para obtener los datos del backend
-        // Por ahora, estamos simulando con los datos estáticos.
+  const toggleVisible = async (sub: SubCategoria) => {
+    // Limitar a 5 visibles
+    const visiblesActuales = subCategorias.filter(s => s.visible === 1).length;
+    if (sub.visible === 0 && visiblesActuales >= 5) {
+      alert("Solo puedes tener 5 subcategorías visibles.");
+      return;
+    }
 
-        // Ejemplo de una llamada API que puedes usar más adelante:
-        // fetch('https://api.example.com/categorias')
-        //   .then(response => response.json())
-        //   .then(data => setCategorias(data))
-        //   .catch(error => console.error('Error al cargar las categorías:', error));
+    try {
+      // Cambiar visible en backend
+      const nuevoVisible = sub.visible === 1 ? 0 : 1;
+      const res = await fetch(`http://localhost:5000/subcategorias/visibilidad/${sub.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visible: nuevoVisible })
+      });
+      const data = await res.json();
+      if (data.status === "ok") {
+        // Actualizar estado local
+        setSubCategorias(subCategorias.map(s =>
+          s.id === sub.id ? { ...s, visible: nuevoVisible } : s
+        ));
+      }
+    } catch (err) {
+      console.error("Error cambiando visibilidad:", err);
+    }
+  };
 
-        // Este bloque simula que los datos llegan de una API después de 2 segundos
-        setTimeout(() => {
-            setCategorias(datosCategoriasEstaticos);  // Aquí se pueden actualizar con datos reales
-        }, 2000);
-    }, []);
+  if (cargando) return <p>Cargando subcategorías...</p>;
 
-    return (
-        <div className="contenedor-pagina-listado">
-            <BusquedaCategorias />
-            <TablaGenerica
-                columnas={columnasCategorias}
-                datos={categorias}
-            />
-        </div>
-    );
+  return (
+    <div className="contenedor-pagina-listado">
+      <TablaGenerica
+        columnas={columnasSubCategorias}
+        datos={subCategorias}
+        renderOpciones={(fila: SubCategoria) => (
+          <button
+            onClick={() => toggleVisible(fila)}
+            style={{
+              padding: "4px 8px",
+              backgroundColor: fila.visible === 1 ? "#4caf50" : "#f0f0f0",
+              color: fila.visible === 1 ? "white" : "black",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer"
+            }}
+          >
+            {fila.visible === 1 ? "Visible" : "Oculta"}
+          </button>
+        )}
+      />
+    </div>
+  );
 };
 
-export default CategoriasListado;
+export default SubCategoriasListado;

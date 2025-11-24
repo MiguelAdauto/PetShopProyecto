@@ -1,15 +1,17 @@
 import './CategoriesTabs.css';
 
-type Category = 'Perros' | 'Gatos' | 'Mixto';
+// Exportamos el tipo Category
+export type Category = 'Perro' | 'Gato' | 'Mixto';
 
-type Props={
-    selected:Category;
-    onChange:(value:Category)=> void;
+type Props = {
+  selected: Category;
+  onChange: (value: Category) => void;
 };
 
-const CategoriesTabs =({selected, onChange}:Props)=>{
-    const categorias : Category[]=['Perros','Gatos','Mixto'];
-    return (
+const CategoriesTabs = ({ selected, onChange }: Props) => {
+  const categorias: Category[] = ['Perro', 'Gato', 'Mixto'];
+
+  return (
     <div className="categories-tabs">
       {categorias.map((cat) => (
         <button

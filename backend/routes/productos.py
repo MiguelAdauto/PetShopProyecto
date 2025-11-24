@@ -17,8 +17,57 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(os.path.dirname(BASE_DIR), "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+# 🔹 Desactivar producto (activo = 0)
+@productos_bp.route("/desactivar/<int:id>", methods=["PUT"])
+def desactivar_producto(id):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
 
-# 🔹 Listar productos
+    try:
+        cursor.execute("""
+            UPDATE productos
+            SET activo = 0
+            WHERE id = %s
+        """, (id,))
+        conn.commit()
+
+        return jsonify({"status": "ok", "message": "Producto desactivado"})
+    except mysql.connector.Error as err:
+        return jsonify({"status": "error", "message": str(err)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@productos_bp.route("/estado/<int:id>", methods=["PUT"])
+def actualizar_estado(id):
+    try:
+        data = request.get_json(force=True)
+
+        if data is None or "activo" not in data:
+            return jsonify({"status": "error", "message": "Campo 'activo' requerido"}), 400
+
+        nuevo_estado = data["activo"]  # True o False
+
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE productos
+            SET activo = %s
+            WHERE id = %s
+        """, (nuevo_estado, id))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({"status": "ok", "message": "Estado actualizado"})
+
+    except Exception as ex:
+        return jsonify({"status": "error", "message": str(ex)}), 500
+
+# Listar productos
+# Listar productos
 @productos_bp.route("/", methods=["GET"])
 def listar_productos():
     conn = None
@@ -35,6 +84,10 @@ def listar_productos():
             LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
         """)
         productos = cursor.fetchall()
+
+        # Log para verificar los datos
+        print("Productos desde backend:", productos)  # Verifica los valores de precio_venta y precio_compra
+
         return jsonify({"status": "ok", "productos": productos})
     except mysql.connector.Error as err:
         return jsonify({"status": "error", "message": str(err)}), 500

@@ -17,6 +17,37 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(os.path.dirname(BASE_DIR), "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+# ---------------------------------------------------------
+# OBTENER USUARIO POR ID  (FALTABA ESTA RUTA)
+# ---------------------------------------------------------
+@usuarios_bp.route("/<int:id>", methods=["GET"])
+def obtener_usuario_por_id(id):
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT u.id, u.nombre, u.apellido, u.telefono, u.correo,
+                   u.imagen, r.nombre AS rol, u.dni, u.estado, u.rol_id
+            FROM usuarios u
+            JOIN roles r ON u.rol_id = r.id
+            WHERE u.id = %s
+        """, (id,))
+
+        usuario = cursor.fetchone()
+
+        if usuario:
+            return jsonify({"status": "ok", "usuario": usuario})
+        else:
+            return jsonify({"status": "error", "message": "Usuario no encontrado"}), 404
+
+    except mysql.connector.Error as err:
+        return jsonify({"status": "error", "message": str(err)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
 @usuarios_bp.route("/rol/<rol_nombre>", methods=["GET"])
 def obtener_usuario_por_rol(rol_nombre):
     try:

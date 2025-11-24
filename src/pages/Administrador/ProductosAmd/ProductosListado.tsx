@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaProductos from "./BusquedaProductos";
 import Paginacion from "../../../components/Paginacion/Paginacion";
-import api from "../../../api/api"; // Axios config
+import api from "../../../api/api";
+import ModalProducto from "../../../components/Modal/ModalProducto"; 
 import "../../../Styles/PaginasListado.css";
 
 const columnasProductosAdmin = [
@@ -24,12 +25,13 @@ const ProductosListado = () => {
   const filasPorPagina = 6;
   const navigate = useNavigate();
 
-  // ✅ Obtener productos desde el backend
+  // 👁️‍🗨️ Estado para modal
+  const [productoSeleccionado, setProductoSeleccionado] = useState<any | null>(null);
+
   const cargarProductos = async () => {
     try {
       const response = await api.get("/productos/");
       if (response.data.status === "ok") {
-        console.log("Productos API:", response.data.productos);
         setProductos(response.data.productos);
       }
     } catch (error) {
@@ -47,9 +49,19 @@ const ProductosListado = () => {
   const productosPaginados = productos.slice(inicio, fin);
   const totalPaginas = Math.ceil(productos.length / filasPorPagina);
 
-  // Botones de acción
+  // 🟦 Botones de acción
   const renderOpciones = (fila: any) => (
     <div style={{ display: "flex", gap: "12px" }}>
+      
+      {/* 🔵 Ver Producto (abre el modal) */}
+      <button
+        title="Ver Producto"
+        onClick={() => setProductoSeleccionado(fila)}
+        style={{ cursor: "pointer", background: "none", border: "none" }}
+      >
+        <i className="bi bi-eye" style={{ fontSize: "20px", color: "#000" }}></i>
+      </button>
+
       <button
         title="Editar Producto"
         onClick={() => navigate("/admin/editar-producto", { state: fila })}
@@ -73,30 +85,42 @@ const ProductosListado = () => {
     </div>
   );
 
+  // Render custom celda imagen
   const renderCustomCell = (key: string, value: any) => {
-  if (key === "imagen") {
-    if (!value) return <span>No hay imagen</span>;
-    const src = `http://localhost:5000/uploads/${value}`; // <- solo el nombre del archivo
-    return <img src={src} alt="Producto" style={{ width: 50, height: 50 }} />;
-  }
-  return value;
-}
+    if (key === "imagen") {
+      if (!value) return <span>No hay imagen</span>;
+      const src = `http://localhost:5000/uploads/${value}`;
+      return <img src={src} alt="Producto" style={{ width: 50, height: 50 }} />;
+    }
+    return value;
+  };
 
   return (
     <div className="contenedor-pagina-listado">
       <BusquedaProductos onBuscar={() => {}} />
+
       <TablaGenerica
         columnas={columnasProductosAdmin}
         datos={productosPaginados}
         renderOpciones={renderOpciones}
         renderCell={renderCustomCell}
       />
+
       <Paginacion
         paginaActual={paginaActual}
         totalPaginas={totalPaginas}
         onPaginaChange={setPaginaActual}
         tipo="admin"
       />
+
+      {/* 🟣 Modal de Producto */}
+      {productoSeleccionado && (
+        <ModalProducto
+          producto={productoSeleccionado}
+          onClose={() => setProductoSeleccionado(null)}
+          onEstadoActualizado={cargarProductos}   // 🔥 AQUÍ
+        />
+      )}
     </div>
   );
 };

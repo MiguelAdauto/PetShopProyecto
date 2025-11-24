@@ -1,15 +1,13 @@
+// SubCategoriesTabs.tsx
 import './SubCategoriesTabs.css';
 
-type SubCategory = 'Juguetes' | 'Aseo' | 'Accesorios' | 'Hogar' | 'Comederos';
-
 type Props = {
-  selected: SubCategory;
-  onChange: (value: SubCategory) => void;
+  subcategorias: string[];
+  selected: string;
+  onChange: (value: string) => void;
 };
 
-const SubCategoriesTabs = ({ selected, onChange }: Props) => {
-  const subcategorias: SubCategory[] = ['Juguetes', 'Aseo', 'Accesorios','Hogar','Comederos'];
-
+const SubCategoriesTabs = ({ subcategorias, selected, onChange }: Props) => {
   return (
     <div className="subcategories-tabs">
       {subcategorias.map((sub) => (

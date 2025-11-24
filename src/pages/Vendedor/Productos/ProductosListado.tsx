@@ -1,65 +1,66 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
-import cuerdaImg from '../../../assets/cuerda.jpg';
 import BusquedaProductos from "./BusquedaProductos";
 import Paginacion from "../../../components/Paginacion/Paginacion";
 import ModalProducto from "../../../components/Modal/ModalProducto";
-import '../../../Styles/PaginasListado.css';
+import api from "../../../api/api"; // Axios config
+import "../../../Styles/PaginasListado.css";
 
-const columnasProductosAdmin = [
-  { key: 'id', label: '#', sortable: true },
-  { key: 'imagen', label: 'Imagen ' },
-  { key: 'codigo', label: 'Código ', sortable: true },
-  { key: 'nombre', label: 'Nombre ', sortable: true },
-  { key: 'precioCompra', label: 'Precio Compra ', sortable: true },
-  { key: 'precioVenta', label: 'Precio Venta ', sortable: true },
-  { key: 'precioTotal', label: 'Precio Total ', sortable: true },
-  { key: 'tipo', label: 'Tipo ', sortable: true },
-  { key: 'categoria', label: 'Categoría ', sortable: true },
-  { key: 'stock', label: 'Stock', sortable: true },
+const columnasProductosVendedor = [
+  { key: "id", label: "#", sortable: true },
+  { key: "imagen", label: "Imagen" },
+  { key: "codigo", label: "Código", sortable: true },
+  { key: "nombre", label: "Nombre", sortable: true },
+  { key: "precio_venta", label: "Precio Venta", sortable: true },
+  { key: "categoria", label: "Categoría", sortable: true },
+  { key: "subcategoria", label: "Subcategoría", sortable: true },
+  { key: "stock", label: "Stock", sortable: true },
 ];
 
-const datosProductos = Array.from({ length: 23 }, (_, index) => ({
-  id: index + 1,
-  imagen: cuerdaImg,
-  codigo: `P${String(index + 1).padStart(3, '0')}`,
-  nombre: `Producto ${index + 1}`,
-  precioCompra: (Math.random() * 100).toFixed(2),
-  precioVenta: (Math.random() * 100).toFixed(2),
-  precioTotal: (Math.random() * 100).toFixed(2),
-  tipo: ['Mixto', 'Perro', 'Gato'][index % 3],
-  categoria: ['Juguete', 'Aseo', 'Accesorios'][index % 3],
-  stock: Math.floor(Math.random() * 50 + 1),
-}));
-
 const ProductosListado = () => {
-  const [productos, setProductos] = useState(datosProductos);
+  const [productos, setProductos] = useState<any[]>([]);
   const [paginaActual, setPaginaActual] = useState(1);
   const [productoSeleccionado, setProductoSeleccionado] = useState<any>(null);
   const filasPorPagina = 6;
 
-  const buscarProductos = (filtros: any) => {
-    const filtrados = datosProductos.filter(p => {
-      const coincideCodigo = filtros.codigo === "" || p.codigo.toLowerCase().includes(filtros.codigo.toLowerCase());
-      const coincideNombre = filtros.nombre === "" || p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
-      const coincideTipo = filtros.tipo === "" || p.tipo === filtros.tipo;
-      const coincideCategoria = filtros.categoria === "" || p.categoria === filtros.categoria;
-      return coincideCodigo && coincideNombre && coincideTipo && coincideCategoria;
-    });
-    setProductos(filtrados);
-    setPaginaActual(1);
-  };
+  // ✅ Obtener productos desde el backend
+ const cargarProductos = async () => {
+  try {
+    const response = await api.get("/productos/");
+    if (response.data.status === "ok") {
+      console.log("Productos API:", response.data.productos);
 
+      // Aseguramos que los precios sean números válidos
+      const productosFormateados = response.data.productos.map((producto: any) => ({
+        ...producto,
+        precio_venta: isNaN(parseFloat(producto.precio_venta)) ? 'No disponible' : parseFloat(producto.precio_venta),
+        precio_compra: isNaN(parseFloat(producto.precio_compra)) ? 'No disponible' : parseFloat(producto.precio_compra),
+      }));
+
+      setProductos(productosFormateados); 
+    }
+  } catch (error) {
+    console.error("Error al cargar productos:", error);
+  }
+};
+
+  useEffect(() => {
+    cargarProductos();
+  }, []); // Cargar productos solo cuando se monta el componente
+
+  // Paginación
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
   const productosPaginados = productos.slice(inicio, fin);
   const totalPaginas = Math.ceil(productos.length / filasPorPagina);
 
+  // Renderiza las opciones para cada fila
   const renderOpciones = (fila: any) => (
-    <div style={{ display: 'flex', gap: '12px' }}>
+    <div style={{ display: "flex", gap: "12px" }}>
       <button
         title="Ver Detalles"
-        onClick={() => setProductoSeleccionado(fila)}
+        onClick={() => setProductoSeleccionado(fila)} // Pasamos el producto completo
         style={{ cursor: "pointer", background: "none", border: "none" }}
       >
         <i className="bi bi-eye" style={{ fontSize: "20px", color: '#000000ff' }}></i>
@@ -67,25 +68,42 @@ const ProductosListado = () => {
     </div>
   );
 
+  // Renderiza las celdas de la tabla, personalizando la celda de la imagen
+  const renderCustomCell = (key: string, value: any) => {
+    if (key === "imagen") {
+      if (!value) return <span>No hay imagen</span>;
+      const src = `http://localhost:5000/uploads/${value}`; // Usas el nombre del archivo de la imagen
+      return <img src={src} alt="Producto" style={{ width: 50, height: 50 }} />;
+    }
+    return value;
+  };
+
   return (
     <div className="contenedor-pagina-listado">
-      <BusquedaProductos onBuscar={buscarProductos} />
+      {/* Buscador */}
+      <BusquedaProductos onBuscar={() => {}} />
+
+      {/* Tabla de productos */}
       <TablaGenerica
-        columnas={columnasProductosAdmin}
+        columnas={columnasProductosVendedor}
         datos={productosPaginados}
-        renderOpciones={renderOpciones}
+        renderOpciones={renderOpciones} // Solo la opción de "Ver Detalles"
+        renderCell={renderCustomCell} // Personaliza las celdas, por ejemplo, para la imagen
       />
 
+      {/* Paginación */}
       <Paginacion
         paginaActual={paginaActual}
         totalPaginas={totalPaginas}
         onPaginaChange={setPaginaActual}
+        tipo="vendedor" // Se puede pasar un tipo si quieres diferenciar entre admin y vendedor
       />
 
-      {/* Mostrar el modal si hay un producto seleccionado */}
+      {/* ModalProducto */}
       <ModalProducto
-        producto={productoSeleccionado}
-        onClose={() => setProductoSeleccionado(null)}
+        producto={productoSeleccionado} // Pasamos el producto seleccionado
+        onClose={() => setProductoSeleccionado(null)} // Lógica para cerrar el modal
+        onEstadoActualizado={cargarProductos}
       />
     </div>
   );

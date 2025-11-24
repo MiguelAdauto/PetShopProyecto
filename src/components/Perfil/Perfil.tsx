@@ -16,11 +16,16 @@ const Perfil: React.FC<PerfilProps> = ({ tipo }) => {
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/usuarios?rol=${tipo}`);
+        const usuarioLS = localStorage.getItem('usuario');
+        if (!usuarioLS) return;
+
+        const { id } = JSON.parse(usuarioLS);
+
+        const res = await fetch(`http://localhost:5000/usuarios/${id}`);
         const data = await res.json();
 
         if (data.status === 'ok') {
-          setUsuario(data.usuarios[0]); // Tomamos el primer usuario con ese rol
+          setUsuario(data.usuario);
         } else {
           alert('Error al cargar datos del usuario: ' + data.message);
         }
@@ -43,7 +48,6 @@ const Perfil: React.FC<PerfilProps> = ({ tipo }) => {
     if (!usuario) return;
 
     try {
-      // Copiamos todos los campos existentes
       const body: any = {
         nombre: usuario.nombre,
         apellido: usuario.apellido,
@@ -51,7 +55,6 @@ const Perfil: React.FC<PerfilProps> = ({ tipo }) => {
         rol_id: usuario.rol_id
       };
 
-      // Actualizamos solo el campo que se editó
       switch (campoAEditar) {
         case 'Nombre':
           body.nombre = nuevoValor;
