@@ -1,18 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaVentas from "./BusquedaVentas";
 import Paginacion from "../../../components/Paginacion/Paginacion";
 import "../../../Styles/PaginasListado.css";
+import api from "../../../api/api";
+import type { Venta } from "../../../types/Venta";
 
-interface Venta {
-  nro: string;
-  tipoPago: string;
-  fecha: string;
-  cliente: string;
-  total: string;
-}
-
+// Columnas basadas en tu BASE DE DATOS real
 const columnasVentas = [
   { key: "nro", label: "NRO.", sortable: true },
   { key: "tipoPago", label: "Tipo de Pago", sortable: true },
@@ -21,24 +16,43 @@ const columnasVentas = [
   { key: "total", label: "Total", sortable: true },
 ];
 
-const datosVentasIniciales: Venta[] = Array.from(
-  { length: 25 },
-  (_, index) => ({
-    nro: String(index + 1).padStart(3, "0"),
-    tipoPago: ["Yape", "Plin", "Mixto"][index % 3],
-    fecha: "2025-09-17",
-    cliente: ["Pepito", "Luis Perez", "Camila Diaz", "Andre"][index % 4],
-    total: `s/${(Math.random() * 100 + 10).toFixed(2)}`,
-  })
-);
 
 const VentasListado = () => {
+  const [ventas, setVentas] = useState<Venta[]>([]);
+  const [ventasFiltradas, setVentasFiltradas] = useState<Venta[]>([]);
   const [paginaActual, setPaginaActual] = useState(1);
-  const [ventasFiltradas, setVentasFiltradas] =
-    useState<Venta[]>(datosVentasIniciales);
   const filasPorPagina = 10;
   const navigate = useNavigate();
 
+  // Cargar ventas desde Flask
+  useEffect(() => {
+    const cargarVentas = async () => {
+      try {
+        const res = await api.get("/ventas/listar");
+
+        // Validación para evitar campos undefined
+        const ventasBD = res.data.map((v: any) => ({
+          id: v.id,
+          fecha: v.fecha || "",
+          nro: v.nro || "",
+          tipoPago: v.tipoPago || "",
+          cliente: v.cliente || "",
+          total: v.total ?? 0,
+        }));
+
+        setVentas(ventasBD);
+        setVentasFiltradas(ventasBD);
+      } catch (error) {
+        console.error("Error cargando ventas:", error);
+        setVentas([]);
+        setVentasFiltradas([]);
+      }
+    };
+
+    cargarVentas();
+  }, []);
+
+  // Paginación
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
   const ventasPaginadas = ventasFiltradas.slice(inicio, fin);
@@ -49,15 +63,17 @@ const VentasListado = () => {
       <i
         className="bi bi-file-earmark-text icono-opcion"
         title="Ver"
-        onClick={() => navigate(`/vendedor/listado/${fila.nro}`)}
+        onClick={() => navigate(`/vendedor/listado/${fila.id}`)}
         style={{ cursor: "pointer", fontSize: "20px" }}
-      ></i>
+      />
       <i
         className="bi bi-download icono-opcion"
         title="Descargar PDF"
-        onClick={() => console.log("Descargar PDF de venta:", fila)}
+        onClick={() =>
+          window.open(`http://localhost:5000/ventas/pdf/${fila.id}`, "_blank")
+        }
         style={{ cursor: "pointer", fontSize: "20px" }}
-      ></i>
+      />
     </div>
   );
 
@@ -68,10 +84,7 @@ const VentasListado = () => {
 
   return (
     <div className="contenedor-pagina-listado">
-      <BusquedaVentas
-        ventas={datosVentasIniciales}
-        onFiltrarVentas={actualizarVentasFiltradas}
-      />
+      <BusquedaVentas ventas={ventas} onFiltrarVentas={actualizarVentasFiltradas} />
 
       <TablaGenerica
         columnas={columnasVentas}

@@ -25,7 +25,7 @@ const ProductosListado = () => {
   const filasPorPagina = 6;
   const navigate = useNavigate();
 
-  // 👁️‍🗨️ Estado para modal
+  // Estado para modal
   const [productoSeleccionado, setProductoSeleccionado] = useState<any | null>(null);
 
   const cargarProductos = async () => {
@@ -49,11 +49,11 @@ const ProductosListado = () => {
   const productosPaginados = productos.slice(inicio, fin);
   const totalPaginas = Math.ceil(productos.length / filasPorPagina);
 
-  // 🟦 Botones de acción
+  // Botones de acción
   const renderOpciones = (fila: any) => (
     <div style={{ display: "flex", gap: "12px" }}>
       
-      {/* 🔵 Ver Producto (abre el modal) */}
+      {/* Ver Producto (abre el modal) */}
       <button
         title="Ver Producto"
         onClick={() => setProductoSeleccionado(fila)}
@@ -113,12 +113,12 @@ const ProductosListado = () => {
         tipo="admin"
       />
 
-      {/* 🟣 Modal de Producto */}
+      {/*Modal de Producto */}
       {productoSeleccionado && (
         <ModalProducto
           producto={productoSeleccionado}
           onClose={() => setProductoSeleccionado(null)}
-          onEstadoActualizado={cargarProductos}   // 🔥 AQUÍ
+          onEstadoActualizado={cargarProductos}
         />
       )}
     </div>

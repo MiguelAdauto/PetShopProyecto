@@ -104,21 +104,21 @@ const Perfil: React.FC<PerfilProps> = ({ tipo }) => {
             <div className="perfil-no-image">Sin foto</div>
           )}
           <input type="file" id="fotoPerfil" hidden />
-          <label htmlFor="fotoPerfil" className="cargar-foto-btn">
-            Cargar foto
+          <label style={{ display: "flex", alignItems: "center", gap: "6px" }} htmlFor="fotoPerfil" className="cargar-foto-btn">
+            Cargar foto  <i className="bi bi-images"></i>
           </label>
         </div>
 
         <div className="perfil-fields">
           <div className="row">
             <div>
-              <label>Nombres:</label>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px" }} >Nombres: <i className="bi bi-pencil-square"></i></label>
               <div className="editable-field" onClick={() => abrirModal('Nombre', usuario.nombre)}>
                 <input type="text" value={usuario.nombre} readOnly />
               </div>
             </div>
             <div>
-              <label>Apellidos:</label>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px" }} >Apellidos:<i className="bi bi-pencil-square"></i></label>
               <div className="editable-field" onClick={() => abrirModal('Apellidos', usuario.apellido)}>
                 <input type="text" value={usuario.apellido} readOnly />
               </div>
@@ -127,7 +127,7 @@ const Perfil: React.FC<PerfilProps> = ({ tipo }) => {
 
           <div className="row">
             <div>
-              <label>Teléfono:</label>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>Teléfono: <i className="bi bi-pencil-square"></i></label>
               <div className="editable-field" onClick={() => abrirModal('Teléfono', usuario.telefono)}>
                 <input type="text" value={usuario.telefono} readOnly />
               </div>

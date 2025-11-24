@@ -11,6 +11,7 @@ from routes.usuarios import usuarios_bp
 from routes.productos import productos_bp
 from routes.categorias import categorias_bp
 from routes.subcategorias import subcategorias_bp
+from routes.ventas import ventas_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -25,6 +26,7 @@ app.register_blueprint(usuarios_bp, url_prefix="/usuarios")
 app.register_blueprint(productos_bp, url_prefix="/productos")
 app.register_blueprint(auth_bp, url_prefix="/auth") 
 app.register_blueprint(subcategorias_bp, url_prefix="/subcategorias")
+app.register_blueprint(ventas_bp, url_prefix="/ventas")
 
 # Ruta para servir imágenes
 @app.route("/uploads/<path:filename>")

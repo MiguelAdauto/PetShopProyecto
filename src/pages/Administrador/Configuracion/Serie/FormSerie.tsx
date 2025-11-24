@@ -14,10 +14,27 @@ const FormSerie: React.FC<FormSerieProps> = ({
 }) => {
   const [nuevaSerie, setNuevaSerie] = useState(serieActual);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (nuevaSerie.trim() === "") return;
-    onGuardar(nuevaSerie);
+
+    try {
+      await fetch("http://127.0.0.1:5000/ventas/serie", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          serie: nuevaSerie, // Ej: "B0000035"
+        }),
+      });
+
+      onGuardar(nuevaSerie);
+
+    } catch (error) {
+      console.error("Error actualizando serie:", error);
+    }
   };
 
   return (
@@ -27,12 +44,14 @@ const FormSerie: React.FC<FormSerieProps> = ({
         type="text"
         value={nuevaSerie}
         onChange={(e) => setNuevaSerie(e.target.value.toUpperCase())}
-        placeholder="Ej: B002"
+        placeholder="Ej: B0000035"
       />
+
       <div className="form-buttons">
         <button type="submit" className="btn btn-success">
-          <i className="bi bi-save"></i> Guardar
+          Guardar
         </button>
+
         <button type="button" className="btn btn-secondary" onClick={onCancelar}>
           Cancelar
         </button>

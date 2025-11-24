@@ -1,7 +1,7 @@
 import trashIcon from '../../assets/trash.svg';
 import './ResumenDeOrden.css';
 import React, { useState } from 'react';
-import api from "../../api/api";  // 👈 usa tu axios configurado
+import api from "../../api/api";
 
 type ProductoCarrito = {
   id: number;
@@ -65,15 +65,16 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
     }
 
     const ventaData = {
-      cliente: cliente || "Consumidor Final",
+      metodo_pago: metodoPago,
+      cliente_nombre: cliente || "Consumidor Final",
+      vendedor_id: 1, // tu id real
       total: totalPagar,
-      pagoCliente,
-      vuelto,
-      metodoPago,
+      pagado: pagoCliente,
+      cambio: vuelto,
       productos: carrito.map((p) => ({
-        id: p.id,
+        id_producto: p.id,
         cantidad: p.cantidad,
-        precio: p.precio
+        precio_unitario: p.precio
       }))
     };
 
@@ -82,10 +83,10 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
       const res = await api.post("/ventas/", ventaData);
 
       if (res.data.status === "ok") {
-        alert("Venta registrada con éxito ✔");
-        setCarrito([]);   // limpiar carrito
-        setCliente("");   // limpiar cliente
-        setPagoCliente(""); // limpiar pago
+        alert(`Venta registrada ✔\nBoleta: ${res.data.boleta}`);
+        setCarrito([]);
+        setCliente("");
+        setPagoCliente("");
       } else {
         alert("Error al registrar la venta");
       }

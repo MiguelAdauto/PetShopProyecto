@@ -1,12 +1,5 @@
 import { useState } from "react";
-
-interface Venta {
-  nro: string;
-  tipoPago: string;
-  fecha: string;
-  cliente: string;
-  total: string;
-}
+import type { Venta } from "../../../types/Venta";
 
 interface Props {
   ventas: Venta[];
@@ -30,12 +23,29 @@ const BusquedaVentas = ({ ventas, onFiltrarVentas }: Props) => {
 
   const handleBuscar = () => {
     const ventasFiltradas = ventas.filter((venta) => {
-      const coincideNro = !filtros.nroBoleta || venta.nro.includes(filtros.nroBoleta);
-      const coincideTipoPago = !filtros.tipoPago || venta.tipoPago === filtros.tipoPago;
-      const coincideFechaInicio = !filtros.fechaInicio || venta.fecha >= filtros.fechaInicio;
-      const coincideFechaFin = !filtros.fechaFin || venta.fecha <= filtros.fechaFin;
+      // Filtrar por número de boleta
+      const coincideNro =
+        !filtros.nroBoleta || venta.nro.includes(filtros.nroBoleta);
 
-      return coincideNro && coincideTipoPago && coincideFechaInicio && coincideFechaFin;
+      // Filtrar por tipo de pago
+      const coincideTipoPago =
+        !filtros.tipoPago || venta.tipoPago === filtros.tipoPago;
+
+      // Convertir fecha "YYYY-MM-DD HH:mm" → "YYYY-MM-DD"
+      const ventaFechaISO = venta.fecha ? venta.fecha.split(" ")[0] : "";
+
+      const coincideFechaInicio =
+        !filtros.fechaInicio || ventaFechaISO >= filtros.fechaInicio;
+
+      const coincideFechaFin =
+        !filtros.fechaFin || ventaFechaISO <= filtros.fechaFin;
+
+      return (
+        coincideNro &&
+        coincideTipoPago &&
+        coincideFechaInicio &&
+        coincideFechaFin
+      );
     });
 
     onFiltrarVentas(ventasFiltradas);
@@ -61,6 +71,7 @@ const BusquedaVentas = ({ ventas, onFiltrarVentas }: Props) => {
           <option value="Yape">Yape</option>
           <option value="Plin">Plin</option>
           <option value="Mixto">Mixto</option>
+          <option value="Efectivo">Efectivo</option>
         </select>
       </label>
 

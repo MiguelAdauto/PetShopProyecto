@@ -19,8 +19,10 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         precio_compra: number;
         precio_venta: number;
         stock: number;
-        categoria_id: number;
-        subcategoria_id: number;
+        categoria: string;
+        subcategoria: string;
+        categoria_id?: number;
+        subcategoria_id?: number;
         imagen?: string | null;
       }
     | undefined;
@@ -36,11 +38,14 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
   const [imagen, setImagen] = useState<File | null>(null);
 
   // Para listar categorías y subcategorías
-  const [categorias, setCategorias] = useState<{ id: number; nombre: string }[]>([]);
-  const [subcategorias, setSubcategorias] = useState<{ id: number; nombre: string; descripcion?: string }[]>([]);
+  const [categorias, setCategorias] = useState<
+    { id: number; nombre: string }[]>([]);
+  const [subcategorias, setSubcategorias] = useState<
+    { id: number; nombre: string; descripcion?: string }[]>([]);
 
   // Precio total dinámico
-  const precioTotal = precioCompra && stock ? Number(precioCompra) * Number(stock) : 0;
+  const precioTotal =
+    precioCompra && stock ? Number(precioCompra) * Number(stock) : 0;
 
   // 🔹 Cargar categorías al montar
   useEffect(() => {
@@ -56,34 +61,48 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
     fetchCategorias();
   }, []);
 
-  // 🔹 Cargar subcategorías al cambiar categoría
+  // argar subcategorías al cambiar categoría
   useEffect(() => {
-  const fetchSubcategorias = async () => {
-    try {
-      const res = await api.get("/subcategorias");
-      setSubcategorias(res.data.subcategorias); // usar data.subcategorias si tu API lo devuelve así
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  fetchSubcategorias();
-}, []);
-
+    const fetchSubcategorias = async () => {
+      try {
+        const res = await api.get("/subcategorias");
+        setSubcategorias(res.data.subcategorias);
+        console.log("📌 DATOS INICIALES:", datosIniciales);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSubcategorias();
+  }, []);
 
   // Si estamos editando, llenar formulario con datos iniciales
   useEffect(() => {
-    if (modo === "editar" && datosIniciales) {
+    if (
+      modo === "editar" &&
+      datosIniciales &&
+      categorias.length > 0 &&
+      subcategorias.length > 0
+    ) {
+      // rellenar datos normales
       setNombre(datosIniciales.nombre);
       setCodigo(datosIniciales.codigo);
       setPrecioCompra(datosIniciales.precio_compra);
       setPrecioVenta(datosIniciales.precio_venta);
       setStock(datosIniciales.stock);
-      setCategoria(datosIniciales.categoria_id);
-      setSubcategoria(datosIniciales.subcategoria_id);
-    }
-  }, [modo, datosIniciales]);
 
-  // 🔹 Manejar envío del formulario
+      // buscar categoría por nombre
+      const cat = categorias.find((c) => c.nombre === datosIniciales.categoria);
+      if (cat) setCategoria(cat.id);
+
+      // buscar subcategoría por nombre
+      const subcat = subcategorias.find(
+        (s) => s.nombre === datosIniciales.subcategoria
+      );
+      if (subcat) setSubcategoria(subcat.id);
+    }
+  }, [modo, datosIniciales, categorias, subcategorias]);
+
+  // Manejar envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -116,7 +135,7 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
     }
   };
 
-  // 🔹 Resetear formulario
+  // Resetear formulario
   const handleReset = () => {
     setNombre("");
     setCodigo("");
@@ -131,8 +150,15 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
   return (
     <div className="StyleAgregarAmd">
       <form onSubmit={handleSubmit} onReset={handleReset}>
-        <button type="button" className="volver-btn" onClick={() => window.history.back()}>
-          <i className="bi bi-chevron-compact-left" style={{ marginRight: "8px" }}></i>
+        <button
+          type="button"
+          className="volver-btn"
+          onClick={() => window.history.back()}
+        >
+          <i
+            className="bi bi-chevron-compact-left"
+            style={{ marginRight: "8px" }}
+          ></i>
           Volver
         </button>
 
@@ -141,7 +167,9 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         {/* Nombre y Código */}
         <div className="form-row">
           <div className="input-group">
-            <label>Nombre del Producto</label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              Nombre del Producto<i className="bi bi-pencil-square"></i>
+            </label>
             <input
               placeholder="Nombre del producto"
               type="text"
@@ -152,7 +180,9 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
           </div>
 
           <div className="input-group">
-            <label>Código</label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              Código<i className="bi bi-pencil-square"></i>
+            </label>
             <input
               placeholder="Código del producto"
               type="text"
@@ -166,7 +196,9 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         {/* Precios */}
         <div className="form-row">
           <div className="input-group">
-            <label>Precio de Compra</label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              Precio de Compra<i className="bi bi-pencil-square"></i>
+            </label>
             <input
               placeholder="Precio de compra"
               type="number"
@@ -178,7 +210,9 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
           </div>
 
           <div className="input-group">
-            <label>Precio de Venta</label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              Precio de Venta<i className="bi bi-pencil-square"></i>
+            </label>
             <input
               type="number"
               placeholder="Precio de venta"
@@ -193,7 +227,11 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         {/* Stock y Precio Total */}
         <div className="form-row">
           <div className="input-group">
-            <label>Stock</label>
+            <label
+              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            >
+              Stock<i className="bi bi-pencil-square"></i>
+            </label>
             <input
               type="number"
               placeholder="Ingresar el stock"
@@ -213,9 +251,13 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         {/* Categoría y Subcategoría */}
         <div className="form-row">
           <div className="input-group">
-            <label>Categoría</label>
+            <label
+              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            >
+              Categoría <i className="bi bi-pencil-square"></i>
+            </label>
             <select
-              value={categoria}
+              value={String(categoria)}
               onChange={(e) => setCategoria(Number(e.target.value))}
               required
             >
@@ -229,9 +271,13 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
           </div>
 
           <div className="input-group">
-            <label>Subcategoría</label>
+            <label
+              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+            >
+              Subcategoría <i className="bi bi-pencil-square"></i>
+            </label>
             <select
-              value={subcategoria}
+              value={String(subcategoria)}
               onChange={(e) => setSubcategoria(Number(e.target.value))}
               required
             >
@@ -246,7 +292,9 @@ const FormProductos: React.FC<ProductoFormProps> = ({ modo = "agregar" }) => {
         </div>
 
         {/* Imagen */}
-        <label>Agregar imagen</label>
+        <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          Agregar imagen <i className="bi bi-images"></i>
+        </label>
         <input
           type="file"
           accept="image/*"

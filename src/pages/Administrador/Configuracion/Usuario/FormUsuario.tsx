@@ -114,25 +114,26 @@ const FormUsuario: React.FC<FormUsuarioProps> = ({ modo = "agregar" }) => {
 
         <div className="form-row">
           <div className="input-group">
-            <label>Nombre</label>
-            <input required value={nombre} onChange={(e) => setNombre(e.target.value)} />
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>Nombre <i className="bi bi-pencil-square"></i></label>
+            <input placeholder="Ingresar Nombre" required value={nombre} onChange={(e) => setNombre(e.target.value)} />
           </div>
 
           <div className="input-group">
-            <label>Apellido</label>
-            <input required value={apellido} onChange={(e) => setApellido(e.target.value)} />
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>Apellido <i className="bi bi-pencil-square"></i></label>
+            <input placeholder="Ingresar Apellido" required value={apellido} onChange={(e) => setApellido(e.target.value)} />
           </div>
         </div>
 
         <div className="form-row">
           <div className="input-group">
-            <label>Teléfono</label>
-            <input required value={telefono} onChange={(e) => setTelefono(e.target.value)} />
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>Teléfono <i className="bi bi-pencil-square"></i></label>
+            <input placeholder="Ingresar Num telefono" required value={telefono} onChange={(e) => setTelefono(e.target.value)} />
           </div>
 
           <div className="input-group">
-            <label>Correo</label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>Correo <i className="bi bi-pencil-square"></i></label>
             <input
+              placeholder="Ingresar correo de acceso"
               required
               value={correo}
               disabled={modo === "editar"}
@@ -143,7 +144,7 @@ const FormUsuario: React.FC<FormUsuarioProps> = ({ modo = "agregar" }) => {
 
         <div className="form-row">
           <div className="input-group">
-            <label>Rol</label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>Rol <i className="bi bi-pencil-square"></i></label>
             <select value={rolId} onChange={(e) => setRolId(Number(e.target.value))} required>
               <option value="" disabled>Seleccione un rol</option>
               <option value={1}>Administrador</option>
@@ -152,8 +153,9 @@ const FormUsuario: React.FC<FormUsuarioProps> = ({ modo = "agregar" }) => {
           </div>
 
           <div className="input-group">
-            <label>DNI</label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>DNI <i className="bi bi-pencil-square"></i></label>
             <input
+              placeholder="Ingresar DNI"
               required
               value={dni}
               disabled={modo === "editar"}
@@ -166,12 +168,12 @@ const FormUsuario: React.FC<FormUsuarioProps> = ({ modo = "agregar" }) => {
           <div className="form-row">
             <div className="input-group">
               <label>Contraseña (DNI)</label>
-              <input value={contrasena} disabled />
+              <input placeholder="Inicio de session con DNI" value={contrasena} disabled />
             </div>
           </div>
         )}
 
-        <label>Imagen</label>
+        <label style={{ display: "flex", alignItems: "center", gap: "6px" }}>Imagen <i className="bi bi-images"></i></label>
         <input type="file" accept="image/*" onChange={(e) => setImagen(e.target.files?.[0] || null)} />
         <div className="botones-row">
           <button type="submit" className="guardar-btn">Guardar</button>
