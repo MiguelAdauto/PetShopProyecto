@@ -7,7 +7,6 @@ import "../../../Styles/PaginasListado.css";
 import api from "../../../api/api";
 import type { Venta } from "../../../types/Venta";
 
-// Columnas basadas en tu BASE DE DATOS real
 const columnasVentas = [
   { key: "nro", label: "NRO.", sortable: true },
   { key: "tipoPago", label: "Tipo de Pago", sortable: true },
@@ -16,7 +15,6 @@ const columnasVentas = [
   { key: "total", label: "Total", sortable: true },
 ];
 
-
 const VentasListado = () => {
   const [ventas, setVentas] = useState<Venta[]>([]);
   const [ventasFiltradas, setVentasFiltradas] = useState<Venta[]>([]);
@@ -24,24 +22,28 @@ const VentasListado = () => {
   const filasPorPagina = 10;
   const navigate = useNavigate();
 
-  // Cargar ventas desde Flask
   useEffect(() => {
     const cargarVentas = async () => {
       try {
         const res = await api.get("/ventas/listar");
 
-        // Validación para evitar campos undefined
-        const ventasBD = res.data.map((v: any) => ({
+        if (res.data.status !== "ok") {
+          console.error("Error al cargar ventas:", res.data);
+          return;
+        }
+
+        const ventasBD = res.data.ventas.map((v: any) => ({
           id: v.id,
-          fecha: v.fecha || "",
-          nro: v.nro || "",
-          tipoPago: v.tipoPago || "",
-          cliente: v.cliente || "",
-          total: v.total ?? 0,
+          nro: v.nro,
+          tipoPago: v.tipoPago,
+          fecha: v.fecha,
+          cliente: v.cliente,
+          total: v.total,
         }));
 
         setVentas(ventasBD);
         setVentasFiltradas(ventasBD);
+
       } catch (error) {
         console.error("Error cargando ventas:", error);
         setVentas([]);
@@ -52,10 +54,8 @@ const VentasListado = () => {
     cargarVentas();
   }, []);
 
-  // Paginación
   const inicio = (paginaActual - 1) * filasPorPagina;
-  const fin = inicio + filasPorPagina;
-  const ventasPaginadas = ventasFiltradas.slice(inicio, fin);
+  const ventasPaginadas = ventasFiltradas.slice(inicio, inicio + filasPorPagina);
   const totalPaginas = Math.ceil(ventasFiltradas.length / filasPorPagina);
 
   const renderOpciones = (fila: Venta) => (
@@ -67,12 +67,12 @@ const VentasListado = () => {
         style={{ cursor: "pointer", fontSize: "20px" }}
       />
       <i
-        className="bi bi-download icono-opcion"
-        title="Descargar PDF"
-        onClick={() =>
-          window.open(`http://localhost:5000/ventas/pdf/${fila.id}`, "_blank")
-        }
+        className="bi bi-eye"
+        title="Ver Boleta"
         style={{ cursor: "pointer", fontSize: "20px" }}
+        onClick={() =>
+          window.open(`http://localhost:5000/boleta/${fila.id}`, "_blank")
+        }
       />
     </div>
   );

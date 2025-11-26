@@ -112,13 +112,13 @@ const Perfil: React.FC<PerfilProps> = ({ tipo }) => {
         <div className="perfil-fields">
           <div className="row">
             <div>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px" }} >Nombres: <i className="bi bi-pencil-square"></i></label>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px" }} >Nombres(s): <i className="bi bi-pencil-square"></i></label>
               <div className="editable-field" onClick={() => abrirModal('Nombre', usuario.nombre)}>
                 <input type="text" value={usuario.nombre} readOnly />
               </div>
             </div>
             <div>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px" }} >Apellidos:<i className="bi bi-pencil-square"></i></label>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px" }} >Apellido(s):<i className="bi bi-pencil-square"></i></label>
               <div className="editable-field" onClick={() => abrirModal('Apellidos', usuario.apellido)}>
                 <input type="text" value={usuario.apellido} readOnly />
               </div>

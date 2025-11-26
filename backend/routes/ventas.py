@@ -20,25 +20,28 @@ def obtener_serie():
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
+
         cursor.execute("SELECT serie, correlativo_actual FROM series WHERE activo = 1 LIMIT 1")
         serie = cursor.fetchone()
+
         if serie:
             return jsonify({
                 "status": "ok",
                 "serie": serie["serie"],
                 "correlativo": serie["correlativo_actual"]
             })
-        else:
-            return jsonify({"status": "error", "message": "No hay serie activa"}), 404
+
+        return jsonify({"status": "error", "message": "No hay serie activa"}), 404
+
     except mysql.connector.Error as err:
         return jsonify({"status": "error", "message": str(err)}), 500
+
     finally:
         cursor.close()
         conn.close()
 
-
 # ==============================
-# PUT actualizar serie
+# PUT actualizar SERIE (FALTABA)
 # ==============================
 @ventas_bp.route("/serie", methods=["PUT"])
 def actualizar_serie():
@@ -46,34 +49,64 @@ def actualizar_serie():
     nueva_serie = data.get("serie")
 
     if not nueva_serie:
-        return jsonify({"status": "error", "message": "Debe proporcionar la serie"}), 400
+        return jsonify({"status": "error", "message": "Debe enviar una serie válida"}), 400
 
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # Mantener el correlativo actual
-        cursor.execute("SELECT correlativo_actual FROM series WHERE activo = 1 LIMIT 1")
-        result = cursor.fetchone()
-        correlativo_actual = result[0] if result else 0
+        cursor.execute("""
+            UPDATE series
+            SET serie = %s
+            WHERE activo = 1
+        """, (nueva_serie,))
+
+        conn.commit()
+
+        return jsonify({"status": "ok", "message": "Serie actualizada", "serie": nueva_serie})
+
+    except mysql.connector.Error as err:
+        conn.rollback()
+        return jsonify({"status": "error", "message": str(err)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# ==============================
+# PUT actualizar CORRELATIVO
+# ==============================
+@ventas_bp.route("/correlativo", methods=["PUT"])
+def actualizar_correlativo():
+    data = request.json
+    nuevo_correlativo = data.get("correlativo")
+
+    if nuevo_correlativo is None:
+        return jsonify({"status": "error", "message": "Debe proporcionar un correlativo válido"}), 400
+
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
 
         cursor.execute("""
             UPDATE series
-            SET serie = %s, correlativo_actual = %s
+            SET correlativo_actual = %s
             WHERE activo = 1
-        """, (nueva_serie, correlativo_actual))
+        """, (nuevo_correlativo,))
 
         conn.commit()
+
         return jsonify({
             "status": "ok",
-            "message": "Serie actualizada",
-            "serie": nueva_serie,
-            "correlativo": correlativo_actual
+            "message": "Correlativo actualizado",
+            "correlativo": nuevo_correlativo
         })
 
     except mysql.connector.Error as err:
         conn.rollback()
         return jsonify({"status": "error", "message": str(err)}), 500
+
     finally:
         cursor.close()
         conn.close()
@@ -101,28 +134,33 @@ def registrar_venta():
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
-        # 1️⃣ Validar stock
+        # Validar stock
         for prod in productos:
             cursor.execute("SELECT stock FROM productos WHERE id = %s", (prod["id_producto"],))
             resultado = cursor.fetchone()
             if not resultado:
                 return jsonify({"status": "error", "message": f"Producto {prod['id_producto']} no encontrado"}), 404
+
             stock_actual = resultado[0]
             if stock_actual < prod["cantidad"]:
                 return jsonify({"status": "error", "message": f"No hay suficiente stock para el producto {prod['id_producto']}"}), 400
 
-        # 2️⃣ Obtener serie y correlativo actual
+        # Obtener serie y correlativo
         cursor.execute("SELECT id, serie, correlativo_actual FROM series WHERE activo = 1 LIMIT 1")
         serie_data = cursor.fetchone()
+
         if not serie_data:
             return jsonify({"status": "error", "message": "No hay serie activa"}), 500
+
         serie_id, serie_str, correlativo_actual = serie_data
 
-        # Incrementar correlativo para esta venta
+        # Incrementar correlativo
         correlativo_actual += 1
-        nro_venta = f"B{str(correlativo_actual).zfill(6)}"  # Ej: B000036, B000037, ...
 
-        # 3️⃣ Insertar venta
+        # 🔥 Generar número de boleta correctamente
+        nro_venta = f"{serie_str}{str(correlativo_actual).zfill(6)}"
+
+        # Insertar venta
         cursor.execute("""
             INSERT INTO boleta_venta (
                 fecha, serie_id, nro_correlativo, nro_venta,
@@ -136,24 +174,132 @@ def registrar_venta():
 
         venta_id = cursor.lastrowid
 
-        # 4️⃣ Insertar detalles y actualizar stock
+        # Insertar detalles
         for prod in productos:
             cursor.execute("""
-                INSERT INTO boleta_venta_detalle (boleta_id, producto_id, cantidad, precio_unitario, subtotal)
+                INSERT INTO boleta_venta_detalle 
+                (boleta_id, producto_id, cantidad, precio_unitario, subtotal)
                 VALUES (%s, %s, %s, %s, %s)
-            """, (venta_id, prod["id_producto"], prod["cantidad"], prod["precio_unitario"], prod["cantidad"]*prod["precio_unitario"]))
+            """, (
+                venta_id, prod["id_producto"], prod["cantidad"],
+                prod["precio_unitario"], prod["cantidad"] * prod["precio_unitario"]
+            ))
 
-            cursor.execute("UPDATE productos SET stock = stock - %s WHERE id = %s", (prod["cantidad"], prod["id_producto"]))
+            cursor.execute("UPDATE productos SET stock = stock - %s WHERE id = %s",
+                           (prod["cantidad"], prod["id_producto"]))
 
-        # 5️⃣ Actualizar correlativo en la serie
-        cursor.execute("UPDATE series SET correlativo_actual = %s WHERE id = %s", (correlativo_actual, serie_id))
+        # Actualizar correlativo
+        cursor.execute("UPDATE series SET correlativo_actual = %s WHERE id = %s",
+                       (correlativo_actual, serie_id))
 
         conn.commit()
-        return jsonify({"status": "ok", "message": "Venta registrada", "boleta": nro_venta})
+
+        return jsonify({
+            "status": "ok",
+            "message": "Venta registrada",
+            "boleta": nro_venta
+        })
 
     except mysql.connector.Error as err:
         conn.rollback()
         return jsonify({"status": "error", "message": str(err)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# ============================
+# GET - Listar ventas
+# ============================
+@ventas_bp.route("/listar", methods=["GET"])
+def listar_ventas():
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT 
+                v.id,
+                v.nro_venta AS nro,
+                v.tipo_pago AS tipoPago,
+                v.fecha,
+                v.cliente_nombre AS cliente,
+                v.total
+            FROM boleta_venta v
+            ORDER BY v.id DESC
+        """)
+
+        ventas = cursor.fetchall()
+
+        # Formatear fecha
+        for v in ventas:
+            if isinstance(v["fecha"], datetime):
+                v["fecha"] = v["fecha"].strftime("%Y-%m-%d %H:%M:%S")
+
+        return jsonify({"status": "ok", "ventas": ventas})
+
+    except mysql.connector.Error as err:
+        return jsonify({"status": "error", "message": str(err)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+        
+@ventas_bp.route("/detalle/<int:boleta_id>", methods=["GET"])
+def obtener_detalle_venta(boleta_id):
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+
+        # =========================
+        # 1️⃣ OBTENER DATOS GENERALES
+        # =========================
+        cursor.execute("""
+            SELECT 
+                b.id,
+                b.fecha,
+                b.nro_venta,
+                b.tipo_pago,
+                b.cliente_nombre,
+                b.total,
+                b.pagado,
+                b.cambio,
+                u.nombre AS vendedor
+            FROM boleta_venta b
+            LEFT JOIN usuarios u ON b.vendedor_id = u.id
+            WHERE b.id = %s
+        """, (boleta_id,))
+
+        venta = cursor.fetchone()
+
+        if not venta:
+            return jsonify({"status": "error", "message": "Venta no encontrada"}), 404
+
+        # ===============================
+        # 2️⃣ OBTENER DETALLES DE PRODUCTOS
+        # ===============================
+        cursor.execute("""
+            SELECT 
+                d.cantidad,
+                d.precio_unitario,
+                d.subtotal,
+                p.nombre AS producto
+            FROM boleta_venta_detalle d
+            INNER JOIN productos p ON d.producto_id = p.id
+            WHERE d.boleta_id = %s
+        """, (boleta_id,))
+
+        detalles = cursor.fetchall()
+
+        # Agregar detalles a la venta
+        venta["detalles"] = detalles
+
+        return jsonify({"status": "ok", "venta": venta})
+
+    except mysql.connector.Error as err:
+        return jsonify({"status": "error", "message": str(err)}), 500
+
     finally:
         cursor.close()
         conn.close()

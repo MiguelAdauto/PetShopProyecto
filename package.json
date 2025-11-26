@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start-backend": "cd backend && python app.py",
-    "start-all": "start cmd /k npm run start-backend & npm run dev"
+    "start-backend": "cd backend && venv\\Scripts\\python.exe app.py",
+    "start-all": "start cmd /k \"C:\\Proyecto\\PetShopProyecto\\backend\\venv\\Scripts\\python.exe C:\\Proyecto\\PetShopProyecto\\backend\\app.py\" & npm run dev"
   },
   "dependencies": {
     "apexcharts": "^5.3.6",

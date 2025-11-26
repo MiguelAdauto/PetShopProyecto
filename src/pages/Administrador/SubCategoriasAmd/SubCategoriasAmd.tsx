@@ -24,7 +24,7 @@ const SubCategoriasAmd = () => {
   const filasPorPagina = 5;
   const navigate = useNavigate();
 
-  // 🔹 Cargar subcategorías desde el backend
+  // Cargar subcategorías desde el backend
   useEffect(() => {
     const fetchSubcategorias = async () => {
       try {
@@ -44,7 +44,7 @@ const SubCategoriasAmd = () => {
     fetchSubcategorias();
   }, []);
 
-  // ✅ Filtrar subcategorías desde buscador
+  // Filtrar subcategorías desde buscador
   const handleBuscar = (filtros: { nombre: string }) => {
     const resultado = subCategorias.filter((sub) =>
       filtros.nombre === "" || sub.nombre.toLowerCase().includes(filtros.nombre.toLowerCase())
@@ -53,7 +53,7 @@ const SubCategoriasAmd = () => {
     setPaginaActual(1);
   };
 
-  // ✅ Eliminar subcategoría
+  // Eliminar subcategoría
   const handleEliminar = async (fila: SubCategoria) => {
     if (!window.confirm(`¿Eliminar subcategoría "${fila.nombre}"?`)) return;
 
@@ -73,13 +73,13 @@ const SubCategoriasAmd = () => {
     }
   };
 
-  // ✅ Paginación
+  // Paginación
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
   const subPaginadas = filtradas.slice(inicio, fin);
   const totalPaginas = Math.ceil(filtradas.length / filasPorPagina);
 
-  // ✅ Botones de acciones
+  // Botones de acciones
   const renderOpciones = (fila: SubCategoria) => (
     <div style={{ display: "flex", gap: "12px" }}>
       <button
@@ -117,3 +117,4 @@ const SubCategoriasAmd = () => {
 };
 
 export default SubCategoriasAmd;
+  

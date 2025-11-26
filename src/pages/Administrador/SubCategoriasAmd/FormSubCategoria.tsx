@@ -43,7 +43,7 @@ const FormSubCategoria: React.FC<SubCategoriaFormProps> = ({ modo = "agregar" })
       const data = await response.json();
       if (data.status === "ok") {
         alert(data.message);
-        window.history.back(); // ✅ vuelve al listado
+        window.history.back(); // vuelve al listado
       } else {
         alert("Error: " + data.message);
       }
@@ -69,10 +69,10 @@ const FormSubCategoria: React.FC<SubCategoriaFormProps> = ({ modo = "agregar" })
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <div className="form-row">
           <div className="input-group">
-            <label>Nombre <i className="bi bi-box-arrow-down-left"></i></label>
+            <label>Nombre: <i className="bi bi-box-arrow-down-left"></i></label>
             <input
               type="text"
-              placeholder="Nombre de la subcategoría"
+              placeholder="Inserte Nombre"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               required
@@ -80,10 +80,10 @@ const FormSubCategoria: React.FC<SubCategoriaFormProps> = ({ modo = "agregar" })
           </div>
 
           <div className="input-group">
-            <label>Descripción <i className="bi bi-box-arrow-down-left"></i></label>
+            <label>Descripción: <i className="bi bi-box-arrow-down-left"></i></label>
             <input
               type="text"
-              placeholder="Descripción o ubicación"
+              placeholder="Inserte Descripción o Ubicación"
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
             />

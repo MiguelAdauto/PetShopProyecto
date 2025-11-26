@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Boleta</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 320px;
+      margin: 0 auto;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
+
+    .logo {
+      width: 180px;
+      display: block;
+      margin: auto;
+    }
+
+    .line {
+      border-bottom: 1px dotted #000;
+      margin: 10px 0;
+    }
+
+    .table-items {
+      width: 100%;
+      font-size: 14px;
+      border-collapse: collapse;
+    }
+
+    .table-items th,
+    .table-items td {
+      text-align: left;
+      padding: 3px 0;
+    }
+
+    .right {
+      float: right;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .clearfix::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h2 class="center">Boleta</h2>
+  <div class="line"></div>
+  <img src="{{ logo_url }}" class="logo">
+
+  <p class="center bold">Sophie's Pet Supply</p>
+  <p class="center">RUC: 100099952747</p>
+  <p class="center">Av San Luis N° 1997 - 1999 Stand 13 - San Borja - Lima</p>
+  <p class="center">Cel.: 992 421 831</p>
+
+  <h3 class="center">Boleta - {{ serie }}</h3>
+
+  <div class="line"></div>
+
+  <p><b>Cajero:</b> {{ cajero }}</p>
+  <p><b>Fecha de emisión:</b> {{ fecha }}</p>
+  <p><b>Cliente:</b> {{ cliente }}</p>
+
+  <div class="line"></div>
+
+  <table class="table-items">
+  <thead>
+    <tr>
+      <th>Cant.</th>
+      <th>Descripción</th>
+      <th class="right">Precio</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.cantidad }}</td>
+      <td>{{ item.nombre }}</td>
+      <td class="right">s/. {{ item.precio }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table> 
+
+  <div class="line"></div>
+
+  <p>Sub Total <span class="right">s/. {{ subtotal }}</span></p>
+  <p>Descuento <span class="right">s/. {{ descuento }}</span></p>
+
+  <p class="bold">TOTAL: <span class="right">s/. {{ total }}</span></p>
+
+  <p><b>Son:</b> {{ total_letras }}</p>
+
+  <p>EFECTIVO: <span class="right">s/. {{ efectivo }}</span></p>
+  <p>VUELTO: <span class="right">s/. {{ vuelto }}</span></p>
+  <p>Tipo de pago: {{ tipo_pago }}</p>
+
+  <div class="line"></div>
+
+  <p class="center">¡Gracias por su preferencia!</p>
+
+  <div class="center clearfix">
+    <img src="data:image/png;base64,{{ qr_base64 }}" width="140">
+  </div>
+<p class="center">Siguenos en todas nuestras redes sociales: </p>
+</body>
+
+</html>

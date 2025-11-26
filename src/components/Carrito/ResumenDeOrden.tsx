@@ -15,6 +15,7 @@ type Props = {
   setCarrito: React.Dispatch<React.SetStateAction<ProductoCarrito[]>>;
 };
 
+
 const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
   const [cliente, setCliente] = useState('');
   const [pagoCliente, setPagoCliente] = useState<number | ''>('');
@@ -50,6 +51,9 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
     setCarrito((prev) => prev.filter((prod) => prod.id !== id));
   };
 
+
+  const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+
   // =============================================
   // 🔥 FUNCIÓN PARA REGISTRAR LA VENTA
   // =============================================
@@ -67,7 +71,7 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
     const ventaData = {
       metodo_pago: metodoPago,
       cliente_nombre: cliente || "Consumidor Final",
-      vendedor_id: 1, // tu id real
+      vendedor_id: usuario.id,
       total: totalPagar,
       pagado: pagoCliente,
       cambio: vuelto,
@@ -90,9 +94,21 @@ const ResumenDeOrden = ({ carrito, setCarrito }: Props) => {
       } else {
         alert("Error al registrar la venta");
       }
-    } catch (error) {
-      console.error("Error al registrar venta:", error);
-      alert("Error con el servidor");
+    } catch (error: any) {
+  console.error("Error al registrar venta:", error);
+
+  if (error.response && error.response.data) {
+    const msg = error.response.data.message || "Error desconocido";
+
+    // 🔥 SI ES ERROR DE STOCK
+    if (error.response.data.status === "stock_error") {
+      alert("❌ " + msg);
+      return;
+    }
+        alert("⚠️ " + msg);
+        return;
+      }
+      alert("❌ Error con el servidor");
     } finally {
       setLoading(false);
     }

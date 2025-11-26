@@ -2,49 +2,56 @@ import React, { useState } from "react";
 import "./Serie.css";
 
 interface FormSerieProps {
-  serieActual: string;
-  onGuardar: (nuevaSerie: string) => void;
+  correlativoActual: number;
+  onGuardar: (nuevoCorrelativo: number) => void;
   onCancelar: () => void;
 }
 
 const FormSerie: React.FC<FormSerieProps> = ({
-  serieActual,
+  correlativoActual,
   onGuardar,
   onCancelar,
 }) => {
-  const [nuevaSerie, setNuevaSerie] = useState(serieActual);
+  const [nuevoCorrelativo, setNuevoCorrelativo] = useState(
+    String(correlativoActual)
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (nuevaSerie.trim() === "") return;
+    const nuevoNumero = parseInt(nuevoCorrelativo, 10);
+
+    if (isNaN(nuevoNumero) || nuevoNumero < 0) {
+      alert("Ingrese un correlativo válido");
+      return;
+    }
 
     try {
-      await fetch("http://127.0.0.1:5000/ventas/serie", {
+      await fetch("http://127.0.0.1:5000/ventas/correlativo", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          serie: nuevaSerie, // Ej: "B0000035"
+          correlativo: nuevoNumero,
         }),
       });
 
-      onGuardar(nuevaSerie);
-
+      onGuardar(nuevoNumero);
     } catch (error) {
-      console.error("Error actualizando serie:", error);
+      console.error("Error actualizando correlativo:", error);
     }
   };
 
   return (
     <form className="form-serie" onSubmit={handleSubmit}>
-      <label>Nueva serie</label>
+      <label>Nuevo correlativo</label>
+
       <input
-        type="text"
-        value={nuevaSerie}
-        onChange={(e) => setNuevaSerie(e.target.value.toUpperCase())}
-        placeholder="Ej: B0000035"
+        type="number"
+        value={nuevoCorrelativo}
+        onChange={(e) => setNuevoCorrelativo(e.target.value)}
+        placeholder="Ej: 15"
       />
 
       <div className="form-buttons">
@@ -52,7 +59,11 @@ const FormSerie: React.FC<FormSerieProps> = ({
           Guardar
         </button>
 
-        <button type="button" className="btn btn-secondary" onClick={onCancelar}>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={onCancelar}
+        >
           Cancelar
         </button>
       </div>

@@ -3,27 +3,27 @@ import "./Serie.css";
 import FormSerie from "./FormSerie";
 
 const Serie: React.FC = () => {
-  const [serie, setSerie] = useState("CARGANDO..."); // solo la serie editable
-  const [correlativo, setCorrelativo] = useState<number>(0); // correlativo actual
+  const [serie, setSerie] = useState("CARGANDO...");
+  const [correlativo, setCorrelativo] = useState<number>(0);
   const [editando, setEditando] = useState(false);
 
   useEffect(() => {
-    // Obtener serie y correlativo actual desde el backend
+    // Obtener serie + correlativo desde el backend
     fetch("http://127.0.0.1:5000/ventas/serie")
       .then((res) => res.json())
       .then((data) => {
         if (data.serie && data.correlativo !== undefined) {
-          setSerie(data.serie); // solo la serie
-          setCorrelativo(data.correlativo); // correlativo actual
+          setSerie(data.serie);
+          setCorrelativo(data.correlativo);
         }
       })
       .catch(() => setSerie("Error al cargar"));
   }, []);
 
-  const handleActualizarSerie = (nuevaSerie: string) => {
-    setSerie(nuevaSerie);
+  // 🔥 Se actualiza SOLO el correlativo cuando guardas
+  const handleActualizarCorrelativo = (nuevoCorrelativo: number) => {
+    setCorrelativo(nuevoCorrelativo);
     setEditando(false);
-    // Opcional: aquí podrías mostrar un alert o feedback
   };
 
   return (
@@ -32,18 +32,24 @@ const Serie: React.FC = () => {
 
       {!editando ? (
         <div className="serie-actual">
-          <p><strong>Serie actual:</strong> {serie}</p>
-          <p><strong>Correlativo actual:</strong> {String(correlativo).padStart(6, "0")}</p>
+          <p>
+            <strong>Serie actual:</strong> {serie}
+          </p>
+
+          <p>
+            <strong>Correlativo actual:</strong>{" "}
+            {String(correlativo).padStart(6, "0")}
+          </p>
 
           <button className="btn btn-primary" onClick={() => setEditando(true)}>
-            Editar serie
+            Editar correlativo
           </button>
         </div>
       ) : (
         <FormSerie
-          serieActual={serie}
+          correlativoActual={correlativo}
           onCancelar={() => setEditando(false)}
-          onGuardar={handleActualizarSerie}
+          onGuardar={handleActualizarCorrelativo}
         />
       )}
     </div>
