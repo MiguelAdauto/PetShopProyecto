@@ -2,7 +2,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-// Interfaces simuladas
 interface Producto {
   nombre: string;
   cantidad: number;
@@ -33,33 +32,40 @@ const DetalleCierreAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [descargando, setDescargando] = useState(false);
 
+  // ================================
+  // 🔹 Cargar datos reales del backend
+  // ================================
   useEffect(() => {
     const fetchCierre = async () => {
       setLoading(true);
       try {
-        // Simulación de datos
-        const data: Cierre = {
-          id: Number(id) || 0,
-          mes: "Octubre",
-          anio: "2025",
-          vendedor: "Juan Pérez",
-          ventas: [
-            {
-              id: 1,
-              fecha: "2025-11-04",
-              numeroBoleta: "B001",
-              vendedor: "Juan Pérez",
-              subtotal: 150,
-              productos: [
-                { nombre: "Producto A", cantidad: 2, precio: 50, metodoPago: "Efectivo" },
-                { nombre: "Producto B", cantidad: 1, precio: 50, metodoPago: "Tarjeta" },
-              ],
-            },
-            // Puedes agregar más ventas simuladas aquí si quieres
-          ],
-        };
+        const res = await fetch(`http://localhost:5000/cierres/detalle/${id}`);
+        const data = await res.json();
 
-        setCierre(data);
+        if (data.status === "ok") {
+          const c = data.cierre;
+
+          setCierre({
+            id: c.id,
+            mes: c.mes,
+            anio: c.anio,
+            vendedor: `${c.vendedor_nombre} ${c.vendedor_apellido}`,
+            ventas: c.ventas.map((v: any) => ({
+              id: v.id,
+              fecha: v.fecha,
+              numeroBoleta: v.nro_venta,  // fijate que en tu tabla es nro_venta
+              vendedor: `${v.vendedor_nombre} ${v.vendedor_apellido}`,
+              subtotal: Number(v.total),
+              productos: v.productos.map((p: any) => ({
+                nombre: p.nombre,
+                cantidad: Number(p.cantidad),
+                precio: Number(p.precio),
+                metodoPago: p.metodo_pago,
+              })),
+            })),
+          });
+        }
+
       } catch (error) {
         console.error("Error al cargar cierre:", error);
       } finally {
@@ -70,17 +76,14 @@ const DetalleCierreAdmin = () => {
     fetchCierre();
   }, [id]);
 
-  // Función para descargar el PDF (simulación, luego adaptas al backend)
+  // ================================
+  // 🔹 Descargar reporte PDF
+  // ================================
   const descargarReporte = async () => {
     setDescargando(true);
     try {
-      // Aquí va la llamada real a la API que genera y devuelve el PDF
-      // Por ejemplo:
-      // const response = await fetch(`/api/cierres/${id}/reporte-pdf`);
-      // const blob = await response.blob();
-
-      // Simulación: creamos un blob vacío para que no rompa la demo
-      const blob = new Blob(["Reporte PDF simulado"], { type: "application/pdf" });
+      const response = await fetch(`http://localhost:5000/cierres/${id}/reporte-pdf`);
+      const blob = await response.blob();
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -90,9 +93,10 @@ const DetalleCierreAdmin = () => {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
+
     } catch (error) {
       console.error("Error al descargar reporte PDF:", error);
-      alert("Error al descargar el reporte. Intente nuevamente.");
+      alert("Error al descargar el reporte.");
     } finally {
       setDescargando(false);
     }
@@ -104,16 +108,28 @@ const DetalleCierreAdmin = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>
-        Detalle del Cierre - {cierre.vendedor} ({cierre.mes} {cierre.anio})
+        Detalle del Cierre — {cierre.vendedor} ({cierre.mes} {cierre.anio})
       </h2>
 
       <button
         onClick={descargarReporte}
         disabled={descargando}
-        style={{ marginBottom: "20px", padding: "10px 15px", cursor: descargando ? "not-allowed" : "pointer" }}
+        style={{
+          marginBottom: "20px",
+          padding: "10px 15px",
+          cursor: descargando ? "not-allowed" : "pointer",
+          backgroundColor: "#4143be",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+        }}
       >
         {descargando ? "Descargando..." : "Descargar detalles de ventas (PDF)"}
       </button>
+
+      {cierre.ventas.length === 0 && (
+        <p>No hubo ventas este mes.</p>
+      )}
 
       {cierre.ventas.map((venta, index) => (
         <div
@@ -122,11 +138,13 @@ const DetalleCierreAdmin = () => {
             marginBottom: "30px",
             border: "1px solid #ccc",
             padding: "15px",
-            borderRadius: "8px"
+            borderRadius: "8px",
           }}
         >
-          <h3>Venta {index + 1} - Boleta: {venta.numeroBoleta}</h3>
-          <p>Vendedor: {venta.vendedor} | Fecha: {venta.fecha}</p>
+          <h3>Venta {index + 1} — Boleta: {venta.numeroBoleta}</h3>
+          <p>
+            Vendedor: {venta.vendedor} | Fecha: {venta.fecha}
+          </p>
 
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
@@ -140,10 +158,18 @@ const DetalleCierreAdmin = () => {
             <tbody>
               {venta.productos.map((prod, i) => (
                 <tr key={i}>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>{prod.nombre}</td>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>{prod.cantidad}</td>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>S/{prod.precio.toFixed(2)}</td>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>{prod.metodoPago}</td>
+                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    {prod.nombre}
+                  </td>
+                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    {prod.cantidad}
+                  </td>
+                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    S/{prod.precio.toFixed(2)}
+                  </td>
+                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    {prod.metodoPago}
+                  </td>
                 </tr>
               ))}
             </tbody>

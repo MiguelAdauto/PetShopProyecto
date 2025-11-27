@@ -9,8 +9,8 @@ interface Usuario {
   nombre: string;
   apellido: string;
   correo: string;
-  rol: string;      // "Administrador" o "Vendedor"
-  imagen?: string;  // nombre del archivo en el backend
+  rol: string;      // Administrador | Vendedor (bonito para mostrar)
+  imagen?: string;  // foto
 }
 
 const Login: React.FC = () => {
@@ -30,26 +30,32 @@ const Login: React.FC = () => {
         body: JSON.stringify({ correo: email, contrasena: password }),
       });
 
-      // Convertimos primero a texto y luego a JSON para evitar errores silenciosos
       const text = await response.text();
       console.log('Response text:', text);
+
       const data = JSON.parse(text);
 
       if (data.status === 'ok') {
+        // Rol bonito para mostrar en la UI
+        const rolBonito =
+          data.user.rol === 'admin' ? 'Administrador' : 'Vendedor';
+
         const usuario: Usuario = {
           id: data.user.id,
           nombre: data.user.nombre,
           apellido: data.user.apellido,
           correo: data.user.correo,
-          rol: data.user.rol === 'admin' ? 'Administrador' : 'Vendedor',
+          rol: rolBonito,
           imagen: data.user.imagen || '',
         };
 
-        // Guardamos usuario y rol en localStorage
+        // Guardamos la info del usuario para mostrar en header
         localStorage.setItem('usuario', JSON.stringify(usuario));
-        localStorage.setItem('rol', data.user.rol); // 'admin' o 'vendedor'
 
-        // Redirección según rol
+        // Guardamos el rol EXACTO que necesita el backend
+        localStorage.setItem('rol', data.user.rol); // admin | vendedor
+
+        // Redirección
         if (data.user.rol === 'admin') {
           navigate('/admin/dashboard');
         } else {
@@ -69,6 +75,7 @@ const Login: React.FC = () => {
       <div className="login-left">
         <div className="login-box">
           <img src={logo} alt="Logo" className="login-logo" />
+
           <form onSubmit={handleLogin}>
             <label htmlFor="login-email">Correo:</label>
             <input
@@ -79,6 +86,7 @@ const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
             <label htmlFor="login-password">Contraseña:</label>
             <input
               type="password"
@@ -88,11 +96,14 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
             {error && <p className="error">{error}</p>}
+
             <button type="submit">Iniciar sesión</button>
           </form>
         </div>
       </div>
+
       <div
         className="login-right"
         style={{ backgroundImage: `url(${fondo})` }}

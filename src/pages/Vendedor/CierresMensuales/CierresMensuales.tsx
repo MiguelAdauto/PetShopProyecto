@@ -45,32 +45,33 @@ const CierresMensuales = () => {
     cargarCierres();
   }, []);
 
-  // 🔹 Abrir modal para generar cierre
-  const handleCerrarCaja = (mes: string, anio: string) => {
-    const mesNum = Number(mes);
-    const anioNum = Number(anio);
+  // 🔹 Cerrar caja → Tomar mes y año actuales automáticos
+  const handleCerrarCaja = () => {
+    const hoy = new Date();
+    const mesActual = hoy.getMonth() + 1;
+    const anioActual = hoy.getFullYear();
 
-    if (!mes || !anio || isNaN(mesNum) || isNaN(anioNum))
-      return alert("Selecciona mes y año válidos.");
-
-    setMesSeleccionado(mesNum);
-    setAnioSeleccionado(anioNum);
+    setMesSeleccionado(mesActual);
+    setAnioSeleccionado(anioActual);
     setModalOpen(true);
   };
 
-  // 🔹 Generar cierre
+  // 🔹 Generar cierre mensual
   const handleGenerarCierre = async () => {
     if (mesSeleccionado === null || anioSeleccionado === null) {
       return alert("Mes o año inválido");
     }
 
     try {
-      const vendedor_id = 1; // reemplazar por el id real del usuario logueado
-      console.log("Generando cierre con:", {
-        mes: mesSeleccionado,
-        anio: anioSeleccionado,
-        vendedor_id,
-      });
+      // ⬇️ ⬇️ AQUI EL ARREGLO FINAL ⬇️ ⬇️  
+      const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+      const vendedor_id = usuario.id; // ← ahora usa el usuario logueado REAL
+
+      if (!vendedor_id) {
+        alert("No se encontró el vendedor logueado.");
+        return;
+      }
+      // ⬆️ ⬆️ FIN DEL ARREGLO ⬆️ ⬆️
 
       const res = await axios.post("http://localhost:5000/cierres/generar", {
         mes: mesSeleccionado,
@@ -91,7 +92,7 @@ const CierresMensuales = () => {
     }
   };
 
-  // 🔹 Filtrar cierres
+  // 🔹 Filtro por mes/año cuando buscas
   const handleBuscar = (mes: string, anio: string) => {
     const mesNum = Number(mes);
     const anioNum = Number(anio);
@@ -115,14 +116,13 @@ const CierresMensuales = () => {
 
   return (
     <div className="contenedor-pagina-listado">
+      {/* Botón cerrar caja + búsqueda */}
       <BusquedaCierres onCerrarCaja={handleCerrarCaja} onBuscar={handleBuscar} />
 
       {datosFiltrados.length === 0 &&
       mesSeleccionado !== null &&
       anioSeleccionado !== null ? (
-        <p>
-          No existe cierre generado para {mesSeleccionado} {anioSeleccionado}
-        </p>
+        <p>No existe cierre generado para {mesSeleccionado} {anioSeleccionado}</p>
       ) : (
         <TablaGenerica
           columnas={columnas}

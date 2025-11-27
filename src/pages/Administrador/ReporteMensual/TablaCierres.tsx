@@ -4,6 +4,7 @@ import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaCierres from "./BusquedaCierresCaja";
 import Paginacion from "../../../components/Paginacion/Paginacion";
 import "../../../Styles/PaginasListado.css";
+import axios from "axios";
 
 interface Cierre {
   id: number;
@@ -15,7 +16,6 @@ interface Cierre {
   vendedor: string;
 }
 
-// ✅ Columnas de la tabla
 const columnasCierres = [
   { key: "id", label: "#", sortable: true },
   { key: "vendedor", label: "Vendedor", sortable: true },
@@ -26,39 +26,63 @@ const columnasCierres = [
   { key: "fecha", label: "Fecha Generación", sortable: true },
 ];
 
-// ✅ Datos simulados
-const datosCierresEstaticos: Cierre[] = Array.from({ length: 15 }, (_, index) => ({
-  id: index + 1,
-  vendedor: ["Luis", "Camila", "Andrés", "Sofía"][index % 4],
-  mes: [
-    "Enero","Febrero","Marzo","Abril","Mayo","Junio",
-    "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
-  ][index % 12],
-  anio: "2025",
-  total: `S/${(Math.random() * 5000 + 1000).toFixed(2)}`,
-  cantidad: Math.floor(Math.random() * 40 + 10),
-  fecha: "2025-10-25",
-}));
-
 const CierresListado = () => {
-  const [cierres, setCierres] = useState<Cierre[]>(datosCierresEstaticos);
+  const [cierres, setCierres] = useState<Cierre[]>([]);
   const [paginaActual, setPaginaActual] = useState(1);
   const filasPorPagina = 6;
   const navigate = useNavigate();
 
+  // 🔹 Traer cierres del backend
   useEffect(() => {
-    setTimeout(() => setCierres(datosCierresEstaticos), 1000);
+    const cargarCierres = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/cierres/listar");
+
+        if (res.data.status === "ok") {
+          const transformados = res.data.cierres.map((c: any) => ({
+            id: c.id,
+            mes: obtenerNombreMes(c.mes),
+            anio: c.anio.toString(),
+            total: `S/${Number(c.total_ventas).toFixed(2)}`,
+            cantidad: c.cantidad_ventas,
+            fecha: c.fecha_generacion,
+            vendedor: c.vendedor_nombre
+            ? `${c.vendedor_nombre} ${c.vendedor_apellido}`
+            : "—",
+          }));
+
+          setCierres(transformados);
+        }
+      } catch (error) {
+        console.error("Error cargando cierres:", error);
+      }
+    };
+
+    cargarCierres();
   }, []);
 
-  //  Filtro desde el buscador
+  // Convertir número a nombre del mes
+  const obtenerNombreMes = (mesNum: number) => {
+    const nombres = [
+      "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+      "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",
+    ];
+    return nombres[mesNum - 1] || mesNum.toString();
+  };
+
+  // Filtro desde buscador
   const buscarCierres = (filtros: { vendedor: string; mes: string }) => {
-    const filtrados = datosCierresEstaticos.filter((cierre) => {
+    const filtrados = cierres.filter((cierre) => {
       const coincideVendedor =
         filtros.vendedor === "" ||
         cierre.vendedor.toLowerCase().includes(filtros.vendedor.toLowerCase());
-      const coincideMes = filtros.mes === "" || cierre.mes === filtros.mes;
+
+      const coincideMes =
+        filtros.mes === "" || cierre.mes === filtros.mes;
+
       return coincideVendedor && coincideMes;
     });
+
     setCierres(filtrados);
     setPaginaActual(1);
   };
@@ -69,43 +93,34 @@ const CierresListado = () => {
   const cierresPaginados = cierres.slice(inicio, fin);
   const totalPaginas = Math.ceil(cierres.length / filasPorPagina);
 
-  //Opciones de cada fila
   const renderOpciones = (fila: Cierre) => (
     <div style={{ display: "flex", gap: "12px" }}>
-      
       <button
         title="Ver Detalles"
         onClick={() => navigate(`/admin/detalle-cierre/${fila.id}`)}
-        style={{ cursor: "pointer", background: "none", border: "none" }}>
+        style={{ cursor: "pointer", background: "none", border: "none" }}
+      >
         <i className="bi bi-info-circle" style={{ fontSize: "18px", color: "#000" }}></i>
       </button>
+
       <button
         title="Descargar PDF"
         onClick={() => console.log("Descargar PDF:", fila)}
-        style={{ cursor: "pointer", background: "none", border: "none" }}>
+        style={{ cursor: "pointer", background: "none", border: "none" }}
+      >
         <i className="bi bi-download" style={{ fontSize: "18px", color: "#000" }}></i>
       </button>
     </div>
   );
 
-  //Render personalizado de celdas (opcional, por si quieres agregar iconos)
-  const renderCustomCell = (key: string, value: any) => {
-    if (key === "archivo") {
-      return <span style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}>{value}</span>;
-    }
-    return value;
-  };
-
   return (
     <div className="contenedor-pagina-listado">
-
       <BusquedaCierres onBuscar={buscarCierres} />
 
       <TablaGenerica
         columnas={columnasCierres}
         datos={cierresPaginados}
         renderOpciones={renderOpciones}
-        renderCell={renderCustomCell}
       />
 
       <Paginacion
