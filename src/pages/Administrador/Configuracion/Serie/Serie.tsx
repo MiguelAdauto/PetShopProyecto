@@ -41,7 +41,7 @@ const Serie: React.FC = () => {
             {String(correlativo).padStart(6, "0")}
           </p>
 
-          <button className="btn btn-primary" onClick={() => setEditando(true)}>
+          <button className="boton-agregar-admin" onClick={() => setEditando(true)}>
             Editar correlativo
           </button>
         </div>

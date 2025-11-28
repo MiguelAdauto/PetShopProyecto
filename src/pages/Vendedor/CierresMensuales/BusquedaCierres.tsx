@@ -67,14 +67,13 @@ const BusquedaCierres: React.FC<BusquedaProps> = ({ onCerrarCaja, onBuscar }) =>
         />
       </label>
 
-      {/* Botón que cierra caja automáticamente con la fecha actual */}
-      <button className="boton-buscar-cierreCaja" onClick={handleCerrarCajaAutomatico}>
-        Cerrar Caja
-      </button>
-
       {/* Botón para realizar la búsqueda */}
       <button className="boton-buscar-vendedor" onClick={handleBuscar}>
         Buscar
+      </button>
+      {/* Botón que cierra caja automáticamente con la fecha actual */}
+      <button className="boton-agregar-vendedor" onClick={handleCerrarCajaAutomatico}>
+        Cerrar Caja
       </button>
     </div>
   );

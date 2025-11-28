@@ -12,7 +12,7 @@ type Sale = {
 type SalesTableProps = {
   data: Sale[];
   title?: string;
-  limit?: number; // 🔥 nuevo: para limitar cuántas filas mostrar
+  limit?: number;
 };
 
 const SalesTable: React.FC<SalesTableProps> = ({ data, title, limit = 3 }) => {
@@ -45,7 +45,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ data, title, limit = 3 }) => {
             <th style={{ padding: 10 }}>Producto</th>
             <th style={{ padding: 10 }}>Subcategoría</th>
             <th style={{ padding: 10 }}>Total</th>
-            <th style={{ padding: 10 }}>Estado</th>
+            <th style={{ padding: 10 }}>Vendedor</th>
           </tr>
         </thead>
         <tbody>

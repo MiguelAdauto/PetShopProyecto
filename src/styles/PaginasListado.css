@@ -39,10 +39,6 @@
   font-weight: bold;
 }
 
-.btn-buscar:hover {
-  background-color: #218838;
-}
-
 /* === TABLA GENERICA (PUEDES ELIMINAR SI YA ESTÁ EN TablaGenerica.css) === */
 .tabla-generica {
   width: 100%;

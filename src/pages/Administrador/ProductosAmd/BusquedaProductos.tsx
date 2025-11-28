@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";  // Importamos useNavigate para navegar a otras rutas
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../../api/api";
 
 interface FiltrosProductos {
   codigo: string;
   nombre: string;
-  tipo: string;
-  categoria: string;
+  categoria: string; // Mixto, Gato, Perro
+  subcategoria: string; // desde API
 }
 
 interface Props {
@@ -16,15 +17,28 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
   const [filtros, setFiltros] = useState<FiltrosProductos>({
     codigo: "",
     nombre: "",
-    tipo: "",
     categoria: "",
+    subcategoria: "",
   });
 
+  const [subcategorias, setSubcategorias] = useState<{ id: number; nombre: string }[]>([]);
   const navigate = useNavigate();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  useEffect(() => {
+    const cargarSubcategorias = async () => {
+      try {
+        const response = await api.get("/subcategorias/visibles");
+        if (response.data.status === "ok") {
+          setSubcategorias(response.data.subcategorias);
+        }
+      } catch (error) {
+        console.error("Error al cargar subcategorías", error);
+      }
+    };
+    cargarSubcategorias();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFiltros((prev) => ({ ...prev, [name]: value }));
   };
@@ -34,7 +48,6 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
   };
 
   const handleBotonAdmin = () => {
-    // Navegar a la página de agregar producto
     navigate("/admin/agregar-producto");
   };
 
@@ -64,7 +77,7 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
 
       <label>
         Tipo:
-        <select name="tipo" value={filtros.tipo} onChange={handleChange}>
+        <select name="categoria" value={filtros.categoria} onChange={handleChange}>
           <option value="">Todos</option>
           <option value="Mixto">Mixto</option>
           <option value="Perro">Perro</option>
@@ -73,18 +86,23 @@ const BusquedaProductos = ({ onBuscar }: Props) => {
       </label>
 
       <label>
-        Categoría:
-        <select name="categoria" value={filtros.categoria} onChange={handleChange}>
+        Subcategoría:
+        <select name="subcategoria" value={filtros.subcategoria} onChange={handleChange}>
           <option value="">Todas</option>
-          <option value="Juguetes">Juguetes</option>
-          <option value="Aseo">Aseo</option>
-          <option value="Accesorios">Accesorios</option>
-          <option value="Hogar">Hogar</option>
-          <option value="Comederos">Comederos</option>
+          {subcategorias.map((s) => (
+            <option key={s.id} value={s.nombre}>
+              {s.nombre}
+            </option>
+          ))}
         </select>
       </label>
-      <button className="boton-buscar-admin" onClick={handleBuscar}>Buscar</button>
-      <button className="boton-buscar-vendedor" onClick={handleBotonAdmin}>Agregar</button>
+
+      <button className="boton-buscar-admin" onClick={handleBuscar}>
+        Buscar
+      </button>
+      <button className="boton-agregar-admin" onClick={handleBotonAdmin}>
+        Agregar
+      </button>
     </div>
   );
 };

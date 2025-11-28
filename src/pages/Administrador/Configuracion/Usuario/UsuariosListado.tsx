@@ -35,6 +35,7 @@ const filasPorPagina = 6;
 
 const UsuariosListado = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [usuariosOriginales, setUsuariosOriginales] = useState<Usuario[]>([]); // Para guardar todos los usuarios y poder restablecer los filtros
   const [paginaActual, setPaginaActual] = useState(1);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario | null>(null);
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const UsuariosListado = () => {
           rol: u.rol_id === 1 ? 'Administrador' : 'Vendedor',
         }));
         setUsuarios(usuariosConRol);
+        setUsuariosOriginales(usuariosConRol); // Guardar todos los usuarios
       } else {
         console.error(data.message);
       }
@@ -111,14 +113,20 @@ const UsuariosListado = () => {
     }
   };
 
+  // Búsqueda de usuarios con filtros
   const buscarUsuarios = (filtros: any) => {
-    const filtrados = usuarios.filter(u => {
+    if (!filtros.nombre && !filtros.dni && !filtros.tipo) {
+      setUsuarios(usuariosOriginales); // Si no hay filtros, mostrar todos
+      return;
+    }
+
+    const filtrados = usuariosOriginales.filter(u => {
       const coincideNombre = !filtros.nombre || u.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
       const coincideDni = !filtros.dni || u.dni.toLowerCase().includes(filtros.dni.toLowerCase());
-      const coincideTipo = !filtros.tipo || (u.rol ?? (u.rol_id === 1 ? 'Administrador' : 'Vendedor')) === filtros.tipo;
+      const coincideTipo = !filtros.tipo || (filtros.tipo === "vendedor" && u.rol === "Vendedor") || (filtros.tipo === "admin" && u.rol === "Administrador");
       return coincideNombre && coincideDni && coincideTipo;
     });
-    setPaginaActual(1);
+    setPaginaActual(1); // Resetear la página cuando los filtros cambian
     setUsuarios(filtrados);
   };
 

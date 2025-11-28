@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface FiltrosUsuarios {
@@ -20,6 +20,7 @@ const BusquedaUsuarios = ({ onBuscar }: Props) => {
 
   const navigate = useNavigate();
 
+  // Manejar cambios en los inputs
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -27,10 +28,12 @@ const BusquedaUsuarios = ({ onBuscar }: Props) => {
     setFiltros((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleBuscar = () => {
-    onBuscar(filtros);
-  };
+  // Ejecutar búsqueda al cambiar filtros
+  useEffect(() => {
+    onBuscar(filtros); // Ejecutar búsqueda cada vez que se cambian los filtros
+  }, [filtros, onBuscar]); // Dependencia en filtros para ejecutar la búsqueda
 
+  // Navegar a agregar un usuario
   const handleAgregarUsuario = () => {
     navigate("/admin/agregar-usuario");
   };
@@ -68,11 +71,8 @@ const BusquedaUsuarios = ({ onBuscar }: Props) => {
         </select>
       </label>
 
-      <button className="boton-buscar-admin" onClick={handleBuscar}>
-        Buscar
-      </button>
-      <button className="boton-buscar-vendedor" onClick={handleAgregarUsuario}>
-        Agregar Usuario
+      <button className="boton-agregar-admin" onClick={handleAgregarUsuario}>
+        Agregar
       </button>
     </div>
   );

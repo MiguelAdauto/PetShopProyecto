@@ -14,6 +14,7 @@ from routes.subcategorias import subcategorias_bp
 from routes.ventas import ventas_bp
 from routes.pdf_routes import pdf_bp
 from routes.cierres_routes import cierres_bp
+from routes.dashboard_bp import dashboard_bp
 
 
 app = Flask(__name__)
@@ -32,6 +33,7 @@ app.register_blueprint(subcategorias_bp, url_prefix="/subcategorias")
 app.register_blueprint(ventas_bp, url_prefix="/ventas")
 app.register_blueprint(pdf_bp)
 app.register_blueprint(cierres_bp)
+app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
 
 
 # Ruta para servir imágenes

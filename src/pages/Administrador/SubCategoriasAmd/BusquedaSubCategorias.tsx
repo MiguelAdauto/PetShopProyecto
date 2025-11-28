@@ -42,7 +42,7 @@ const BusquedaCategorias = ({ onBuscar }: Props) => {
       </label>
 
       <button className="boton-buscar-admin" onClick={handleBuscar}>Buscar</button>
-      <button className="boton-buscar-vendedor" onClick={handleBotonAdmin}>Agregar</button>
+      <button className="boton-agregar-admin" onClick={handleBotonAdmin}>Agregar</button>
     </div>
   );
 };

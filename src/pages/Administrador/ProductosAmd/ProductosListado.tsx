@@ -4,8 +4,15 @@ import TablaGenerica from "../../../components/TablaGenerica/TablaGenerica";
 import BusquedaProductos from "./BusquedaProductos";
 import Paginacion from "../../../components/Paginacion/Paginacion";
 import api from "../../../api/api";
-import ModalProducto from "../../../components/Modal/ModalProducto"; 
+import ModalProducto from "../../../components/Modal/ModalProducto";
 import "../../../Styles/PaginasListado.css";
+
+interface FiltrosProductos {
+  codigo: string;
+  nombre: string;
+  categoria: string;
+  subcategoria: string;
+}
 
 const columnasProductosAdmin = [
   { key: "id", label: "#", sortable: true },
@@ -25,8 +32,13 @@ const ProductosListado = () => {
   const filasPorPagina = 6;
   const navigate = useNavigate();
 
-  // Estado para modal
   const [productoSeleccionado, setProductoSeleccionado] = useState<any | null>(null);
+  const [filtros, setFiltros] = useState<FiltrosProductos>({
+    codigo: "",
+    nombre: "",
+    categoria: "",
+    subcategoria: "",
+  });
 
   const cargarProductos = async () => {
     try {
@@ -43,30 +55,32 @@ const ProductosListado = () => {
     cargarProductos();
   }, []);
 
-  // Paginación
+  const handleBuscar = (nuevosFiltros: FiltrosProductos) => {
+    setFiltros(nuevosFiltros);
+    setPaginaActual(1);
+  };
+
+  const productosFiltrados = productos.filter((p) => {
+    return (
+      (filtros.codigo === "" || p.codigo.includes(filtros.codigo)) &&
+      (filtros.nombre === "" || p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase())) &&
+      (filtros.categoria === "" || p.categoria === filtros.categoria) &&
+      (filtros.subcategoria === "" || p.subcategoria === filtros.subcategoria)
+    );
+  });
+
+  const totalPaginas = Math.ceil(productosFiltrados.length / filasPorPagina);
   const inicio = (paginaActual - 1) * filasPorPagina;
   const fin = inicio + filasPorPagina;
-  const productosPaginados = productos.slice(inicio, fin);
-  const totalPaginas = Math.ceil(productos.length / filasPorPagina);
+  const productosPaginados = productosFiltrados.slice(inicio, fin);
 
-  // Botones de acción
   const renderOpciones = (fila: any) => (
     <div style={{ display: "flex", gap: "12px" }}>
-      
-      {/* Ver Producto (abre el modal) */}
-      <button
-        title="Ver Producto"
-        onClick={() => setProductoSeleccionado(fila)}
-        style={{ cursor: "pointer", background: "none", border: "none" }}
-      >
+      <button title="Ver Producto" onClick={() => setProductoSeleccionado(fila)} style={{ cursor: "pointer", background: "none", border: "none" }}>
         <i className="bi bi-eye" style={{ fontSize: "20px", color: "#000" }}></i>
       </button>
 
-      <button
-        title="Editar Producto"
-        onClick={() => navigate("/admin/editar-producto", { state: fila })}
-        style={{ cursor: "pointer", background: "none", border: "none" }}
-      >
+      <button title="Editar Producto" onClick={() => navigate("/admin/editar-producto", { state: fila })} style={{ cursor: "pointer", background: "none", border: "none" }}>
         <i className="bi bi-pencil-square" style={{ fontSize: "18px", color: "#000" }}></i>
       </button>
 
@@ -85,7 +99,6 @@ const ProductosListado = () => {
     </div>
   );
 
-  // Render custom celda imagen
   const renderCustomCell = (key: string, value: any) => {
     if (key === "imagen") {
       if (!value) return <span>No hay imagen</span>;
@@ -97,7 +110,7 @@ const ProductosListado = () => {
 
   return (
     <div className="contenedor-pagina-listado">
-      <BusquedaProductos onBuscar={() => {}} />
+      <BusquedaProductos onBuscar={handleBuscar} />
 
       <TablaGenerica
         columnas={columnasProductosAdmin}
@@ -113,7 +126,6 @@ const ProductosListado = () => {
         tipo="admin"
       />
 
-      {/*Modal de Producto */}
       {productoSeleccionado && (
         <ModalProducto
           producto={productoSeleccionado}

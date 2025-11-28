@@ -55,13 +55,13 @@ const FormSerie: React.FC<FormSerieProps> = ({
       />
 
       <div className="form-buttons">
-        <button type="submit" className="btn btn-success">
+        <button type="submit" className="boton-add-admin">
           Guardar
         </button>
 
         <button
           type="button"
-          className="btn btn-secondary"
+          className="boton-cancelar-admin"
           onClick={onCancelar}
         >
           Cancelar

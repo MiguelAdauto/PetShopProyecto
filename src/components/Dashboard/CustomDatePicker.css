@@ -46,3 +46,12 @@
 .rdp-day:hover {
   background-color: var(--rdp-background-color);
 }
+
+.calendar-popup-portal {
+  position: absolute;
+  z-index: 9999; /* importante para que flote sobre todo */
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 6px;
+  padding: 8px;
+}

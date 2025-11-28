@@ -1,6 +1,7 @@
 // src/pages/Administrador/ReporteMensual/DetalleCierreAdmin.tsx
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import html2pdf from "html2pdf.js"; // importamos
 
 interface Producto {
   nombre: string;
@@ -31,10 +32,9 @@ const DetalleCierreAdmin = () => {
   const [cierre, setCierre] = useState<Cierre | null>(null);
   const [loading, setLoading] = useState(true);
   const [descargando, setDescargando] = useState(false);
+  const reporteRef = useRef<HTMLDivElement>(null);
 
-  // ================================
-  // 🔹 Cargar datos reales del backend
-  // ================================
+  // 🔹 Cargar datos del backend
   useEffect(() => {
     const fetchCierre = async () => {
       setLoading(true);
@@ -44,7 +44,6 @@ const DetalleCierreAdmin = () => {
 
         if (data.status === "ok") {
           const c = data.cierre;
-
           setCierre({
             id: c.id,
             mes: c.mes,
@@ -53,7 +52,7 @@ const DetalleCierreAdmin = () => {
             ventas: c.ventas.map((v: any) => ({
               id: v.id,
               fecha: v.fecha,
-              numeroBoleta: v.nro_venta,  // fijate que en tu tabla es nro_venta
+              numeroBoleta: v.nro_venta,
               vendedor: `${v.vendedor_nombre} ${v.vendedor_apellido}`,
               subtotal: Number(v.total),
               productos: v.productos.map((p: any) => ({
@@ -65,41 +64,42 @@ const DetalleCierreAdmin = () => {
             })),
           });
         }
-
       } catch (error) {
         console.error("Error al cargar cierre:", error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchCierre();
   }, [id]);
 
-  // ================================
-  // 🔹 Descargar reporte PDF
-  // ================================
-  const descargarReporte = async () => {
+  // 🔹 Descargar PDF (usa un clon para imprimir todo)
+  const descargarPDF = () => {
+    if (!reporteRef.current) return;
     setDescargando(true);
-    try {
-      const response = await fetch(`http://localhost:5000/cierres/${id}/reporte-pdf`);
-      const blob = await response.blob();
 
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `reporte_cierre_${id}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
+    const clone = reporteRef.current.cloneNode(true) as HTMLElement;
+    clone.style.maxHeight = "none";
+    clone.style.overflow = "visible";
 
-    } catch (error) {
-      console.error("Error al descargar reporte PDF:", error);
-      alert("Error al descargar el reporte.");
-    } finally {
+    const opt = {
+      margin: 0.5,
+      filename: `reporte_cierre_${cierre?.id}.pdf`,
+      image: { type: "jpeg" as const, quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" as const },
+    };
+
+    const container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.left = "-9999px";
+    container.appendChild(clone);
+    document.body.appendChild(container);
+
+    html2pdf().set(opt).from(clone).save().finally(() => {
       setDescargando(false);
-    }
+      document.body.removeChild(container);
+    });
   };
 
   if (loading) return <p>Cargando cierre...</p>;
@@ -108,11 +108,11 @@ const DetalleCierreAdmin = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>
-        Detalle del Cierre — {cierre.vendedor} ({cierre.mes} {cierre.anio})
+        Detalle del Cierre — {cierre.vendedor} ({cierre.mes} / {cierre.anio})
       </h2>
 
       <button
-        onClick={descargarReporte}
+        onClick={descargarPDF}
         disabled={descargando}
         style={{
           marginBottom: "20px",
@@ -124,62 +124,78 @@ const DetalleCierreAdmin = () => {
           borderRadius: "8px",
         }}
       >
-        {descargando ? "Descargando..." : "Descargar detalles de ventas (PDF)"}
+        {descargando ? "Generando PDF..." : "Descargar reporte PDF"}
       </button>
 
-      {cierre.ventas.length === 0 && (
-        <p>No hubo ventas este mes.</p>
-      )}
+      {cierre.ventas.length === 0 && <p>No hubo ventas este mes.</p>}
 
-      {cierre.ventas.map((venta, index) => (
-        <div
-          key={venta.id}
-          style={{
-            marginBottom: "30px",
-            border: "1px solid #ccc",
-            padding: "15px",
-            borderRadius: "8px",
-          }}
-        >
-          <h3>Venta {index + 1} — Boleta: {venta.numeroBoleta}</h3>
-          <p>
-            Vendedor: {venta.vendedor} | Fecha: {venta.fecha}
-          </p>
+      {/* Contenedor con scroll en pantalla */}
+      <div
+        ref={reporteRef}
+        style={{
+          maxHeight: "680px",
+          overflowY: "auto",
+          paddingRight: "10px",
+        }}
+      >
+        {cierre.ventas.map((venta, index) => (
+          <div
+            key={venta.id}
+            style={{
+              marginBottom: "30px",
+              border: "1px solid #ccc",
+              padding: "15px",
+              borderRadius: "8px",
+            }}
+          >
+            <h3>Venta {index + 1} — Boleta: {venta.numeroBoleta}</h3>
+            <p>
+              Vendedor: {venta.vendedor} | Fecha: {venta.fecha}
+            </p>
 
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th style={{ border: "1px solid #ccc", padding: "5px" }}>Producto</th>
-                <th style={{ border: "1px solid #ccc", padding: "5px" }}>Cantidad</th>
-                <th style={{ border: "1px solid #ccc", padding: "5px" }}>Precio</th>
-                <th style={{ border: "1px solid #ccc", padding: "5px" }}>Tipo de pago</th>
-              </tr>
-            </thead>
-            <tbody>
-              {venta.productos.map((prod, i) => (
-                <tr key={i}>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
-                    {prod.nombre}
-                  </td>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
-                    {prod.cantidad}
-                  </td>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
-                    S/{prod.precio.toFixed(2)}
-                  </td>
-                  <td style={{ border: "1px solid #ccc", padding: "5px" }}>
-                    {prod.metodoPago}
-                  </td>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    Producto
+                  </th>
+                  <th style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    Cantidad
+                  </th>
+                  <th style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    Precio
+                  </th>
+                  <th style={{ border: "1px solid #ccc", padding: "5px" }}>
+                    Tipo de pago
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {venta.productos.map((prod, i) => (
+                  <tr key={i}>
+                    <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                      {prod.nombre}
+                    </td>
+                    <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                      {prod.cantidad}
+                    </td>
+                    <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                      S/{prod.precio.toFixed(2)}
+                    </td>
+                    <td style={{ border: "1px solid #ccc", padding: "5px" }}>
+                      {prod.metodoPago}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-          <p style={{ textAlign: "right", fontWeight: "bold" }}>
-            Subtotal: S/{venta.subtotal.toFixed(2)}
-          </p>
-        </div>
-      ))}
+            <p style={{ textAlign: "right", fontWeight: "bold" }}>
+              Subtotal: S/{venta.subtotal.toFixed(2)}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
